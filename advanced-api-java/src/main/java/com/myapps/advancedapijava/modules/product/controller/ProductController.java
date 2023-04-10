@@ -27,12 +27,10 @@ public class ProductController {
   @GetMapping("")
   private ResponseEntity<List<Product>> findAll() {
     logger.info("GET /products");
-
     return new ResponseEntity<>(
       service.findAll(),
       HttpStatus.OK
     );
-
   }
 
   @PostMapping("")
@@ -40,12 +38,10 @@ public class ProductController {
     @RequestBody Product product
   ) {
     logger.info("POST /products");
-
     return new ResponseEntity<>(
       service.save(product),
       HttpStatus.OK
     );
-
   }
 
   @GetMapping("/{id}")
@@ -53,11 +49,9 @@ public class ProductController {
     @PathVariable("id") Long id
   ) {
     logger.info("GET /products/%s".formatted(id));
-
     return new ResponseEntity<>(
       service.findById(id),
       HttpStatus.OK
     );
-
   }
 }
