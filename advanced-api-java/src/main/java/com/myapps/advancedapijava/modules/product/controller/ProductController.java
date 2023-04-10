@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/products")
 public class ProductController {
-  private ProductService productService;
+  private final ProductService productService;
 
   public ProductController(
     ProductService productService
@@ -25,7 +25,7 @@ public class ProductController {
 
   @GetMapping("")
   private ResponseEntity<ProductDto> findAll() {
-    logger.info("Called controller");
+    logger.info("Called controller.");
 
     ProductDto productDto = ProductDto.builder()
       .id(1L)

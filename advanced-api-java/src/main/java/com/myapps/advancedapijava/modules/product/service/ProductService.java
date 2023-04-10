@@ -10,6 +10,6 @@ public class ProductService {
   Logger logger = Util.getLogger(this.getClass());
 
   public void findAll() {
-    logger.info("Called service");
+    logger.info("Called service.");
   }
 }
