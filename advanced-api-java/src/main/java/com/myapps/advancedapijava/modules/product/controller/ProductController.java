@@ -48,4 +48,16 @@ public class ProductController {
 
   }
 
+  @GetMapping("/{id}")
+  private ResponseEntity<Product> findById(
+    @PathVariable("id") Long id
+  ) {
+    logger.info("GET /products/%s".formatted(id));
+
+    return new ResponseEntity<>(
+      service.findById(id),
+      HttpStatus.OK
+    );
+
+  }
 }
