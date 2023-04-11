@@ -34,7 +34,12 @@ public class ProductController {
     @PathVariable("id") Long id
   ) {
     logger.info("GET /products/%s".formatted(id));
-    return new ResponseEntity<>(service.findById(id), HttpStatus.OK);
+    try {
+      return new ResponseEntity<>(service.findById(id), HttpStatus.OK);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return new ResponseEntity("Error: %s".formatted(e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
   }
 
   @PostMapping("")
@@ -42,9 +47,45 @@ public class ProductController {
     @RequestBody ProductDto productDto
   ) {
     logger.info("POST /products");
-    return new ResponseEntity<>(service.save(productDto), HttpStatus.OK);
+    return new ResponseEntity<>(service.save(productDto), HttpStatus.CREATED);
   }
 
-  
+  @PutMapping("/{id}")
+  private ResponseEntity<ProductDto> update(
+    @PathVariable("id") Long id,
+    @RequestBody ProductDto productDto
+  ) {
+    logger.info("PUT /products/%s".formatted(id));
+    try {
+      return new ResponseEntity<>(service.update(id, productDto), HttpStatus.OK);
+    } catch (Exception e) {
+      return new ResponseEntity("Error: %s".formatted(e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @PatchMapping("/{id}")
+  private ResponseEntity<ProductDto> updatePartial(
+    @PathVariable("id") Long id,
+    @RequestBody ProductDto productDto
+  ) {
+    logger.info("PATCH /products/%s".formatted(id));
+    try {
+      return new ResponseEntity<>(service.updatePartial(id, productDto), HttpStatus.OK);
+    } catch (Exception e) {
+      return new ResponseEntity("Error: %s".formatted(e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @DeleteMapping("/{id}")
+  private ResponseEntity<String> delete(
+    @PathVariable("id") Long id
+  ) {
+    try {
+      service.deleteById(id);
+      return new ResponseEntity<>("Deleted product %s.".formatted(id), HttpStatus.NO_CONTENT);
+    } catch (Exception e) {
+      return new ResponseEntity<>("Error: %s".formatted(e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+  }
 
 }

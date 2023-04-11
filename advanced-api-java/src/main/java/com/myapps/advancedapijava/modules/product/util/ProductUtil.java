@@ -102,15 +102,11 @@ public class ProductUtil {
     return resEntity;
   }
 
-  static public Product updateEntityNoId(
-    Product oldEntity, Product newEntity, Boolean ignoreIds, Boolean ignoreNulls
-  ) {
+  static public Product updateEntityNoId(Product oldEntity, Product newEntity) {
     return updateEntityValues(oldEntity, newEntity, true, false);
   }
 
-  static public Product updateEntityNoIdNotNull(
-    Product oldEntity, Product newEntity, Boolean ignoreIds, Boolean ignoreNulls
-  ) {
+  static public Product updateEntityNoIdNotNull(Product oldEntity, Product newEntity) {
     return updateEntityValues(oldEntity, newEntity, true, true);
   }
 
