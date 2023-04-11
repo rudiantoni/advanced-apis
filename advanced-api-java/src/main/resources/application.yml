@@ -1,4 +1,8 @@
-server.port: 8080
+app.openapi.server-url: http://localhost:8080/api
+
+server:
+  port: 8080
+  servlet.context-path: /api
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/market
@@ -8,6 +12,3 @@ spring:
   flyway:
     out-of-order: true
     enabled: true
-
-propriedade:
-  teste: teste

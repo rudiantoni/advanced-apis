@@ -1,6 +1,5 @@
 package com.myapps.advancedapijava.modules.product.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.persistence.*;
