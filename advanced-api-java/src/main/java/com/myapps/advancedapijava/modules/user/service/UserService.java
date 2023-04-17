@@ -16,8 +16,12 @@ public class UserService {
   Logger logger = Util.getLogger(this.getClass());
 
   public User saveUser(User user) {
-    logger.info("Saving new user to the database: %s, %s.".formatted(user.getEmail(), user.getUsername()));
-    return repository.save(user);
+    if (!repository.existsByEmail(user.getEmail())) {
+      logger.info("Saving new user to the database: %s, %s.".formatted(user.getEmail(), user.getUsername()));
+      return repository.save(user);
+    }
+    logger.info("User with email %s already on the database.".formatted(user.getEmail()));
+    return null;
   }
 
   public User getUserByEmail(String email) {
@@ -25,9 +29,9 @@ public class UserService {
     return repository.findByEmail(email);
   }
 
-  public User getUserByUsername(String username) {
+  public User getUserByUsername(String username) throws Exception {
     logger.info("Fetching user: %s.".formatted(username));
-    return repository.findByUsername(username);
+    return repository.findByUsername(username).orElseThrow(() -> new Exception("Username not found exception"));
   }
 
   public List<User> getUsers() {

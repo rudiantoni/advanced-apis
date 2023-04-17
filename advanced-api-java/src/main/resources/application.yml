@@ -9,15 +9,19 @@ spring:
     username: market
     password: market
     driver-class-name: org.postgresql.Driver
+  jpa:
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: false
   flyway:
     out-of-order: true
     enabled: true
 
-hibernate:
-  show_sql: true
-
 logging:
   level:
-    org.hibernate.SQL: DEBUG
+    org.hibernate.SQL: ERROR
 #    org.hibernate.SQL: TRACE
-    org.hibernate.type: DEBUG
+    org.hibernate.type: ERROR
