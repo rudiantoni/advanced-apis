@@ -16,6 +16,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -32,7 +34,10 @@ public class SecurityConfig {
       .csrf()
       .disable()
       .authorizeHttpRequests()
-      .requestMatchers(request -> request.getRequestURI().matches("^.*/api/auth.*$"))
+      .mvcMatchers("/auth/**", "/swagger-ui/**","/v3/api-docs/**")
+//      .antMatchers("/auth/**","/swagger-ui/**","/v3/api-docs/**")
+//      .regexMatchers("^.*auth.*$", "^.*swagger-ui.*$", "^.*v3/api-docs.*$")
+//      .requestMatchers(request -> {return getCustomRequestMatchers(request);})
       .permitAll() // Permit all do anterior
       .anyRequest()
       .authenticated() // Outras requestes precisam ser autorizadas
@@ -45,5 +50,18 @@ public class SecurityConfig {
 
 
     return http.build();
+  }
+
+  private Boolean getCustomRequestMatchers(HttpServletRequest request) {
+//    String servletPath = request.getServletPath(); // Os outros matchers analisam este caminho
+    String uri = request.getRequestURI();
+    List<String> regexList = new ArrayList<>();
+    regexList.add("^.*auth.*$");
+    regexList.add("^.*swagger-ui.*$");
+    regexList.add("^.*v3/api-docs.*$");
+
+    return regexList.stream().anyMatch(s -> {
+      return uri.matches(s);
+    });
   }
 }
