@@ -13,3 +13,15 @@
 - SpringDoc OpenAPI UI 1.6.15 - OpenAPI 3.0.1 - Swagger UI
   - Endpoint da página de testes do Swagger: */api/swagger-ui.index.html*
   - Endpoint dos dados da api-docs: */api/v3/api-docs*
+<!--
+  Spring Boot Developer Tools: 3.0.4
+-->
+
+## Diagrama de relacionamento de entidades
+- [Clique aqui](https://app.diagrams.net/#G13bd2ILwPsaACDqCaTtsRLozOtMCCcUoe)
+
+## Dados padrão
+- Spring Security login padrão: user
+  - Autenticação pelo header da requisição: Basic Auth (user + password)
+  - Endpoint de login padrão: `/api/login`
+

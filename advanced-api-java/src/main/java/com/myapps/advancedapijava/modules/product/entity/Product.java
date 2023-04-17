@@ -23,6 +23,4 @@ public class Product {
   private String description;
   @Column(name = "price")
   private Float price;
-  @Column(name = "amount")
-  private Integer amount;
 }

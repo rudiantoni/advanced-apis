@@ -17,7 +17,6 @@ public class ProductUtil {
       .name(entity.getName())
       .description(entity.getDescription())
       .price(entity.getPrice())
-      .amount(entity.getAmount())
       .build();
   }
 
@@ -46,7 +45,6 @@ public class ProductUtil {
     entity.setName(dto.getName());
     entity.setDescription(dto.getDescription());
     entity.setPrice(dto.getPrice());
-    entity.setAmount(dto.getAmount());
     return entity;
   }
 
@@ -86,19 +84,16 @@ public class ProductUtil {
       name = newEntity.getName();
       description = newEntity.getDescription();
       price = newEntity.getPrice();
-      amount = newEntity.getAmount();
     } else {
       name = Util.getOrDefault(newEntity.getName(), oldEntity.getName());
       description = Util.getOrDefault(newEntity.getDescription(), oldEntity.getDescription());
       price = Util.getOrDefault(newEntity.getPrice(), oldEntity.getPrice());
-      amount = Util.getOrDefault(newEntity.getAmount(), oldEntity.getAmount());
     }
 
     resEntity.setId(id);
     resEntity.setName(name);
     resEntity.setDescription(description);
     resEntity.setPrice(price);
-    resEntity.setAmount(amount);
     return resEntity;
   }
 
