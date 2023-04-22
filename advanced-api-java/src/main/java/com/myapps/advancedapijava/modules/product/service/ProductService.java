@@ -6,67 +6,62 @@ import com.myapps.advancedapijava.modules.product.entity.Product;
 import com.myapps.advancedapijava.modules.product.repository.ProductRepository;
 import com.myapps.advancedapijava.modules.product.util.ProductUtil;
 import com.myapps.advancedapijava.util.Util;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
+@RequiredArgsConstructor
 public class ProductService {
   private final ProductRepository repository;
-
-  public ProductService(ProductRepository repository) {
-    this.repository = repository;
-  }
-
   Logger logger = Util.getLogger(this.getClass());
 
-  public List<ProductDto> findAll() {
-    List<Product> productList = repository.findAll();
-    return ProductUtil.toDtoList(productList);
+  public Product findByIdOrException(Long id) {
+    return repository.findById(id).orElseThrow(() -> new NoSuchElementException("Product with id %s not found.".formatted(id)));
   }
 
-  public ProductDto save(ProductDto productDto) {
+  public void existsByIdOrException(Long id) {
+    if (!repository.existsById(id)) {
+      throw new NoSuchElementException("Product with id %s not found.".formatted(id));
+    }
+  }
+
+  public ProductDto create(ProductDto productDto) {
     Product productReceived = ProductUtil.toEntityNoId(productDto);
     Product productSaved = repository.save(productReceived);
     return ProductUtil.toDto(productSaved);
   }
 
-  public Product findByIdOrNotFound(Long id) throws Exception {
-    return repository.findById(id).orElseThrow(() -> new Exception("Product %s not found.".formatted(id)));
+  public ProductDto readOne(Long id) {
+    return ProductUtil.toDto(findByIdOrException(id));
   }
 
-  public ProductDto findById(Long id) throws Exception {
-    return ProductUtil.toDto(findByIdOrNotFound(id));
+  public List<ProductDto> readAll() {
+    List<Product> productList = repository.findAll();
+    return ProductUtil.toDtoList(productList);
   }
 
-  public Boolean existsById(Long id) {
-    return repository.existsById(id);
-  }
-
-  public void existsByIdOrNotFound(Long id) throws Exception {
-    if (!existsById(id))
-      throw new Exception("Product %s not found.".formatted(id));
-  }
-
-  public ProductDto update(Long id, ProductDto productDto) throws Exception {
-    existsByIdOrNotFound(id);
-    Product productStored = findByIdOrNotFound(id);
+  public ProductDto update(Long id, ProductDto productDto) {
+    existsByIdOrException(id);
+    Product productStored = findByIdOrException(id);
     Product productReceived = ProductUtil.toEntityNoId(productDto);
     Product productUpdated = ProductUtil.updateEntityNoId(productStored, productReceived);
     Product productSaved = repository.save(productUpdated);
     return ProductUtil.toDto(productSaved);
   }
 
-  public ProductDto updatePartial(Long id, ProductDto productDto) throws Exception {
-    Product productStored = findByIdOrNotFound(id);
+  public ProductDto updatePartial(Long id, ProductDto productDto) {
+    Product productStored = findByIdOrException(id);
     Product productReceived = ProductUtil.toEntityNoId(productDto);
     Product productToSave = ProductUtil.updateEntityNoIdNotNull(productStored, productReceived);
     Product productSave = repository.save(productToSave);
     return ProductUtil.toDto(productSave);
   }
 
-  public void deleteById(Long id) throws Exception {
-    existsByIdOrNotFound(id);
+  public void deleteById(Long id) {
+    existsByIdOrException(id);
     repository.deleteById(id);
   }
 

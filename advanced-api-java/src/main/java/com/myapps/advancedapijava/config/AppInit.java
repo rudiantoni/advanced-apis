@@ -1,15 +1,12 @@
 package com.myapps.advancedapijava.config;
 
 import ch.qos.logback.classic.Logger;
-import com.myapps.advancedapijava.modules.user.entity.User;
-import com.myapps.advancedapijava.modules.user.service.UserService;
 import com.myapps.advancedapijava.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.annotation.PostConstruct;
 import java.util.Locale;
@@ -20,9 +17,8 @@ import java.util.TimeZone;
 @RequiredArgsConstructor
 public class AppInit {
   private final Environment env;
-  private final UserService userService;
-  private final PasswordEncoder passwordEncoder;
   Logger logger = Util.getLogger(this.getClass());
+
   @PostConstruct
   private void init() {
     initializeLocalization();
@@ -42,6 +38,7 @@ public class AppInit {
   }
 
   public void initializeTestData() {
+    /*
     try {
       User userA = User.builder().email("john.travolta@user.com").username("john").password(passwordEncoder.encode("john123")).build();
       User userB = User.builder().email("will.smith@user.com").username("will").password(passwordEncoder.encode("will123")).build();
@@ -56,7 +53,7 @@ public class AppInit {
       logger.error("Error when generating starting users: %s.".formatted(e.getMessage()));
       e.printStackTrace();
     }
-
+    */
   }
 
 }

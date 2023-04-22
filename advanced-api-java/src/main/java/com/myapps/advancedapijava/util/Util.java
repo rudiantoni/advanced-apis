@@ -19,18 +19,20 @@ public class Util {
       jsonStr = new ObjectMapper().writeValueAsString(obj);
     } catch (JsonProcessingException e) {
       e.printStackTrace();
-      System.out.printf("Error when converting %s to a JSON String.\n", obj.getClass().getName());
+      System.out.printf("Error when converting from class %s to a JSON String.\n", obj.getClass().getName());
     }
     return jsonStr;
   }
 
   static public <T> T fromJsonStr(String jsonStr, Class<T> c) {
     T obj = null;
+    String className = "(unable to read classname)";
     try {
       obj = new ObjectMapper().readValue(jsonStr, c);
+      className = obj.getClass().getName();
     } catch (JsonProcessingException e) {
       e.printStackTrace();
-      System.out.printf("Error when converting %s from a JSON String.\n", obj.getClass().getName());
+      System.out.printf("Error when converting to class %s from a JSON String.\n", className);
     }
     return obj;
   }

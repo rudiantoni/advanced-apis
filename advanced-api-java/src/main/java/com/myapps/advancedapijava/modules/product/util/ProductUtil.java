@@ -2,10 +2,10 @@ package com.myapps.advancedapijava.modules.product.util;
 
 import com.myapps.advancedapijava.modules.product.dto.ProductDto;
 import com.myapps.advancedapijava.modules.product.entity.Product;
-import com.myapps.advancedapijava.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ProductUtil {
   private ProductUtil() {
@@ -20,10 +20,6 @@ public class ProductUtil {
       .build();
   }
 
-  static public Product toEntity(ProductDto dto) {
-    return toEntity(dto, false);
-  }
-
   static public List<ProductDto> toDtoList(List<Product> entityList) {
     List<ProductDto> dtoList = new ArrayList<>();
     entityList.forEach(it -> {
@@ -33,11 +29,8 @@ public class ProductUtil {
     return dtoList;
   }
 
-  static public Product toEntityNoId(ProductDto dto) {
-    return toEntity(dto, true);
-  }
 
-  static public Product toEntity(ProductDto dto, Boolean ignoreIds) {
+  static private Product toEntityBase(ProductDto dto, Boolean ignoreIds) {
     Product entity = new Product();
     if (!ignoreIds) {
       entity.setId(dto.getId());
@@ -48,22 +41,32 @@ public class ProductUtil {
     return entity;
   }
 
-  /*
-  static public List<Product> toEntityList(List<ProductDto> dtoList, Boolean ignoreIds) {
+  static public Product toEntity(ProductDto dto) {
+    return toEntityBase(dto, false);
+  }
+
+  static public Product toEntityNoId(ProductDto dto) {
+    return toEntityBase(dto, true);
+  }
+
+
+  static private List<Product> toEntityListBase(List<ProductDto> dtoList, Boolean ignoreIds) {
     List<Product> entityList = new ArrayList<>();
     dtoList.forEach(it -> {
-      Product entity = toEntity(it, ignoreIds);
+      Product entity = toEntityBase(it, ignoreIds);
       entityList.add(entity);
     });
     return entityList;
   }
-   */
 
-  /*
-  static public List<Product> toEntityListNoId(List<ProductDto> dtoList) {
-    return toEntityList(dtoList, true);
+  static public List<Product> toEntityList(List<ProductDto> dtoList) {
+    return toEntityListBase(dtoList, false);
   }
-   */
+
+  static public List<Product> toEntityListNoId(List<ProductDto> dtoList) {
+    return toEntityListBase(dtoList, true);
+  }
+
 
   static public Product updateEntityValues(
     Product oldEntity, Product newEntity, Boolean ignoreIds, Boolean ignoreNulls
@@ -73,7 +76,6 @@ public class ProductUtil {
     String name;
     String description;
     Float price;
-    Integer amount;
 
     if (!ignoreIds) {
       id = newEntity.getId();
@@ -85,9 +87,9 @@ public class ProductUtil {
       description = newEntity.getDescription();
       price = newEntity.getPrice();
     } else {
-      name = Util.getOrDefault(newEntity.getName(), oldEntity.getName());
-      description = Util.getOrDefault(newEntity.getDescription(), oldEntity.getDescription());
-      price = Util.getOrDefault(newEntity.getPrice(), oldEntity.getPrice());
+      name = Optional.ofNullable(newEntity.getName()).orElse(oldEntity.getName());
+      description = Optional.ofNullable(newEntity.getDescription()).orElse(oldEntity.getDescription());
+      price = Optional.ofNullable(newEntity.getPrice()).orElse(oldEntity.getPrice());
     }
 
     resEntity.setId(id);
@@ -103,6 +105,10 @@ public class ProductUtil {
 
   static public Product updateEntityNoIdNotNull(Product oldEntity, Product newEntity) {
     return updateEntityValues(oldEntity, newEntity, true, true);
+  }
+
+  static public Product updateEntityFull(Product oldEntity, Product newEntity) {
+    return updateEntityValues(oldEntity, newEntity, false, false);
   }
 
 }

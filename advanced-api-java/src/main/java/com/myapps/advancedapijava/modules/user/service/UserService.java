@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -15,27 +16,16 @@ public class UserService {
   private final UserRepository repository;
   Logger logger = Util.getLogger(this.getClass());
 
-  public User saveUser(User user) {
-    if (!repository.existsByEmail(user.getEmail())) {
-      logger.info("Saving new user to the database: %s, %s.".formatted(user.getEmail(), user.getUsername()));
-      return repository.save(user);
-    }
-    logger.info("User with email %s already on the database.".formatted(user.getEmail()));
-    return null;
+  public User findByEmailOrException(String email) {
+    return repository.findByEmailIgnoreCase(email).orElseThrow(() -> new NoSuchElementException("User with email %s not found.".formatted(email)));
   }
 
-  public User getUserByEmail(String email) {
-    logger.info("Fetching user: %s.".formatted(email));
-    return repository.findByEmail(email);
+  public User findByUsernameOrException(String username) {
+    return repository.findByUsernameIgnoreCase(username).orElseThrow(() -> new NoSuchElementException("User with username %s not found.".formatted(username)));
   }
 
-  public User getUserByUsername(String username) throws Exception {
-    logger.info("Fetching user: %s.".formatted(username));
-    return repository.findByUsername(username).orElseThrow(() -> new Exception("Username not found exception"));
-  }
-
-  public List<User> getUsers() {
-    logger.info("Fetching all users.");
+  public List<User> getAll() {
     return repository.findAll();
   }
+
 }
