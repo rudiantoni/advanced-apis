@@ -24,4 +24,3 @@
 - Spring Security login padrão: user
   - Autenticação pelo header da requisição: Basic Auth (user + password)
   - Endpoint de login padrão: `/api/login`
-
