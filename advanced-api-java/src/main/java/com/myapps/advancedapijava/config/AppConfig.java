@@ -8,6 +8,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.core.env.Environment;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.annotation.PostConstruct;
 import java.util.Locale;
@@ -18,6 +19,7 @@ import java.util.TimeZone;
 @RequiredArgsConstructor
 public class AppConfig {
   private final Environment env;
+  private final PasswordEncoder passwordEncoder;
   Logger logger = Util.getLogger(this.getClass());
 
   @PostConstruct
@@ -49,6 +51,9 @@ public class AppConfig {
   }
 
   public void initializeTestData() {
+    System.out.println("Password encoder %s = %s".formatted("pass", passwordEncoder.encode("pass")));
+    System.out.println("Password encoder %s = %s".formatted("user", passwordEncoder.encode("user")));
+
     /*
     try {
       User userA = User.builder().email("john.travolta@user.com").username("john").password(passwordEncoder.encode("john123")).build();

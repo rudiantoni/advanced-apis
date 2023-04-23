@@ -10,6 +10,7 @@ import com.myapps.advancedapijava.modules.user.repository.UserRepository;
 import com.myapps.advancedapijava.modules.user.util.UserUtil;
 import com.myapps.advancedapijava.util.Util;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.NoSuchElementException;
 @Service
 @RequiredArgsConstructor
 public class UserService {
+  private final PasswordEncoder passwordEncoder;
   private final UserRepository repository;
   Logger logger = Util.getLogger(this.getClass());
 
@@ -36,6 +38,9 @@ public class UserService {
   public UserRespDto createResp(UserDto userDto) {
     validateRequiredFields(userDto);
     validateDuplicate(userDto);
+
+    String encodedPassword = passwordEncoder.encode(userDto.getPassword());
+    userDto.setPassword(encodedPassword);
     User userReceived = UserUtil.toEntityNoId(userDto);
     User userSaved = repository.save(userReceived);
     return UserUtil.toRespDto(userSaved);

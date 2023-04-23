@@ -23,7 +23,13 @@
 ## Segurança
 - Spring Security login padrão: user
   - Autenticação pelo header da requisição: Basic Auth (user + password)
-  - Endpoint de login padrão: `/api/login`
+  - Endpoint Web de login padrão: `/api/login`
+
+**Propriedades padrão para definir usuário e senha do Spring Security**
+
+- **spring.security.user.name=user**
+- **spring.security.user.password=pass**
+- **spring.security.user.roles=manager**
 
 - Ferramenta para auxiliar na geração de chaves para uso em segurança: [https://www.allkeysgenerator.com](https://www.allkeysgenerator.com)
 
