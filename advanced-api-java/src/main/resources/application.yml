@@ -1,4 +1,8 @@
-app.openapi.server-url: http://localhost:8080/api
+app:
+  openapi.server-url: http://localhost:8080/api
+  security:
+    secret-key: 28472B4B6150645367566B5970337336763979244226452948404D6351655468
+    token-expiration-hours: 24
 
 server:
   port: 8080

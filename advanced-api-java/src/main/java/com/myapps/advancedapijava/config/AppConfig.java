@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.core.env.Environment;
 
 import javax.annotation.PostConstruct;
@@ -15,7 +16,7 @@ import java.util.TimeZone;
 @Configuration
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @RequiredArgsConstructor
-public class AppInit {
+public class AppConfig {
   private final Environment env;
   Logger logger = Util.getLogger(this.getClass());
 
@@ -32,9 +33,19 @@ public class AppInit {
   }
 
   private void initializeProperties() {
-    AppProperties.appOpenServerUrl = env.getRequiredProperty("app.openapi.server-url");
-    AppProperties.appUrlPort = env.getRequiredProperty("server.port");
-    AppProperties.appContextPath = env.getRequiredProperty("server.servlet.context-path");
+    try {
+      AppProperties.appOpenServerUrl = env.getRequiredProperty("app.openapi.server-url");
+      AppProperties.appUrlPort = env.getRequiredProperty("server.port");
+      AppProperties.appContextPath = env.getRequiredProperty("server.servlet.context-path");
+      AppProperties.secretKey = env.getRequiredProperty("app.security.secret-key");
+      AppProperties.tokenExpirationHours = env.getRequiredProperty("app.security.token-expiration-hours", Integer.class);
+    } catch (IllegalStateException e) {
+      logger.error("Unable to initialize property from environment variables. Check your environment and/or profiles definition.");
+      e.printStackTrace();
+    } catch (ConversionFailedException e) {
+      logger.error("Unable to convert property to target type from environment variables. Check your environment and/or profiles definition.");
+      e.printStackTrace();
+    }
   }
 
   public void initializeTestData() {
