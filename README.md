@@ -90,3 +90,9 @@ String subject = claims.getSubject();
 // Converte (função interna) a JSON string como objeto
 TokenSubject tokenSubject = Util.fromJsonStr(subject, TokenSubject.class);
 ```
+
+### Obter o authentication token no @ResponseBody
+
+```java
+AuthenticationToken authenticationToken
+```

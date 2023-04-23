@@ -1,4 +1,4 @@
-package com.myapps.advancedapijava.modules.auth.dto;
+package com.myapps.advancedapijava.modules.auth.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -113,7 +113,7 @@ public class UserUtil {
   }
 
   static public User updateEntityFull(User oldEntity, User newEntity) {
-    return updateEntityBase(oldEntity, newEntity, false, false,false);
+    return updateEntityBase(oldEntity, newEntity, false, false, false);
   }
 
 }

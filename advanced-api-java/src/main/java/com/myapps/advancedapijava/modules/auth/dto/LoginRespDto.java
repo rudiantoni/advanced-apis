@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TokenSubject {
-  private String username;
+public class LoginRespDto {
+  private Long id;
   private String email;
+  private String username;
+  private String token;
 }

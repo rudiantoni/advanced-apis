@@ -1,8 +1,8 @@
 package com.myapps.advancedapijava.modules.auth.service;
 
 import com.myapps.advancedapijava.config.AppProperties;
-import com.myapps.advancedapijava.modules.auth.dto.Token;
-import com.myapps.advancedapijava.modules.auth.dto.TokenSubject;
+import com.myapps.advancedapijava.modules.auth.model.Token;
+import com.myapps.advancedapijava.modules.auth.model.TokenSubject;
 import com.myapps.advancedapijava.modules.user.entity.User;
 import com.myapps.advancedapijava.util.DateUtil;
 import com.myapps.advancedapijava.util.Util;
@@ -15,14 +15,12 @@ import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Optional;
 
 @Service
-public class TokenService {
+public class JwtService {
 
   public Key getSigningKey() {
-    String secretKey256Hex = AppProperties.secretKey;
+    String secretKey256Hex = AppProperties.securitySecretKey;
     byte[] keyBytes = Decoders.BASE64.decode(secretKey256Hex);
     return Keys.hmacShaKeyFor(keyBytes);
   }
@@ -46,8 +44,9 @@ public class TokenService {
       .setSubject(subject)
       .setIssuedAt(token.getIssuedAtDate())
       .setExpiration(token.getExpirationDate())
+      //.setExpiration(token.getIssuedAtDate())
       .signWith(getSigningKey(), SignatureAlgorithm.HS256)
-    .compact();
+      .compact();
   }
 
   public Token decodeToken(String jwtToken) {
@@ -72,7 +71,7 @@ public class TokenService {
 
   public Token createToken(User user) {
     Date issuedAtDate = new Date();
-    Date expirationDate = DateUtil.plusHours(issuedAtDate, AppProperties.tokenExpirationHours);
+    Date expirationDate = DateUtil.plusHours(issuedAtDate, AppProperties.securityTokenExpirationHours);
 
     return Token.builder()
       .username(user.getUsername())
@@ -85,6 +84,23 @@ public class TokenService {
   public String generateToken(User user) {
     Token token = createToken(user);
     return encodeToken(token);
+  }
+
+  public String generateFullToken(User user) {
+    String prefix = AppProperties.securityTokenPrefix;
+    String token = generateToken(user);
+    return "%s %s".formatted(prefix, token);
+  }
+
+  public Boolean isTokenExpired(Token token) {
+    return token.getExpirationDate().before(new Date());
+  }
+
+  public Boolean isTokenValid(User user, Token token) {
+    final Boolean isNotExpired = !isTokenExpired(token);
+    final Boolean emailEquals = user.getEmail().equals(token.getEmail());
+    final Boolean usernameEquals = user.getUsername().equals(token.getUsername());
+    return isNotExpired && emailEquals && usernameEquals;
   }
 
 }

@@ -10,4 +10,5 @@ public class DateUtil {
   public static Date plusHours(Date date, Integer hours) {
     return new Date(date.getTime() + TimeUnit.HOURS.toMillis(hours));
   }
+
 }
