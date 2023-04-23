@@ -11,6 +11,7 @@ public class ProductUtil {
   private ProductUtil() {
   }
 
+  // Convert: To DTOs
   static public ProductDto toDto(Product entity) {
     return ProductDto.builder()
       .id(entity.getId())
@@ -29,7 +30,7 @@ public class ProductUtil {
     return dtoList;
   }
 
-
+  // Convert: To Entities
   static private Product toEntityBase(ProductDto dto, Boolean ignoreIds) {
     Product entity = new Product();
     if (!ignoreIds) {
@@ -67,48 +68,40 @@ public class ProductUtil {
     return toEntityListBase(dtoList, true);
   }
 
-
-  static public Product updateEntityValues(
+  // Convert: Entities Update
+  static public Product updateEntityBase(
     Product oldEntity, Product newEntity, Boolean ignoreIds, Boolean ignoreNulls
   ) {
     Product resEntity = new Product();
-    Long id;
-    String name;
-    String description;
-    Float price;
 
     if (!ignoreIds) {
-      id = newEntity.getId();
+      resEntity.setId(newEntity.getId());
     } else {
-      id = oldEntity.getId();
+      resEntity.setId(oldEntity.getId());
     }
     if (!ignoreNulls) {
-      name = newEntity.getName();
-      description = newEntity.getDescription();
-      price = newEntity.getPrice();
+      resEntity.setName(newEntity.getName());
+      resEntity.setDescription(newEntity.getDescription());
+      resEntity.setPrice(newEntity.getPrice());
     } else {
-      name = Optional.ofNullable(newEntity.getName()).orElse(oldEntity.getName());
-      description = Optional.ofNullable(newEntity.getDescription()).orElse(oldEntity.getDescription());
-      price = Optional.ofNullable(newEntity.getPrice()).orElse(oldEntity.getPrice());
+      resEntity.setName(Optional.ofNullable(newEntity.getName()).orElse(oldEntity.getName()));
+      resEntity.setDescription(Optional.ofNullable(newEntity.getDescription()).orElse(oldEntity.getDescription()));
+      resEntity.setPrice(Optional.ofNullable(newEntity.getPrice()).orElse(oldEntity.getPrice()));
     }
 
-    resEntity.setId(id);
-    resEntity.setName(name);
-    resEntity.setDescription(description);
-    resEntity.setPrice(price);
     return resEntity;
   }
 
   static public Product updateEntityNoId(Product oldEntity, Product newEntity) {
-    return updateEntityValues(oldEntity, newEntity, true, false);
+    return updateEntityBase(oldEntity, newEntity, true, false);
   }
 
   static public Product updateEntityNoIdNotNull(Product oldEntity, Product newEntity) {
-    return updateEntityValues(oldEntity, newEntity, true, true);
+    return updateEntityBase(oldEntity, newEntity, true, true);
   }
 
   static public Product updateEntityFull(Product oldEntity, Product newEntity) {
-    return updateEntityValues(oldEntity, newEntity, false, false);
+    return updateEntityBase(oldEntity, newEntity, false, false);
   }
 
 }

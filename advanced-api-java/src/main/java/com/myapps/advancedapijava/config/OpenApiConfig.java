@@ -13,7 +13,7 @@ public class OpenApiConfig {
     String title = "API Advanced Java";
     String description = "Documentação API Advanced Java";
     String version = "1.0.0";
-    String serverUrl = AppProperties.appOpenServerUrl;
+    String serverUrl = AppProperties.openServerUrl;
 
     return new OpenAPI()
       .addServersItem(

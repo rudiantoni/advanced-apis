@@ -5,9 +5,20 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.List;
+
 public class Util {
   private Util() {
   }
+
+  public static List<String> ALLOWED_URLS = Arrays.asList(
+    "/auth/**",
+    "/tests/**",
+    "/swagger-ui/**",
+    "/v3/api-docs/**"
+  );
 
   static public <T> Logger getLogger(Class<T> c) {
     return (Logger) LoggerFactory.getLogger(c);
@@ -43,6 +54,11 @@ public class Util {
     } else {
       return defaultValue;
     }
+  }
+
+  static public <T> T[] toArray(List<T> list, Class<T[]> c) {
+    T[] array = c.cast(Array.newInstance(c.getComponentType(), list.size()));
+    return list.toArray(array);
   }
 
 }
