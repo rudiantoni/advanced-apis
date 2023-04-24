@@ -1,6 +1,8 @@
 package com.myapps.advancedapijava.modules.user.service;
 
 import ch.qos.logback.classic.Logger;
+import com.myapps.advancedapijava.enums.ExceptionType;
+import com.myapps.advancedapijava.exception.HandledException;
 import com.myapps.advancedapijava.modules.user.dto.UserDto;
 import com.myapps.advancedapijava.modules.user.dto.UserRespDto;
 import com.myapps.advancedapijava.modules.user.entity.User;
@@ -52,7 +54,7 @@ public class UserService {
     return repository.findAll();
   }
 
-  public UserRespDto create(UserDto userDto) {
+  public UserRespDto create(UserDto userDto) throws HandledException {
     validateRequiredFields(userDto);
     validateDuplicate(userDto);
 
@@ -63,25 +65,25 @@ public class UserService {
     return UserUtil.toRespDto(userSaved);
   }
 
-  public void validateRequiredFields(UserDto userDto) {
+  public void validateRequiredFields(UserDto userDto) throws HandledException {
     if (strHasNoValue(userDto.getEmail())) {
-      throw new IllegalArgumentException("User email is required.");
+      throw new HandledException(ExceptionType.USER_REQUIRED_EMAIL);
 
     } else if (strHasNoValue(userDto.getUsername())) {
-      throw new IllegalArgumentException("User username is required.");
+      throw new HandledException(ExceptionType.USER_REQUIRED_USERNAME);
 
     } else if (strHasNoValue(userDto.getPassword())) {
-      throw new IllegalArgumentException("User password is required.");
+      throw new HandledException(ExceptionType.USER_REQUIRED_PASSWORD);
 
     }
   }
 
-  public void validateDuplicate(UserDto userDto) {
+  public void validateDuplicate(UserDto userDto) throws HandledException {
     if (strHasValue(userDto.getEmail()) && repository.existsByEmailIgnoreCase(userDto.getEmail())) {
-      throw new IllegalArgumentException("User with email %s already exists.".formatted(userDto.getEmail()));
+      throw new HandledException("User with email %s already exists.".formatted(userDto.getEmail()), ExceptionType.USER_EXISTS_EMAIL);
 
     } else if (strHasValue(userDto.getUsername()) && repository.existsByUsernameIgnoreCase(userDto.getUsername())) {
-      throw new IllegalArgumentException("User with username %s already exists.".formatted(userDto.getUsername()));
+      throw new HandledException("User with username %s already exists.".formatted(userDto.getEmail()), ExceptionType.USER_EXISTS_USERNAME);
 
     }
   }

@@ -71,14 +71,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
       filterChain.doFilter(request, response);
     } catch (Exception e) {
-      logger.error("Error: %s".formatted(e.getMessage()));
-      // Status padrão e também para AuthenticationServiceException
-      response.setStatus(HttpStatus.UNAUTHORIZED.value());
-      if (e instanceof AuthorizationServiceException) {
-        response.setStatus(HttpStatus.FORBIDDEN.value());
-      }
-      response.getWriter().write(e.getMessage());
+      setResponseData(e, response);
     }
+  }
+
+  public void setResponseData(Exception e, HttpServletResponse response) throws IOException {
+    logger.error("Error: %s".formatted(e.getMessage()));
+    // Status padrão e também para AuthenticationServiceException
+    response.setStatus(HttpStatus.UNAUTHORIZED.value());
+    if (e instanceof AuthorizationServiceException) {
+      response.setStatus(HttpStatus.FORBIDDEN.value());
+    }
+    response.getWriter().write(e.getMessage());
   }
 
   private Boolean isRequestedAlreadyPermitted(HttpServletRequest request) {

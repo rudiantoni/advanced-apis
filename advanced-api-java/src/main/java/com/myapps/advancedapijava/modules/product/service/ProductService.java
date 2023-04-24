@@ -1,5 +1,7 @@
 package com.myapps.advancedapijava.modules.product.service;
 
+import com.myapps.advancedapijava.enums.ExceptionType;
+import com.myapps.advancedapijava.exception.HandledException;
 import com.myapps.advancedapijava.modules.product.dto.ProductDto;
 import com.myapps.advancedapijava.modules.product.entity.Product;
 import com.myapps.advancedapijava.modules.product.repository.ProductRepository;
@@ -17,13 +19,13 @@ import static com.myapps.advancedapijava.util.StringUtil.strHasNoValue;
 public class ProductService {
   private final ProductRepository repository;
 
-  public Product findByIdOrException(Long id) {
-    return repository.findById(id).orElseThrow(() -> new NoSuchElementException("Product with id %s not found.".formatted(id)));
+  public Product findByIdOrException(Long id) throws HandledException {
+    return repository.findById(id).orElseThrow(() -> new HandledException("Product with id %s not found.".formatted(id), ExceptionType.PRODUCT_NOT_FOUND_BY_ID));
   }
 
-  public void existsByIdOrException(Long id) {
+  public void existsByIdOrException(Long id) throws HandledException {
     if (!repository.existsById(id)) {
-      throw new NoSuchElementException("Product with id %s not found.".formatted(id));
+      throw new HandledException("Product with id %s not found.".formatted(id), ExceptionType.PRODUCT_NOT_FOUND_BY_ID);
     }
   }
 
@@ -32,18 +34,18 @@ public class ProductService {
     return ProductUtil.toDtoList(productList);
   }
 
-  public ProductDto create(ProductDto productDto) {
+  public ProductDto create(ProductDto productDto) throws HandledException {
     validateRequiredFields(productDto);
     Product productReceived = ProductUtil.toEntityNoId(productDto);
     Product productSaved = repository.save(productReceived);
     return ProductUtil.toDto(productSaved);
   }
 
-  public ProductDto readOne(Long id) {
+  public ProductDto readOne(Long id) throws HandledException {
     return ProductUtil.toDto(findByIdOrException(id));
   }
 
-  public ProductDto update(Long id, ProductDto productDto) {
+  public ProductDto update(Long id, ProductDto productDto) throws HandledException {
     existsByIdOrException(id);
     Product productStored = findByIdOrException(id);
     Product productReceived = ProductUtil.toEntityNoId(productDto);
@@ -53,7 +55,7 @@ public class ProductService {
     return ProductUtil.toDto(productSaved);
   }
 
-  public ProductDto updatePartial(Long id, ProductDto productDto) {
+  public ProductDto updatePartial(Long id, ProductDto productDto) throws HandledException {
     Product productStored = findByIdOrException(id);
     Product productReceived = ProductUtil.toEntityNoId(productDto);
     Product productUpdated = ProductUtil.updateEntityNoIdNotNull(productStored, productReceived);
@@ -62,16 +64,18 @@ public class ProductService {
     return ProductUtil.toDto(productSaved);
   }
 
-  public void deleteById(Long id) {
+  public void deleteById(Long id) throws HandledException {
     existsByIdOrException(id);
     repository.deleteById(id);
   }
 
-  public void validateRequiredFields(ProductDto productDto) {
+  public void validateRequiredFields(ProductDto productDto) throws HandledException {
     if (strHasNoValue(productDto.getName())) {
-      throw new IllegalArgumentException("Product name is required.");
+      throw new HandledException(ExceptionType.PRODUCT_REQUIRED_NAME);
+
     } else if (strHasNoValue(productDto.getDescription())) {
-      throw new IllegalArgumentException("Product description is required.");
+      throw new HandledException(ExceptionType.PRODUCT_REQUIRED_DESCRIPTION);
+
     }
 
   }

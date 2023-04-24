@@ -1,5 +1,6 @@
 package com.myapps.advancedapijava.modules.open.service;
 
+import com.myapps.advancedapijava.exception.HandledException;
 import com.myapps.advancedapijava.modules.auth.dto.LoginReqDto;
 import com.myapps.advancedapijava.modules.auth.dto.LoginRespDto;
 import com.myapps.advancedapijava.modules.auth.service.AuthService;
@@ -15,11 +16,11 @@ public class OpenService {
   private final AuthService authService;
   private final UserService userService;
 
-  public LoginRespDto login(LoginReqDto loginReqDto) {
+  public LoginRespDto login(LoginReqDto loginReqDto) throws HandledException {
     return authService.login(loginReqDto);
   }
 
-  public UserRespDto createUser(UserDto userDto) {
+  public UserRespDto createUser(UserDto userDto) throws HandledException {
     return userService.create(userDto);
   }
 

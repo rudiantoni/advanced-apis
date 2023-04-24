@@ -1,5 +1,6 @@
 package com.myapps.advancedapijava.modules.product.controller;
 
+import com.myapps.advancedapijava.exception.HandledException;
 import com.myapps.advancedapijava.modules.product.dto.ProductDto;
 import com.myapps.advancedapijava.modules.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -23,14 +24,14 @@ public class ProductController {
   @GetMapping("/{id}")
   public ResponseEntity<ProductDto> readOne(
     @PathVariable("id") Long id
-  ) {
+  ) throws HandledException {
       return new ResponseEntity<>(service.readOne(id), HttpStatus.OK);
   }
 
   @PostMapping
   public ResponseEntity<ProductDto> create(
     @RequestBody ProductDto productDto
-  ) {
+  ) throws HandledException {
     return new ResponseEntity<>(service.create(productDto), HttpStatus.CREATED);
   }
 

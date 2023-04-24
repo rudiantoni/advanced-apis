@@ -1,5 +1,6 @@
 package com.myapps.advancedapijava.modules.open.controller;
 
+import com.myapps.advancedapijava.exception.HandledException;
 import com.myapps.advancedapijava.modules.auth.dto.LoginReqDto;
 import com.myapps.advancedapijava.modules.auth.dto.LoginRespDto;
 import com.myapps.advancedapijava.modules.open.service.OpenService;
@@ -22,14 +23,14 @@ public class OpenController {
   @PostMapping("/auth/login")
   public ResponseEntity<LoginRespDto> authLogin(
     @RequestBody LoginReqDto loginReqDto
-  ) {
+  ) throws HandledException {
     return new ResponseEntity<>(service.login(loginReqDto), HttpStatus.CREATED);
   }
 
   @PostMapping("/users/create")
   public ResponseEntity<UserRespDto> usersCreate(
     @RequestBody UserDto userDto
-  ) {
+  ) throws HandledException {
     return new ResponseEntity<>(service.createUser(userDto), HttpStatus.OK);
   }
 

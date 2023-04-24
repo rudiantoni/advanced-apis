@@ -1,6 +1,8 @@
 package com.myapps.advancedapijava.modules.auth.service;
 
 import ch.qos.logback.classic.Logger;
+import com.myapps.advancedapijava.enums.ExceptionType;
+import com.myapps.advancedapijava.exception.HandledException;
 import com.myapps.advancedapijava.modules.auth.dto.LoginReqDto;
 import com.myapps.advancedapijava.modules.auth.dto.LoginRespDto;
 import com.myapps.advancedapijava.modules.user.entity.User;
@@ -21,13 +23,13 @@ public class AuthService {
   private final JwtService jwtService;
   Logger logger = Util.getLogger(this.getClass());
 
-  public LoginRespDto login(LoginReqDto loginReqDto) {
+  public LoginRespDto login(LoginReqDto loginReqDto) throws HandledException {
     validateRequiredFields(loginReqDto);
 
     String sentEncodedPassword = CryptUtil.hashSha256(loginReqDto.getPassword());
     User user = userService.findByEmailOrUsernameOrNull(loginReqDto.getEmail(), loginReqDto.getUsername());
     if (user == null || !Objects.equals(sentEncodedPassword, user.getPassword())) {
-      throw new IllegalArgumentException("Invalid login or password.");
+      throw new HandledException(ExceptionType.LOGIN_INVALID_LOGIN_OR_PASSWORD);
     }
     String jwtToken = jwtService.generateFullToken(user);
 
@@ -41,13 +43,16 @@ public class AuthService {
       .build();
   }
 
-  public void validateRequiredFields(LoginReqDto loginReqDto) {
+  public void validateRequiredFields(LoginReqDto loginReqDto) throws HandledException {
     if (strHasNoValue(loginReqDto.getEmail()) && strHasNoValue(loginReqDto.getUsername())) {
-      throw new IllegalArgumentException("User email or username is required.");
+      throw new HandledException(ExceptionType.LOGIN_REQUIRED_EMAIL_OR_USERNAME);
+
     } else if (strHasValue(loginReqDto.getEmail()) && !strIsValidEmail(loginReqDto.getEmail())) {
-      throw new IllegalArgumentException("Email format is invalid.");
+      throw new HandledException(ExceptionType.EMAIL_FORMAT_INVALID);
+
     } else if (strHasNoValue(loginReqDto.getPassword())) {
-      throw new IllegalArgumentException("User password is required.");
+      throw new HandledException(ExceptionType.LOGIN_REQUIRED_PASSWORD);
+
     }
   }
 

@@ -1,5 +1,6 @@
 package com.myapps.advancedapijava.modules.user.controller;
 
+import com.myapps.advancedapijava.exception.HandledException;
 import com.myapps.advancedapijava.modules.user.dto.UserDto;
 import com.myapps.advancedapijava.modules.user.dto.UserRespDto;
 import com.myapps.advancedapijava.modules.user.entity.User;
@@ -25,7 +26,7 @@ public class UserController {
   @PostMapping
   public ResponseEntity<UserRespDto> create(
     @RequestBody UserDto userDto
-  ) {
+  ) throws HandledException {
     return new ResponseEntity<>(service.create(userDto), HttpStatus.OK);
   }
 
