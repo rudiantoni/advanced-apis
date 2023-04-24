@@ -24,12 +24,7 @@ public class ProductController {
   public ResponseEntity<ProductDto> readOne(
     @PathVariable("id") Long id
   ) {
-    try {
       return new ResponseEntity<>(service.readOne(id), HttpStatus.OK);
-    } catch (Exception e) {
-      e.printStackTrace();
-      return new ResponseEntity("Error: %s".formatted(e.getMessage()), HttpStatus.BAD_REQUEST);
-    }
   }
 
   @PostMapping

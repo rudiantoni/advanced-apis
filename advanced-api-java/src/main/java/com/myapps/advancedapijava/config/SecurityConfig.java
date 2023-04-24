@@ -6,6 +6,7 @@ import com.myapps.advancedapijava.modules.auth.service.JwtService;
 import com.myapps.advancedapijava.modules.user.service.UserService;
 import com.myapps.advancedapijava.util.Util;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,8 +22,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-  private final JwtService jwtService;
-  private final UserService userService;
+  private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -37,7 +37,7 @@ public class SecurityConfig {
       .and()
       .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
       .and()
-      .addFilterBefore(new JwtAuthenticationFilter(jwtService, userService), BasicAuthenticationFilter.class);
+      .addFilterBefore(jwtAuthenticationFilter, BasicAuthenticationFilter.class);
 
     return http.build();
   }

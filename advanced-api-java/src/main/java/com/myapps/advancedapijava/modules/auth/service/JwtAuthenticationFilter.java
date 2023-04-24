@@ -10,6 +10,7 @@ import com.myapps.advancedapijava.modules.user.util.UserUtil;
 import com.myapps.advancedapijava.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
@@ -34,46 +35,50 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-    if (isRequestedAlreadyPermitted(request)) {
+    try {
+      if (isRequestedAlreadyPermitted(request)) {
+        filterChain.doFilter(request, response);
+        return;
+      }
+
+      final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+      final String tokenPrefix = AppProperties.securityTokenPrefix;
+
+      if (authHeader == null || !authHeader.startsWith(tokenPrefix)) {
+        logger.error("Authorization header can not be null and must have the correct prefix.");
+        throw new AuthenticationServiceException("Invalid authorization.");
+      }
+
+      final String jwtToken = authHeader.substring(tokenPrefix.length() + 1);
+      Token token = jwtService.decodeToken(jwtToken);
+
+      if (token == null || token.getEmail() == null || token.getUsername() == null) {
+        logger.error("Token could not be parsed. Check token required field (username, email).");
+        throw new AuthenticationServiceException("Token parse error.");
+      }
+
+      final String email = token.getEmail();
+      final String username = token.getUsername();
+      User user = userService.findByEmailOrUsernameOrNull(email, username);
+
+      if (jwtService.isTokenValid(user, token)) {
+        Authentication authentication = getAuthentication(user, token);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+      } else {
+        logger.error("Token data could not be validated. Check user existence and required fields (username, email), check token validation fields (username, email) and expiration.");
+        throw new AuthorizationServiceException("Invalid token data.");
+      }
+
       filterChain.doFilter(request, response);
-      return;
+    } catch (Exception e) {
+      logger.error("Error: %s".formatted(e.getMessage()));
+      // Status padrão e também para AuthenticationServiceException
+      response.setStatus(HttpStatus.UNAUTHORIZED.value());
+      if (e instanceof AuthorizationServiceException) {
+        response.setStatus(HttpStatus.FORBIDDEN.value());
+      }
+      response.getWriter().write(e.getMessage());
     }
-
-    final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-    final String tokenPrefix = AppProperties.securityTokenPrefix;
-    final String jwtToken;
-    final String username;
-    final String email;
-
-    if (authHeader == null || !authHeader.startsWith(tokenPrefix)) {
-      filterChain.doFilter(request, response);
-      logger.error("Authorization header can not be null and must have the correct prefix.");
-      throw new AuthenticationServiceException("Authorization invalid.");
-    }
-
-    jwtToken = authHeader.substring(tokenPrefix.length() + 1);
-    Token token = jwtService.decodeToken(jwtToken);
-
-    if (token == null || token.getEmail() == null || token.getUsername() == null) {
-      filterChain.doFilter(request, response);
-      logger.error("Token could not be parsed. Check token required field (username, email).");
-      throw new AuthenticationServiceException("Token parse error.");
-    }
-
-    email = token.getEmail();
-    username = token.getUsername();
-    User user = userService.findByEmailOrUsernameOrNull(email, username);
-
-    if (jwtService.isTokenValid(user, token)) {
-      Authentication authentication = getAuthentication(user, token);
-      SecurityContextHolder.getContext().setAuthentication(authentication);
-    } else {
-      filterChain.doFilter(request, response);
-      logger.error("Token data could not be validated. Check user existence and required fields (username, email), check token validation fields (username, email) and expiration.");
-      throw new AuthorizationServiceException("Token data invalid.");
-    }
-
-    filterChain.doFilter(request, response);
   }
 
   private Boolean isRequestedAlreadyPermitted(HttpServletRequest request) {
