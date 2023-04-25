@@ -23,15 +23,8 @@ class UserRepositoryTest {
   void itShouldCheckWhenUserEmailExists() {
     // given
     String email = "user.test@email.com";
-    User user = new User();
-    user.setEmail(email);
-    user.setUsername("user.test");
-    user.setPassword("user");
-    user.getEmail();
-    user.getUsername();
-    user.getPassword();
+    User user = User.builder().email(email).username("user.test").password("user").build();
     underTest.save(user);
-    User.builder().build();
     // when
     Boolean expected = underTest.existsByEmailIgnoreCase(email);
     // then
@@ -42,7 +35,7 @@ class UserRepositoryTest {
   @Test
   void itShouldCheckWhenUserEmailDoesNotExists() {
     // given
-    String email = "user.testNoExists@email.com";
+    String email = "user.test@email.com";
     // when
     Boolean expected = underTest.existsByEmailIgnoreCase(email);
     // then
