@@ -1,13 +1,30 @@
 package com.myapps.advancedapijava;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
+//@SpringBootTest
 class AdvancedApiJavaApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+	Calculator underTest = new Calculator();
+
+  class Calculator {
+    int add(int a, int b) {
+      return a + b;
+    }
+  }
+
+  @Test
+  void itShouldAddTwoNumbers() {
+		// given
+		int numberOne = 20;
+		int numberTwo = 30;
+		//when
+		int result = underTest.add(numberOne, numberTwo);
+		// then
+    int expected = 50;
+		assertThat(result).isEqualTo(expected);
+  }
 
 }
