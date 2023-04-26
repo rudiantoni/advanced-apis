@@ -1,6 +1,5 @@
 package com.myapps.advancedapijava.modules.user.service;
 
-import ch.qos.logback.classic.Logger;
 import com.myapps.advancedapijava.enums.ExceptionType;
 import com.myapps.advancedapijava.exception.HandledException;
 import com.myapps.advancedapijava.modules.user.dto.UserDto;
@@ -9,7 +8,6 @@ import com.myapps.advancedapijava.modules.user.entity.User;
 import com.myapps.advancedapijava.modules.user.repository.UserRepository;
 import com.myapps.advancedapijava.modules.user.util.UserUtil;
 import com.myapps.advancedapijava.util.CryptUtil;
-import com.myapps.advancedapijava.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

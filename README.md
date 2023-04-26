@@ -13,6 +13,12 @@
 - SpringDoc OpenAPI UI 1.6.15 - OpenAPI 3.0.1 - Swagger UI
   - Endpoint da página de testes do Swagger: */api/swagger-ui.index.html*
   - Endpoint dos dados da api-docs: */api/v3/api-docs*
+- Spring Security
+- Testing
+  - JUnit5
+  - H2 Database (for testing)
+  - Mockito
+
 <!--
   Spring Boot Developer Tools: 3.0.4
 -->
@@ -96,3 +102,19 @@ TokenSubject tokenSubject = Util.fromJsonStr(subject, TokenSubject.class);
 ```java
 AuthenticationToken authenticationToken
 ```
+
+## Outros códigos
+
+```java
+// Manual comparator entre 2 objetos da mesma classe null safe and case sensitive
+Comparator<User> userComparator = Comparator
+  .comparing(User::getId, Comparator.nullsFirst(Long::compare))
+  .thenComparing((User user) -> user.getEmail(), Comparator.nullsFirst(String::compareTo))
+  .thenComparing(User::getUsername, Comparator.nullsFirst(String::compareTo))
+  .thenComparing((User user) -> user.getPassword(), Comparator.nullsFirst(String::compareTo));
+  
+
+// Manual comparator
+assertThat(capturedUser).usingComparator(userComparator).isEqualTo(newUser);
+```
+

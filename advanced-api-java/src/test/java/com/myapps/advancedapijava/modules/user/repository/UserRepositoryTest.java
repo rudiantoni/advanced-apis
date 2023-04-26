@@ -1,7 +1,6 @@
 package com.myapps.advancedapijava.modules.user.repository;
 
 import com.myapps.advancedapijava.modules.user.entity.User;
-import com.myapps.advancedapijava.util.CryptUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +34,7 @@ class UserRepositoryTest {
   @Test
   void itShouldCheckWhenUserEmailDoesNotExists() {
     // given
-    String email = "user.test@email.com";
+    String email = "user.test @email.com";
     // when
     Boolean expected = underTest.existsByEmailIgnoreCase(email);
     // then
