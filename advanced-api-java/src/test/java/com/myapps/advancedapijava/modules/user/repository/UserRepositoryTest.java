@@ -2,9 +2,13 @@ package com.myapps.advancedapijava.modules.user.repository;
 
 import com.myapps.advancedapijava.modules.user.entity.User;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -12,6 +16,16 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 class UserRepositoryTest {
   @Autowired
   private UserRepository underTest;
+  private User user;
+
+  @BeforeEach
+  public void setUp() {
+    user = User.builder()
+      .email("test@example.com")
+      .username("testuser")
+      .password("password")
+      .build();
+  }
 
   @AfterEach
   void tearDown() {
@@ -19,45 +33,107 @@ class UserRepositoryTest {
   }
 
   @Test
+  @DisplayName("Given email and a user, when it checks for users exists by email, is should exists.")
   void itShouldCheckWhenUserEmailExists() {
-    // given
-    String email = "user.test@email.com";
-    User user = User.builder().email(email).username("user.test").password("user").build();
+    // Given
+    String email = "test@example.com";
     underTest.save(user);
-    // when
-    Boolean expected = underTest.existsByEmailIgnoreCase(email);
-    // then
-    assertThat(expected).isTrue();
-
+    // When
+    Boolean exists = underTest.existsByEmailIgnoreCase(email);
+    // Then
+    assertThat(exists).isTrue();
   }
 
   @Test
+  @DisplayName("Given a email, when it checks for users exists by email, is should not exists.")
   void itShouldCheckWhenUserEmailDoesNotExists() {
-    // given
-    String email = "user.test @email.com";
-    // when
-    Boolean expected = underTest.existsByEmailIgnoreCase(email);
-    // then
+    // Given
+    String email = "test@example.com";
+    // When
+    Boolean exists = underTest.existsByEmailIgnoreCase(email);
+    // Then
+    assertThat(exists).isFalse();
+  }
+
+  @Test
+  @DisplayName("Given username and a user, when it checks for users exists by username, is should exists.")
+  void itShouldCheckWhenUserUsernameExists() {
+    // Given
+    String username = "testuser";
+    underTest.save(user);
+    // When
+    Boolean exists = underTest.existsByUsernameIgnoreCase(username);
+    // Then
+    assertThat(exists).isTrue();
+  }
+
+  @Test
+  @DisplayName("Given a username, when it checks for users exists by username, is should not exists.")
+  void itShouldCheckWhenUserUsernameDoesNotExists() {
+    // Given
+    String username = "testuser";
+    // When
+    Boolean expected = underTest.existsByUsernameIgnoreCase(username);
+    // Then
     assertThat(expected).isFalse();
   }
 
   @Test
-  void existsByUsernameIgnoreCase() {
+  @DisplayName("Given email and a user, when it searches for a user by email, it should find it and it should be equals to the user.")
+  void itShouldFindAndBeEqualsUserByEmail() {
+    // Given
+    String email = "test@example.com";
+    underTest.save(user);
+    // When
+    Optional<User> foundUser = underTest.findByEmailIgnoreCase(email);
+    // Then
+    assertThat(foundUser).isPresent();
+    assertThat(foundUser.get())
+      .usingRecursiveComparison()
+      .withStrictTypeChecking()
+      .isEqualTo(user);
+
   }
 
   @Test
-  void findByEmailIgnoreCase() {
+  @DisplayName("Given a email, when it searches for a user by email, it should not find it.")
+  void itShouldNotFindUserByEmail() {
+    // Given
+    String email = "test@example.com";
+    // When
+    Optional<User> foundUser = underTest.findByEmailIgnoreCase(email);
+    // Then
+    assertThat(foundUser).isEmpty();
+
   }
 
   @Test
-  void findByUsernameIgnoreCase() {
+  @DisplayName("Given username and a user, when it searches for a user by username, it should find it and it should be equals to the user.")
+  void itShouldFindAndBeEqualsUserByUsername() {
+    // Given
+    String username = "testuser";
+    underTest.save(user);
+    // When
+    Optional<User> foundUser = underTest.findByUsernameIgnoreCase(username);
+    // Then
+    assertThat(foundUser).isPresent();
+    assertThat(foundUser.get())
+      .usingRecursiveComparison()
+      .withStrictTypeChecking()
+      .isEqualTo(user);
+
   }
 
   @Test
-  void findByEmail() {
+  @DisplayName("Given a username, when it searches for a user by username, it should not find it.")
+  void itShouldNotFindUserByUsername() {
+    // Given
+    String username = "testuser";
+    // When
+    Optional<User> foundUser = underTest.findByUsernameIgnoreCase(username);
+    // Then
+    assertThat(foundUser).isEmpty();
+
   }
 
-  @Test
-  void findByUsername() {
-  }
 }
