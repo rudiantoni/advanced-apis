@@ -18,6 +18,7 @@
   - JUnit5
   - H2 Database (for testing)
   - Mockito
+  - JaCoCo
 
 <!--
   Spring Boot Developer Tools: 3.0.4
@@ -118,3 +119,18 @@ Comparator<User> userComparator = Comparator
 assertThat(capturedUser).usingComparator(userComparator).isEqualTo(newUser);
 ```
 
+## Teste
+
+Para executar os testes, execute a rotina Tasks > verification > jacocoTestReport ou use o comando.
+
+```
+./gradlew jacocoTestReport
+```
+
+O relatório de testes é gerado em /build/reports/jacoco/test/html/index.html
+
+### Ignorar packages/classes
+- Usando o code coverage do IntelliJ:
+  - Edit Run Configuration > Modify Options > Exclude classes and packages
+- Definindo o JaCoCo como padrão
+  - Edit Run Configuration > Modify Options > Choose coverage runner

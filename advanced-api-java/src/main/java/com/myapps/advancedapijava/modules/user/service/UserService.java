@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static com.myapps.advancedapijava.util.StringUtil.strHasNoValue;
@@ -23,12 +22,14 @@ import static com.myapps.advancedapijava.util.StringUtil.strHasValue;
 public class UserService {
   private final UserRepository repository;
 
-  public User findByEmailOrException(String email) {
-    return repository.findByEmailIgnoreCase(email).orElseThrow(() -> new NoSuchElementException("User with email %s not found.".formatted(email)));
+  public User findByEmailOrException(String email) throws HandledException {
+    String message = ExceptionType.USER_NOT_FOUND_BY_EMAIL.getMessage().formatted(email);
+    return repository.findByEmailIgnoreCase(email).orElseThrow(() -> new HandledException(message, ExceptionType.USER_NOT_FOUND_BY_EMAIL));
   }
 
-  public User findByUsernameOrException(String username) {
-    return repository.findByUsernameIgnoreCase(username).orElseThrow(() -> new NoSuchElementException("User with username %s not found.".formatted(username)));
+  public User findByUsernameOrException(String username) throws HandledException {
+    String message = ExceptionType.USER_NOT_FOUND_BY_USERNAME.getMessage().formatted(username);
+    return repository.findByUsernameIgnoreCase(username).orElseThrow(() -> new HandledException(message, ExceptionType.USER_NOT_FOUND_BY_USERNAME));
   }
 
   public User findByEmailOrUsernameOrNull(String email, String username) {
@@ -78,10 +79,12 @@ public class UserService {
 
   public void validateDuplicate(UserDto userDto) throws HandledException {
     if (strHasValue(userDto.getEmail()) && repository.existsByEmailIgnoreCase(userDto.getEmail())) {
-      throw new HandledException("User with email %s already exists.".formatted(userDto.getEmail()), ExceptionType.USER_EXISTS_EMAIL);
+      String message = ExceptionType.USER_EXISTS_BY_EMAIL.getMessage().formatted(userDto.getEmail());
+      throw new HandledException(message, ExceptionType.USER_EXISTS_BY_EMAIL);
 
     } else if (strHasValue(userDto.getUsername()) && repository.existsByUsernameIgnoreCase(userDto.getUsername())) {
-      throw new HandledException("User with username %s already exists.".formatted(userDto.getEmail()), ExceptionType.USER_EXISTS_USERNAME);
+      String message = ExceptionType.USER_EXISTS_BY_USERNAME.getMessage().formatted(userDto.getUsername());
+      throw new HandledException(message, ExceptionType.USER_EXISTS_BY_USERNAME);
 
     }
   }

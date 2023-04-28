@@ -1,8 +1,8 @@
 package com.myapps.advancedapijava.modules.user.repository;
 
+import com.myapps.advancedapijava.enums.ExceptionType;
 import com.myapps.advancedapijava.modules.user.entity.User;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,16 +16,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 class UserRepositoryTest {
   @Autowired
   private UserRepository underTest;
-  private User user;
-
-  @BeforeEach
-  public void setUp() {
-    user = User.builder()
-      .email("test@example.com")
-      .username("testuser")
-      .password("password")
-      .build();
-  }
 
   @AfterEach
   void tearDown() {
@@ -37,6 +27,7 @@ class UserRepositoryTest {
   void itShouldCheckWhenUserEmailExists() {
     // Given
     String email = "test@example.com";
+    User user = User.builder().email(email).username("testuser").password("password").build();
     underTest.save(user);
     // When
     Boolean exists = underTest.existsByEmailIgnoreCase(email);
@@ -60,6 +51,7 @@ class UserRepositoryTest {
   void itShouldCheckWhenUserUsernameExists() {
     // Given
     String username = "testuser";
+    User user = User.builder().email("test@example.com").username(username).password("password").build();
     underTest.save(user);
     // When
     Boolean exists = underTest.existsByUsernameIgnoreCase(username);
@@ -83,6 +75,7 @@ class UserRepositoryTest {
   void itShouldFindAndBeEqualsUserByEmail() {
     // Given
     String email = "test@example.com";
+    User user = User.builder().email(email).username("testuser").password("password").build();
     underTest.save(user);
     // When
     Optional<User> foundUser = underTest.findByEmailIgnoreCase(email);
@@ -112,6 +105,7 @@ class UserRepositoryTest {
   void itShouldFindAndBeEqualsUserByUsername() {
     // Given
     String username = "testuser";
+    User user = User.builder().email("test@example.com").username(username).password("password").build();
     underTest.save(user);
     // When
     Optional<User> foundUser = underTest.findByUsernameIgnoreCase(username);
