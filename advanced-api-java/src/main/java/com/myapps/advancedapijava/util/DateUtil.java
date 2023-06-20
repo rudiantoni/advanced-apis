@@ -11,4 +11,7 @@ public class DateUtil {
     return new Date(date.getTime() + TimeUnit.HOURS.toMillis(hours));
   }
 
+  public static Date minusHours(Date date, Integer hours) {
+    return new Date(date.getTime() - TimeUnit.HOURS.toMillis(hours));
+  }
 }

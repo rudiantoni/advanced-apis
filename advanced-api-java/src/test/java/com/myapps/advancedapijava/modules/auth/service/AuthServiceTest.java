@@ -16,15 +16,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.env.Environment;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
@@ -35,6 +30,7 @@ class AuthServiceTest {
   private UserRepository repository;
   private JwtService jwtService;
   private AuthService underTest;
+
   @BeforeEach
   void setUp() {
     UserService userService = new UserService(repository);
@@ -110,7 +106,7 @@ class AuthServiceTest {
   @DisplayName("Given an null email and a null user name, when it makes login, it will throw an exception.")
   @Test
   void willThrowExceptionOnEmailNullAndUsernameNull() {
-  // Given
+    // Given
     String pass = "user";
     LoginReqDto loginInfo = LoginReqDto.builder().email(null).username(null).password(pass).build();
     String messageLoginRequired = ExceptionType.LOGIN_REQUIRED_EMAIL_OR_USERNAME.getMessage();
