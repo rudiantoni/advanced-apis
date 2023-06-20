@@ -1,6 +1,5 @@
 plugins {
   id 'java'
-  id 'jacoco'
   id 'org.springframework.boot' version '2.7.10'
   id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
@@ -35,36 +34,5 @@ dependencies {
 
   annotationProcessor 'org.projectlombok:lombok'
 
-  testImplementation 'org.springframework.boot:spring-boot-starter-test'
-  testImplementation 'org.springframework.security:spring-security-test'
-  testImplementation 'com.h2database:h2'
-
 }
 
-tasks.named('test') {
-  useJUnitPlatform()
-
-  finalizedBy jacocoTestReport
-}
-
-jacocoTestReport {
-  dependsOn test
-
-  afterEvaluate {
-    classDirectories.setFrom(files(classDirectories.files.collect {
-      fileTree(dir: it, exclude: [
-        "**/AdvancedApiJavaApplication.class",
-        "**/JwtService.class",
-        "**/JwtAuthenticationFilter.class",
-        "**/config/*",
-        "**/controller/*",
-        "**/enums/*",
-        "**/exception/*",
-        "**/dto/*",
-        "**/entity/*",
-        "**/model/*",
-        "**/util/*",
-      ])
-    }))
-  }
-}
