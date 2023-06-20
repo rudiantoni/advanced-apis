@@ -19,12 +19,12 @@ public class ProductService {
   private final ProductRepository repository;
 
   public Product findByIdOrException(Long id) throws HandledException {
-    return repository.findById(id).orElseThrow(() -> new HandledException("Product with id %s not found.".formatted(id), ExceptionType.PRODUCT_NOT_FOUND_WITH_ID));
+    return repository.findById(id).orElseThrow(() -> new HandledException(ExceptionType.PRODUCT_NOT_FOUND_BY_ID.getMessage().formatted(id), ExceptionType.PRODUCT_NOT_FOUND_BY_ID));
   }
 
   public void existsByIdOrException(Long id) throws HandledException {
     if (!repository.existsById(id)) {
-      throw new HandledException("Product with id %s not found.".formatted(id), ExceptionType.PRODUCT_NOT_FOUND_WITH_ID);
+      throw new HandledException(ExceptionType.PRODUCT_NOT_FOUND_BY_ID.getMessage().formatted(id), ExceptionType.PRODUCT_NOT_FOUND_BY_ID);
     }
   }
 
