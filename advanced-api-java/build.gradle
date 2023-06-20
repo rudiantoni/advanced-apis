@@ -57,6 +57,7 @@ jacocoTestReport {
         "**/JwtService.class",
         "**/JwtAuthenticationFilter.class",
         "**/config/*",
+        "**/controller/*",
         "**/enums/*",
         "**/exception/*",
         "**/dto/*",
