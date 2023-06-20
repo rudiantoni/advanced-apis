@@ -24,7 +24,7 @@
   Spring Boot Developer Tools: 3.0.4
 -->
 
-## Diagrama de relacionamento de entidades
+## Diagrama do esquema de banco de dados
 - [Clique aqui](https://app.diagrams.net/#G13bd2ILwPsaACDqCaTtsRLozOtMCCcUoe)
 
 ## Segurança

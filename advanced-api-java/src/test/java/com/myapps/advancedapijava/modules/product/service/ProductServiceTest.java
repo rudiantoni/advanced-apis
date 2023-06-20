@@ -24,8 +24,7 @@ import java.util.Optional;
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ProductServiceTest {
@@ -176,6 +175,114 @@ class ProductServiceTest {
       .isEqualTo(product);
   }
 
-  // TODO: Continuar desenvolvimento aqui, a partir do update do ProductService
+  @Test
+  @DisplayName("Given id and product, when it updates a product, it must be updated.")
+  void canUpdateProduct() throws HandledException {
+    // Given
+    Long id = 1L;
+    String name = "productA";
+    String desc = "product.descriptionA";
+    Float price = 3.99F;
+    Product product = Product.builder().id(id).name("product").description("product.description").price(2.99F).build();
+    Optional<Product> optionalProduct = Optional.of(product);
+    ProductDto productDto = ProductDto.builder().name(name).description(desc).price(price).build();
+    Product productUpdated = ProductUtil.toEntity(productDto);
+
+    // When
+    when(repository.existsById(any(Long.class))).thenReturn(true);
+    when(repository.findById(any(Long.class))).thenReturn(optionalProduct);
+    when(repository.save(any())).thenReturn(productUpdated);
+    underTest.update(id, productDto);
+
+    // Then
+    ArgumentCaptor<Product> userArgumentCaptor = ArgumentCaptor.forClass(Product.class);
+    verify(repository).save(userArgumentCaptor.capture());
+    Product capturedProduct = userArgumentCaptor.getValue();
+    assertThat(capturedProduct)
+      .usingRecursiveComparison()
+      .withStrictTypeChecking()
+      .ignoringFields("id")
+      .isEqualTo(productUpdated);
+  }
+
+  @Test
+  @DisplayName("Given id and product, when it partially updates a product, it must be updated.")
+  void canUpdatePartiallyProduct() throws HandledException {
+    // Given
+    Long id = 1L;
+    String name = "productA";
+    String desc = "product.descriptionA";
+    Float price = 3.99F;
+    Product product = Product.builder().id(id).name("product").description("product.description").price(2.99F).build();
+    Optional<Product> optionalProduct = Optional.of(product);
+    ProductDto productDto = ProductDto.builder().name(name).description(desc).price(price).build();
+    Product productUpdated = ProductUtil.toEntity(productDto);
+
+    // When
+    when(repository.findById(any(Long.class))).thenReturn(optionalProduct);
+    when(repository.save(any())).thenReturn(productUpdated);
+    underTest.updatePartial(id, productDto);
+
+    // Then
+    ArgumentCaptor<Product> userArgumentCaptor = ArgumentCaptor.forClass(Product.class);
+    verify(repository).save(userArgumentCaptor.capture());
+    Product capturedProduct = userArgumentCaptor.getValue();
+    assertThat(capturedProduct)
+      .usingRecursiveComparison()
+      .withStrictTypeChecking()
+      .ignoringFields("id")
+      .isEqualTo(productUpdated);
+  }
+
+  @Test
+  @DisplayName("Given id, when it deletes a product, it must be deleted.")
+  void canRemoveProduct() {
+    // Given
+    Long id = 1L;
+
+    // When
+    when(repository.existsById(any(Long.class))).thenReturn(true);
+    doNothing().when(repository).deleteById(any(Long.class));
+
+    // Then
+    assertThatNoException().isThrownBy(() -> underTest.deleteById(id));
+  }
+
+  @Test
+  @DisplayName("Given product with no name, when it validates for required fields, it will throw an Exception.")
+  void willThrowOnNoName() {
+    // Given
+    Long id = 1L;
+    String name = null;
+    String desc = "product.description";
+    Float price = 2.99F;
+    ProductDto productDto = ProductDto.builder().name(name).description(desc).price(price).build();
+    String msgRequiredName = ExceptionType.PRODUCT_REQUIRED_NAME.getMessage();
+
+    // When
+    // Then
+    assertThatThrownBy(() -> underTest.validateRequiredFields(productDto))
+      .isInstanceOf(HandledException.class)
+      .hasMessageContaining(msgRequiredName);
+  }
+
+  @Test
+  @DisplayName("Given product with no description, when it validates for required fields, it will throw an Exception.")
+  void willThrowOnNoDescription() {
+    // Given
+    Long id = 1L;
+    String name = "product";
+    String desc = null;
+    Float price = 2.99F;
+    ProductDto productDto = ProductDto.builder().name(name).description(desc).price(price).build();
+    String msgRequiredName = ExceptionType.PRODUCT_REQUIRED_DESCRIPTION.getMessage();
+
+    // When
+    // Then
+    assertThatThrownBy(() -> underTest.validateRequiredFields(productDto))
+      .isInstanceOf(HandledException.class)
+      .hasMessageContaining(msgRequiredName);
+  }
+
 
 }
