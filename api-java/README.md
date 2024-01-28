@@ -8,7 +8,7 @@
 - Contexto: */api*
 - Perfil *dev*
   - Porta padrão: 8081
-- Build da imagem docker
+- Build da imagem docker *myapps/api-java*
   - Linux Ubuntu: `$ sh build.sh`
 - Build do artefato *.jar*
   - Linux Ubuntu: `$ sh build_artifact.sh`
