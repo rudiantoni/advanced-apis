@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  backend:
+    container_name: backend_api_java
+    image: myapps/api-java
+    restart: unless-stopped
+    logging:
+      options:
+        max-file: '5'
+        max-size: '20m'
+    environment:
+      - "PORT=8081"
+    ports:
+      - 8081:8081
