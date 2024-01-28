@@ -10,10 +10,13 @@
   - Porta padrão: 8081
 - Build da imagem docker *myapps/api-java*
   - Linux Ubuntu: `$ sh build.sh`
+  - Microsoft Windows: `> build.bat`
 - Build do artefato *.jar*
   - Linux Ubuntu: `$ sh build_artifact.sh`
+  - Microsoft Windows: `> build_artifact.bat`
 - Executar localmente com o perfil *dev*
   - Linux Ubuntu: `$ sh run_artifact_dev.sh`
+  - Microsoft Windows: `> run_artifact_dev.bat`
 
 ## Read Me First
 The following was discovered as part of building this project:
