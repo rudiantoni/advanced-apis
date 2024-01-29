@@ -5,7 +5,9 @@
 - Versão JDK: 17
 - Versão Gradle: 8.5
 - Spring Boot: 3.2.2
+- Spring Security: 6
 - Contexto: */api*
+  - Endpoint aberto para teste: */open*
 - Perfil *dev*
   - Porta padrão: 8081
 - Build da imagem docker *myapps/api-java*
@@ -14,6 +16,14 @@
   - Linux Ubuntu: `$ sh build_artifact.sh`
 - Executar localmente com o perfil *dev*
   - Linux Ubuntu: `$ sh run_artifact_dev.sh`
+
+- Geração da chave de segurança
+  - Gerado uma string aleatória de 32 caracteres: `63412610788732741019852643069194`
+    - Ferramenta: [https://www.random.org/strings/](https://www.random.org/strings/)
+  - Aplicado criptografia SHA-256 nessa string aleatória: `24788b370e16e2893453c3f871e127c3d8d41b0a0f56c2b222be4ff99232e50b`
+    - Ferramenta: [https://emn178.github.io/online-tools/sha256.html](https://emn178.github.io/online-tools/sha256.html)
+  - Codificado string criftografada em BASE64: `MjQ3ODhiMzcwZTE2ZTI4OTM0NTNjM2Y4NzFlMTI3YzNkOGQ0MWIwYTBmNTZjMmIyMjJiZTRmZjk5MjMyZTUwYg==`
+    - Ferramenta: [https://www.base64encode.org/](https://www.base64encode.org/)
 
 ## Read Me First
 The following was discovered as part of building this project:

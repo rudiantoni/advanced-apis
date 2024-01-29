@@ -1,6 +1,6 @@
 package com.myapps.apijava.controller;
 
-import com.myapps.apijava.dto.ErrorDto;
+import com.myapps.apijava.dto.MsgDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class OpenController {
 
   @GetMapping("/check")
-  public ResponseEntity<?> getAll () {
+  public ResponseEntity<?> getCheck() {
     try {
-      System.out.println("Vou tentar fazer algo");
-      return new ResponseEntity(new ErrorDto("Não deu erro"), HttpStatus.OK);
+      System.out.println("OPEN CHECK: You reached the open endpoint SUCCESSFULLY");
+      return new ResponseEntity<>(new MsgDto("OPEN CHECK: You reached the open endpoint SUCCESSFULLY."), HttpStatus.OK);
     } catch (Exception e) {
       e.printStackTrace();
-      return new ResponseEntity(new ErrorDto("Erro interno do servidor"), HttpStatus.INTERNAL_SERVER_ERROR);
+      return new ResponseEntity<>(new MsgDto("INTERNAL SERVER ERROR"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 

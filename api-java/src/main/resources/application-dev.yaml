@@ -1,3 +1,11 @@
 server:
   port: 8081
   servlet.context-path: /api
+
+app:
+  security:
+    secret-key: MjQ3ODhiMzcwZTE2ZTI4OTM0NTNjM2Y4NzFlMTI3YzNkOGQ0MWIwYTBmNTZjMmIyMjJiZTRmZjk5MjMyZTUwYg==
+    token:
+      expiration-hours: 1
+      prefix: Bearer
+
