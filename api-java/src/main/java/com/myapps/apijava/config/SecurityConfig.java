@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -28,13 +29,16 @@ public class SecurityConfig {
       .cors(it -> corsConfigurationSource())
       .csrf(AbstractHttpConfigurer::disable)
       .authorizeHttpRequests(authorize ->
-          authorize
-            .requestMatchers(openUrls.toArray(String[]::new)).permitAll()
-            .anyRequest().authenticated()
-//          .requestMatchers("/closed/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_MANAGER", "ROLE_TECHNICIAN")
+        authorize
+          .requestMatchers(openUrls.toArray(String[]::new)).permitAll()
+          .anyRequest().authenticated()
+//        .requestMatchers("/closed/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_MANAGER", "ROLE_TECHNICIAN")
       )
-      .addFilterBefore(customJwtAuthenticationFilter, BasicAuthenticationFilter.class)
-    ;
+      .sessionManagement(httpSecuritySessionManagementConfigurer ->
+        httpSecuritySessionManagementConfigurer
+          .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+      )
+      .addFilterBefore(customJwtAuthenticationFilter, BasicAuthenticationFilter.class);
     return http.build();
   }
 

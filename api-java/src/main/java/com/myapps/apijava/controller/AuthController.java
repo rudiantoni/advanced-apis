@@ -21,6 +21,7 @@ public class AuthController {
     try {
       // TODO: continuar aqui
       // Token já consegue ser gerado, encodado e decodado, falta poder autenticar no filter, atribuir roles/authorities e pesquisar num repo o usuário
+      // Também é necessário testar o acesso ao Token nos endpoints
       // Por último, preparar endpoint de criação de user (email único)
       User user = User.builder()
         .id(1L)

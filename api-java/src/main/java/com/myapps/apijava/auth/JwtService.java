@@ -19,7 +19,6 @@ import java.util.Date;
 public class JwtService {
 
   public Token decodeToken(String jwtToken) {
-    // TODO: remover setSigningKey
     Claims claims = Jwts.parser()
       .verifyWith(getSigningKey())
       .build()
@@ -86,5 +85,9 @@ public class JwtService {
   private SecretKey getSigningKey() {
     byte[] keyBytes = Decoders.BASE64.decode(AppProperties.securitySecretKey);
     return Keys.hmacShaKeyFor(keyBytes);
+  }
+
+  public Boolean isTokenValid(Token token) {
+    return token.getExpiration().isAfter(OffsetDateTime.now());
   }
 }
