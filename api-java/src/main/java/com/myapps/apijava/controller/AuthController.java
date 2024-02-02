@@ -1,9 +1,9 @@
 package com.myapps.apijava.controller;
 
-import com.myapps.apijava.auth.JwtService;
 import com.myapps.apijava.dto.LoginReqDto;
 import com.myapps.apijava.dto.LoginRespDto;
-import com.myapps.apijava.entity.User;
+import com.myapps.apijava.exception.HandledException;
+import com.myapps.apijava.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,31 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
-  private final JwtService jwtService;
+  private final AuthService service;
 
   @PostMapping("/login")
   public ResponseEntity<LoginRespDto> login(
     @RequestBody LoginReqDto loginReqDto
-  ) {
-    // Token já consegue ser gerado, encodado e decodado OK
-    // Token ja consegue ser autenticado no filtro OK
-    // TODO: continuar aqui
-    // Falta:
-    // Validar dados antes de gerar o token (senha, email, etc) pesquisa pelo usuário
-    // Adicionar mais dados ao token: permissões nos claims?
-    // Atribuir os roles e authorities ao usuário quando receber o token no filtro
-    // Manter o token autocontido
-    // Testar o acesso ao Token nos endpoints
-    // Manipulação de erro no securityconfig
-    // Por último, preparar endpoint de criação de user (email único)
-    User user = User.builder()
-      .id(1L)
-      .email("email@test.com")
-      .username("Testing User")
-      .build();
-    String jwtToken = jwtService.createToken(user);
-
-    System.out.println("AUTH LOGIN: You logged in with a new token %s.".formatted(jwtToken));
-    return new ResponseEntity<>(null, HttpStatus.OK);
+  ) throws HandledException {
+    LoginRespDto result = service.login(loginReqDto);
+    return new ResponseEntity<>(result, HttpStatus.OK);
   }
 }

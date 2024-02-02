@@ -6,14 +6,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Token {
-  private String username;
   private String email;
   private OffsetDateTime issuedAt;
   private OffsetDateTime expiration;
+  private List<String> roles;
+  private List<String> authorities;
 }

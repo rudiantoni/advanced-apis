@@ -13,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
@@ -20,6 +21,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 @RequiredArgsConstructor
@@ -48,16 +51,23 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
     Token token = jwtService.decodeToken(jwtToken);
 
     // Validate obtained parsed token
-    if (token == null || token.getEmail() == null || token.getUsername() == null) {
-      logger.error("Token could not be parsed. Check token required fields (username, email).");
+    if (token == null || token.getEmail() == null) {
+      logger.error("Token could not be parsed. Check token required fields (email).");
       throw new AuthenticationServiceException("Token parse error.");
     }
 
     if (jwtService.isTokenValid(token)) {
-      // TODO: atualizar o token gerado para conter informações de roles e authorities do usuário,
-      //  assim será possível adicioná-lo ao contexto de autenticação e mantê-lo autocontido
-      Authentication authentication = new AuthenticationToken(token);
+      List<SimpleGrantedAuthority> grantedRoles = token.getRoles().stream()
+        .map(SimpleGrantedAuthority::new)
+        .toList();
+      List<SimpleGrantedAuthority> grantedAuthorities = token.getAuthorities().stream()
+        .map(SimpleGrantedAuthority::new)
+        .toList();
+      List<SimpleGrantedAuthority> userAuthorities = Stream
+        .concat(grantedRoles.stream(), grantedAuthorities.stream()).toList();
+      Authentication authentication = new AuthenticationToken(token, userAuthorities);
       SecurityContextHolder.getContext().setAuthentication(authentication);
+      var x = true;
     } else {
       logger.error("Token data could not be validated. Check user existence and required fields (username, email), check token validation fields (username, email) and expiration.");
       throw new AuthorizationServiceException("Invalid token data.");

@@ -1,9 +1,9 @@
 -- -------------------------------
 -- Table public.users
 -- -------------------------------
-INSERT INTO public.users (email, username, password, created_at, updated_at)
+INSERT INTO public.users (email, username, password, active, created_at, updated_at)
 VALUES
-    ('usuario.teste@meuemail.com', 'Usuário Teste', 'master', NOW(), NOW());
+    ('usuario.teste@meuemail.com', 'Usuário Teste', 'master', true, NOW(), NOW());
 
 -- -------------------------------
 -- Table public.permission
