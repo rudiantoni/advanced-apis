@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Token {
-  private String email;
+  private TokenSubject tokenSubject;
   private OffsetDateTime issuedAt;
   private OffsetDateTime expiration;
   private List<String> roles;

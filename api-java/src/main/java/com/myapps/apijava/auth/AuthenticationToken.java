@@ -1,38 +1,36 @@
 package com.myapps.apijava.auth;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.myapps.apijava.dto.UserSecureDto;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.List;
 
-@Getter
-@Setter
 public class AuthenticationToken extends AbstractAuthenticationToken {
-  private Token token;
+  private final Token token;
+  private final TokenSubject tokenSubject;
+  private final UserSecureDto userSecureDto;
 
-  public AuthenticationToken(Token token, List<SimpleGrantedAuthority> simpleGrantedAuthorities) {
+  public AuthenticationToken(Token token, UserSecureDto userSecureDto, List<SimpleGrantedAuthority> simpleGrantedAuthorities) {
     super(simpleGrantedAuthorities);
-    setAuthenticated(true);
     this.token = token;
+    this.tokenSubject = token.getTokenSubject();
+    this.userSecureDto = userSecureDto;
+    setAuthenticated(true);
   }
 
   @Override
-  public Token getPrincipal() {
-    return getToken();
-  }
-
-  public void setPrincipal(Token user) {
-    setToken(user);
+  public TokenSubject getPrincipal() {
+    return tokenSubject;
   }
 
   @Override
   public Token getCredentials() {
-    return getToken();
+    return token;
   }
 
-  public void setCredentials(Token token) {
-    setToken(token);
+  @Override
+  public UserSecureDto getDetails() {
+    return userSecureDto;
   }
 }

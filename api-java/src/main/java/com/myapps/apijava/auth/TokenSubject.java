@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TokenSubject {
-  private String username;
+  private Long id;
   private String email;
+  private String username;
 }

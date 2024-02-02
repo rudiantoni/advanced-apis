@@ -10,10 +10,11 @@ public class ApiJavaApplication {
 		/**
 		 *    TODO:
 		 *     // Testar os roles e authorities nos endpoints
-		 *     // Testar o acesso ao Token nos endpoints
+		 *     // Testar o acesso ao Token nos endpoints OK
 		 *     // Manipulação de erro no securityconfig
 		 *     // Por último, preparar endpoint de criação de user (email único)
 		 *     // também ajustar os campos created at e updated at do user
+		 *     // Ajustar controllers para não ter try-catch
 		 */
 
 		SpringApplication.run(ApiJavaApplication.class, args);

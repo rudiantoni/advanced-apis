@@ -2,7 +2,7 @@ package com.myapps.apijava.auth;
 
 import ch.qos.logback.classic.Logger;
 import com.myapps.apijava.config.AppProperties;
-import com.myapps.apijava.entity.User;
+import com.myapps.apijava.dto.UserSecureDto;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +21,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Component
@@ -51,8 +50,8 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
     Token token = jwtService.decodeToken(jwtToken);
 
     // Validate obtained parsed token
-    if (token == null || token.getEmail() == null) {
-      logger.error("Token could not be parsed. Check token required fields (email).");
+    if (token == null || token.getTokenSubject().getId() == null || token.getTokenSubject().getEmail() == null) {
+      logger.error("Token could not be parsed. Check if token exists and token required fields (id, email and username).");
       throw new AuthenticationServiceException("Token parse error.");
     }
 
@@ -65,9 +64,18 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
         .toList();
       List<SimpleGrantedAuthority> userAuthorities = Stream
         .concat(grantedRoles.stream(), grantedAuthorities.stream()).toList();
-      Authentication authentication = new AuthenticationToken(token, userAuthorities);
+
+      List<String> userPermissions = userAuthorities.stream().map(SimpleGrantedAuthority::toString).toList();
+
+      UserSecureDto userSecureDto = UserSecureDto.builder()
+        .id(token.getTokenSubject().getId())
+        .email(token.getTokenSubject().getEmail())
+        .username(token.getTokenSubject().getUsername())
+        .permissions(userPermissions)
+        .build();
+
+      Authentication authentication = new AuthenticationToken(token, userSecureDto, userAuthorities);
       SecurityContextHolder.getContext().setAuthentication(authentication);
-      var x = true;
     } else {
       logger.error("Token data could not be validated. Check user existence and required fields (username, email), check token validation fields (username, email) and expiration.");
       throw new AuthorizationServiceException("Invalid token data.");
