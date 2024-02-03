@@ -2,7 +2,10 @@ package com.myapps.apijava.exception;
 
 import ch.qos.logback.classic.Logger;
 import com.myapps.apijava.dto.HandledExceptionDto;
+import com.myapps.apijava.dto.HandledSecurityExceptionDto;
 import com.myapps.apijava.enums.ExceptionType;
+import com.myapps.apijava.util.Util;
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 @ControllerAdvice
@@ -42,6 +46,29 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
       .message(message)
       .build();
     return new ResponseEntity<>(sendError, httpStatus);
+  }
+
+  public void handleSecurityException(HttpServletResponse response, ExceptionType exceptionType, Exception e) throws IOException {
+    OffsetDateTime now = OffsetDateTime.now();
+    HttpStatus httpStatus = exceptionType.getHttpStatus();
+    Integer errorCode = exceptionType.getErrorCode();
+    String message = exceptionType.getMessage();
+
+    HandledSecurityExceptionDto sendError = HandledSecurityExceptionDto.builder()
+      .timestamp(now.toString())
+      .httpStatus(httpStatus.value())
+      .errorCode(errorCode)
+      .message(message)
+      .build();
+
+    if (e != null) {
+      e.printStackTrace();
+    }
+    logger.error("A handled security exception occured: %s".formatted(message));
+
+    response.setStatus(httpStatus.value());
+    response.setContentType("application/json");
+    response.getWriter().write(Util.toJsonStr(sendError));
   }
 
 }

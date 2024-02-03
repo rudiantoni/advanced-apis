@@ -33,23 +33,24 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-    // Skip filter if the URL is open
     if (isRequestWithUrls(request, openUrls)) {
       filterChain.doFilter(request, response);
       return;
     }
 
-    // Obtain, validate and parse jwt token from the request header
     final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
     final String tokenPrefix = AppProperties.securityTokenPrefix;
     if (authHeader == null || !authHeader.startsWith(tokenPrefix)) {
       logger.error("Authorization header can not be null and must have the correct prefix.");
       throw new AuthenticationServiceException("Invalid authentication.");
     }
+    if (authHeader.length() < tokenPrefix.length() + 1) {
+      logger.error("Token could not be parsed. Check the authentication header and the prefix.");
+      throw new AuthenticationServiceException("Token parse error.");
+    }
     final String jwtToken = authHeader.substring(tokenPrefix.length() + 1);
     Token token = jwtService.decodeToken(jwtToken);
 
-    // Validate obtained parsed token
     if (token == null || token.getTokenSubject().getId() == null || token.getTokenSubject().getEmail() == null) {
       logger.error("Token could not be parsed. Check if token exists and token required fields (id, email and username).");
       throw new AuthenticationServiceException("Token parse error.");
