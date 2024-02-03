@@ -1,6 +1,7 @@
 package com.myapps.apijava.config;
 
 import com.myapps.apijava.auth.CustomJwtAuthenticationFilter;
+import com.myapps.apijava.enums.PermissionData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,8 +32,16 @@ public class SecurityConfig {
       .authorizeHttpRequests(authorize ->
         authorize
           .requestMatchers(openUrls.toArray(String[]::new)).permitAll()
+//          .requestMatchers("/closed/**").permitAll() // APENAS PARA TESTES
+//          .requestMatchers("/closed/**").hasAnyAuthority(
+//            PermissionName.AUTHORITY_ACCESS_ALL_USER_DATA.getName(),
+//            PermissionName.AUTHORITY_MODIFY_SYSTEM_SETTINGS.getName(),
+//            PermissionName.AUTHORITY_VIEW_TEAM_REPORTS.getName()
+//          )
+          .requestMatchers("/closed/**").hasAnyRole(
+            PermissionData.ROLE_ADMIN.getName()
+          )
           .anyRequest().authenticated()
-//        .requestMatchers("/closed/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_MANAGER", "ROLE_TECHNICIAN")
       )
       .sessionManagement(httpSecuritySessionManagementConfigurer ->
         httpSecuritySessionManagementConfigurer
