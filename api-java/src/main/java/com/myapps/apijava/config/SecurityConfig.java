@@ -12,6 +12,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -71,6 +75,22 @@ public class SecurityConfig {
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", configuration);
     return source;
+  }
+
+  @Bean
+  public BCryptPasswordEncoder bCrypt() {
+    return new BCryptPasswordEncoder();
+  }
+
+  @Bean
+  public UserDetailsService userDetailsService() {
+    return new UserDetailsService() {
+      @Override
+      public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        System.out.println("Call not implemented UserDetailsService.loadUserByUsername");
+        return null;
+      }
+    };
   }
 
 }

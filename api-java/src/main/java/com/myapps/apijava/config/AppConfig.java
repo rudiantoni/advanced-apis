@@ -33,11 +33,6 @@ public class AppConfig {
     );
   }
 
-  @Bean
-  public BCryptPasswordEncoder bCrypt() {
-    return new BCryptPasswordEncoder();
-  }
-
   @PostConstruct
   public void init() {
     initializeLocalization();
