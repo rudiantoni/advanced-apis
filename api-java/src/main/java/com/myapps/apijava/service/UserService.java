@@ -14,8 +14,16 @@ import java.util.Optional;
 public class UserService {
   private final UserRepository repository;
 
-  public User findActiveByEmailAndPasswordOrException(String email, String password) throws HandledException {
-    return Optional.ofNullable(repository.findActiveByEmailAndPassword(email, password))
+  public User findActiveByEmailOrException(String email) throws HandledException {
+    return Optional.ofNullable(repository.findActiveByEmail(email))
       .orElseThrow(() -> new HandledException(ExceptionType.INVALID_EMAIL_OR_PASSWORD));
+  }
+
+  public Boolean existsByEmail(String email) {
+    return repository.existsByEmail(email);
+  }
+
+  public User save(User user) {
+    return repository.save(user);
   }
 }

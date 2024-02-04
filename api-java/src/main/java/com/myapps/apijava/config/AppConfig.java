@@ -10,6 +10,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.core.env.Environment;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.List;
 import java.util.Locale;
@@ -27,8 +28,14 @@ public class AppConfig {
   public List<String> openUrls() {
     return List.of(
       "/open/**",
-      "/auth/login"
+      "/auth/login",
+      "/auth/create"
     );
+  }
+
+  @Bean
+  public BCryptPasswordEncoder bCrypt() {
+    return new BCryptPasswordEncoder();
   }
 
   @PostConstruct

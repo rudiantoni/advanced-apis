@@ -50,9 +50,9 @@ public class SecurityConfig {
 //            PermissionName.AUTHORITY_MODIFY_SYSTEM_SETTINGS.getName(),
 //            PermissionName.AUTHORITY_VIEW_TEAM_REPORTS.getName()
 //          )
-            .requestMatchers("/closed/**").hasAnyRole(
-              PermissionData.ROLE_ADMIN.getName()
-            )
+//            .requestMatchers("/closed/**").hasAnyRole(
+//              PermissionData.ROLE_ADMIN.getName()
+//            )
             .anyRequest().authenticated()
       )
       .sessionManagement(httpSecuritySessionManagementConfigurer ->

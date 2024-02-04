@@ -1,6 +1,7 @@
 package com.myapps.apijava.controller;
 
 import com.myapps.apijava.dto.MsgDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/open")
+@RequiredArgsConstructor
 public class OpenController {
 
   @GetMapping("/check")

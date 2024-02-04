@@ -7,7 +7,10 @@ import org.springframework.data.repository.query.Param;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-  @Query("SELECT u FROM User u WHERE u.email = :email AND u.password = :password AND u.active = true")
-  User findActiveByEmailAndPassword(@Param("email") String email, @Param("password") String password);
+  @Query("SELECT u FROM User u WHERE UPPER(u.email) = UPPER(:email)")
+  User findActiveByEmail(@Param("email") String email);
+  
+  @Query("SELECT (COUNT(u) > 0) FROM User u WHERE UPPER(u.email) = UPPER(:email)")
+  Boolean existsByEmail(@Param("email") String email);
 
 }
