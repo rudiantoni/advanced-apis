@@ -10,18 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/open")
-@RequiredArgsConstructor
 public class OpenController {
 
   @GetMapping("/check")
-  public ResponseEntity<?> getCheck() {
-    try {
-      System.out.println("OPEN CHECK: You reached the open endpoint SUCCESSFULLY");
-      return new ResponseEntity<>(new MsgDto("OPEN CHECK: You reached the open endpoint SUCCESSFULLY."), HttpStatus.OK);
-    } catch (Exception e) {
-      e.printStackTrace();
-      return new ResponseEntity<>(new MsgDto("INTERNAL SERVER ERROR"), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+  public ResponseEntity<MsgDto> getCheck() {
+    System.out.println("OPEN CHECK: You reached the open endpoint SUCCESSFULLY");
+    return new ResponseEntity<>(new MsgDto("OPEN CHECK: You reached the open endpoint SUCCESSFULLY."), HttpStatus.OK);
   }
 
 }

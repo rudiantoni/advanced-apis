@@ -13,16 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class ClosedController {
 
   @GetMapping("/check")
-  public ResponseEntity<?> getCheck(
+  public ResponseEntity<MsgDto> getCheck(
     AuthenticationToken authentication
   ) {
-    try {
-      System.out.println("CLOSED CHECK: You reached the closed endpoint SUCCESSFULLY");
-      return new ResponseEntity<>(new MsgDto("CLOSED CHECK: You reached the closed endpoint SUCCESSFULLY."), HttpStatus.OK);
-    } catch (Exception e) {
-      e.printStackTrace();
-      return new ResponseEntity<>(new MsgDto("INTERNAL SERVER ERROR"), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    System.out.println("CLOSED CHECK: You reached the closed endpoint SUCCESSFULLY");
+    return new ResponseEntity<>(new MsgDto("CLOSED CHECK: You reached the closed endpoint SUCCESSFULLY."), HttpStatus.OK);
   }
 
 }
