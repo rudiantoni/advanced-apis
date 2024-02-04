@@ -2,7 +2,7 @@ app:
   security:
     secret-key: MjQ3ODhiMzcwZTE2ZTI4OTM0NTNjM2Y4NzFlMTI3YzNkOGQ0MWIwYTBmNTZjMmIyMjJiZTRmZjk5MjMyZTUwYg==
     token:
-      expiration-hours: 1
+      expiration-hours: 24
       prefix: Bearer
 
 server:
