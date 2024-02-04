@@ -6,6 +6,7 @@
 - Versão Gradle: 8.5
 - Spring Boot: 3.2.2
 - Spring Security: 6
+- Flyway: 9.22.3
 - Contexto: */api*
   - Endpoint aberto para teste: */open*
 - Perfil *dev*
