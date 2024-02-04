@@ -36,7 +36,7 @@ public class AuthService {
     }
   }
 
-  public User create(CreateUserReqDto createUserReqDto) throws HandledException {
+  public UserSecureDto create(CreateUserReqDto createUserReqDto) throws HandledException {
     validateUserCreateReqDto(createUserReqDto);
     User newUser = User.builder()
       .email(createUserReqDto.getEmail())
@@ -44,7 +44,9 @@ public class AuthService {
       .password(bCryptEncode(createUserReqDto.getPassword()))
       .active(true)
       .build();
-    return userService.save(newUser);
+
+    User savedUser = userService.save(newUser);
+    return savedUser.toSecureDto();
   }
 
   private void validateLoginReqDto(LoginReqDto loginReqDto) throws HandledException {

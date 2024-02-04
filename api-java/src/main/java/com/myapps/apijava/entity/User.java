@@ -8,6 +8,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,7 +56,12 @@ public class User {
   private List<Permission> permissions;
 
   public UserSecureDto toSecureDto() {
-    List<String> permissions = this.permissions.stream().map(Permission::getName).collect(Collectors.toList());
+    List<String> permissions = new ArrayList<>();
+    if (this.permissions == null) {
+      permissions = null;
+    } else {
+      permissions = this.permissions.stream().map(Permission::getName).collect(Collectors.toList());
+    }
     return UserSecureDto.builder()
       .id(this.id)
       .username(this.username)
