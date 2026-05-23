@@ -1,2 +1,47 @@
+# --- Docker (local runtime data) ---
+**/docker/dev/data/
 
-**/docker/dev/data
+# --- Gradle ---
+**/.gradle/
+**/build/
+
+# --- Java ---
+**/*.class
+**/out/
+
+# Build artifacts (never commit; wrapper JAR is excluded above)
+**/*.jar
+**/*.war
+**/*.ear
+!**/gradle/wrapper/gradle-wrapper.jar
+
+# --- Logs & temp ---
+*.log
+logs/
+*~
+*.swp
+*.tmp
+
+# --- IDE ---
+.idea/
+*.iml
+*.ipr
+*.iws
+.project
+.classpath
+.settings/
+.factorypath
+.springBeans
+.sts4-cache/
+bin/
+.vscode/
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# --- Secrets / local env ---
+.env
+.env.*
+!.env.example
