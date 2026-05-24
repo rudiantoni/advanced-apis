@@ -30,6 +30,12 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
+    public Product copy() {
+        Product copy = new Product(name, description, price, reference, stockQuantity, imageUrl);
+        copy.setId(id);
+        return copy;
+    }
+
     public Long getId() {
         return id;
     }

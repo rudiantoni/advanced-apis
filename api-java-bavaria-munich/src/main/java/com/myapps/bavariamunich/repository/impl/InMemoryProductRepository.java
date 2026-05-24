@@ -6,10 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 public class InMemoryProductRepository implements ProductRepository {
@@ -20,21 +18,24 @@ public class InMemoryProductRepository implements ProductRepository {
 
     @Override
     public List<Product> findAll() {
-        return this.products;
+        return products.stream()
+                .map(Product::copy)
+                .collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
     }
 
     @Override
     public Optional<Product> findById(Long id) {
         return products.stream()
                 .filter(it -> Objects.equals(it.getId(), id))
-                .findFirst();
+                .findFirst()
+                .map(Product::copy);
     }
 
     @Override
     public Product save(Product product) {
         product.setId(nextId++);
         products.add(product);
-        return product;
+        return product.copy();
     }
 
     @Override
