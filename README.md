@@ -1,10 +1,30 @@
 # advanced-apis
 
-## api-java-bavaria-munich
+## Dependencies
 
-- Java 8
-- Spring 2.7
-- Gradle 8.14
+### Databases
+
+- Postgres 18 (dev compose)
+  - Start in background (-d) but wait (--wait) for healthcheck
+    ```bat
+    cd repository_root/docker/dev
+    docker compose up -d --wait postgres_18
+    ```
+  - Stop
+    ```bat
+    cd repository_root/docker/dev
+    docker compose down postgres_18
+    ```
+
+## Java projects
+
+Version table
+
+| Project                 | Java | Spring Boot | Build tool            | Database    |
+|-------------------------|------|-------------|-----------------------|-------------|
+| api-java-bavaria-munich | 8    | 2.7.18      | Gradle (wrapper) 8.14 | Postgres 18 |
+
+
 
 - countries
   - Java: germany

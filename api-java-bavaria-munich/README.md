@@ -12,7 +12,10 @@ How this project was created from scratch (steps and initial files): [docs/CREAT
 
 ## Run
 
-From the module root (`api-java-bavaria-munich/`). Requires **Java 8**; Gradle is provided by the wrapper (`gradlew` / `gradlew.bat`).
+From the module root (`api-java-bavaria-munich/`).
+
+- Requires **Java 8**
+- Gradle is provided by the wrapper (`gradlew` / `gradlew.bat`).
 
 ### Development
 
