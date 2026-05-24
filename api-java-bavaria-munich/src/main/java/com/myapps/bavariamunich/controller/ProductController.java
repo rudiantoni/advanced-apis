@@ -2,6 +2,8 @@ package com.myapps.bavariamunich.controller;
 
 import com.myapps.bavariamunich.dto.ProductDto;
 import com.myapps.bavariamunich.service.ProductService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,15 +19,25 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<ProductDto> readProducts() {
-        return productService.readProducts();
+    public ResponseEntity<List<ProductDto>> readProducts() {
+        List<ProductDto> result = productService.readProducts();
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping
-    public ProductDto createProduct(
+    public ResponseEntity<ProductDto> createProduct(
             @RequestBody ProductDto productDto
     ) {
-        return productService.createProduct(productDto);
+        ProductDto result = productService.createProduct(productDto);
+        return new ResponseEntity<>(result, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProduct(
+            @PathVariable("id") Long id
+    ) {
+        productService.deleteProduct(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }
