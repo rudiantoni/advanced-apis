@@ -23,7 +23,13 @@ public class ProductService {
     }
 
     private ProductDto repoSaveProduct(ProductDto productDto) {
-        ProductDto newProduct = new ProductDto(nextId++, productDto.getDescription());
+        ProductDto newProduct = new ProductDto(
+                nextId++,
+                productDto.getName(),
+                productDto.getDescription(),
+                productDto.getPrice()
+        );
+
         products.add(newProduct);
         return newProduct;
     }
