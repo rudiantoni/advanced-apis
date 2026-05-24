@@ -1,61 +1,36 @@
 package com.myapps.bavariamunich.service;
 
 import com.myapps.bavariamunich.dto.ProductDto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
+import com.myapps.bavariamunich.entity.Product;
+import com.myapps.bavariamunich.mapper.ProductMapper;
+import com.myapps.bavariamunich.repository.ProductRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
 
-    private static final Logger logger = LoggerFactory.getLogger(ProductService.class);
-    private final List<ProductDto> products = new ArrayList<>();
-    private Long nextId = 1L;
+    private final ProductRepository productRepository;
 
-    private List<ProductDto> repoFindProducts() {
-        return this.products;
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
     }
-
-    private ProductDto repoSaveProduct(ProductDto productDto) {
-        ProductDto newProduct = new ProductDto(
-                nextId++,
-                productDto.getName(),
-                productDto.getDescription(),
-                productDto.getPrice()
-        );
-
-        products.add(newProduct);
-        return newProduct;
-    }
-
-    private void repoRemoveProduct(Long id) {
-        ProductDto product = products.stream()
-                .filter(it -> Objects.equals(it.getId(), id))
-                .findFirst()
-                .orElseThrow(() -> {
-                    logger.warn("Product not found with id: {}", id);
-                    return new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found with id: " + id);
-                });
-        products.remove(product);
-    }
-
 
     public List<ProductDto> readProducts() {
-        return repoFindProducts();
+        return productRepository.findAll().stream()
+                .map(ProductMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     public ProductDto createProduct(ProductDto productDto) {
-        return repoSaveProduct(productDto);
+        Product created = productRepository.save(ProductMapper.toEntity(productDto));
+        return ProductMapper.toDto(created);
     }
 
     public void deleteProduct(Long id) {
-        repoRemoveProduct(id);
+        productRepository.deleteById(id);
     }
 
 }
