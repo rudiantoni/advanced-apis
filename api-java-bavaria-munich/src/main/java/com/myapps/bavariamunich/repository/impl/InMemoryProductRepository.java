@@ -4,9 +4,7 @@ import com.myapps.bavariamunich.entity.Product;
 import com.myapps.bavariamunich.repository.ProductRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +25,9 @@ public class InMemoryProductRepository implements ProductRepository {
 
     @Override
     public Optional<Product> findById(Long id) {
-        return Optional.empty();
+        return products.stream()
+                .filter(it -> Objects.equals(it.getId(), id))
+                .findFirst();
     }
 
     @Override
@@ -39,13 +39,9 @@ public class InMemoryProductRepository implements ProductRepository {
 
     @Override
     public void deleteById(Long id) {
-        Product product = products.stream()
+        products.stream()
                 .filter(it -> Objects.equals(it.getId(), id))
                 .findFirst()
-                .orElseThrow(() -> {
-                    logger.warn("Product not found with id: {}", id);
-                    return new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found with id: " + id);
-                });
-        products.remove(product);
+                .ifPresent(products::remove);
     }
 }

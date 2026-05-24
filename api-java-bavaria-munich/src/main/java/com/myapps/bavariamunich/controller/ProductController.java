@@ -19,24 +19,32 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProductDto>> readProducts() {
-        List<ProductDto> result = productService.readProducts();
+    public ResponseEntity<List<ProductDto>> readAll() {
+        List<ProductDto> result = productService.readAll();
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductDto> read(
+            @PathVariable("id") Long id
+    ) {
+        ProductDto result = productService.read(id);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<ProductDto> createProduct(
+    public ResponseEntity<ProductDto> create(
             @RequestBody ProductDto productDto
     ) {
-        ProductDto result = productService.createProduct(productDto);
+        ProductDto result = productService.create(productDto);
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(
+    public ResponseEntity<Void> delete(
             @PathVariable("id") Long id
     ) {
-        productService.deleteProduct(id);
+        productService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

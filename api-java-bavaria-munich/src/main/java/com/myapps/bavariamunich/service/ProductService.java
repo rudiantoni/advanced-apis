@@ -4,7 +4,11 @@ import com.myapps.bavariamunich.dto.ProductDto;
 import com.myapps.bavariamunich.entity.Product;
 import com.myapps.bavariamunich.mapper.ProductMapper;
 import com.myapps.bavariamunich.repository.ProductRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,24 +16,35 @@ import java.util.stream.Collectors;
 @Service
 public class ProductService {
 
+    private static final Logger logger = LoggerFactory.getLogger(ProductService.class);
+
     private final ProductRepository productRepository;
 
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
-    public List<ProductDto> readProducts() {
+    public List<ProductDto> readAll() {
         return productRepository.findAll().stream()
                 .map(ProductMapper::toDto)
                 .collect(Collectors.toList());
     }
 
-    public ProductDto createProduct(ProductDto productDto) {
+    public ProductDto read(Long id) {
+        return productRepository.findById(id)
+                .map(ProductMapper::toDto)
+                .orElseThrow(() -> {
+                    logger.warn("Product not found with id: {}", id);
+                    return new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found with id: " + id);
+                });
+    }
+
+    public ProductDto create(ProductDto productDto) {
         Product created = productRepository.save(ProductMapper.toEntity(productDto));
         return ProductMapper.toDto(created);
     }
 
-    public void deleteProduct(Long id) {
+    public void delete(Long id) {
         productRepository.deleteById(id);
     }
 
