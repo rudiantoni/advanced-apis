@@ -1,6 +1,8 @@
 package com.myapps.bavariamunich.service;
 
 import com.myapps.bavariamunich.dto.ProductDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -12,6 +14,7 @@ import java.util.Objects;
 @Service
 public class ProductService {
 
+    private static final Logger logger = LoggerFactory.getLogger(ProductService.class);
     private final List<ProductDto> products = new ArrayList<>();
     private Long nextId = 1L;
 
@@ -29,10 +32,10 @@ public class ProductService {
         ProductDto product = products.stream()
                 .filter(it -> Objects.equals(it.getId(), id))
                 .findFirst()
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "Product not found with id: " + id
-                ));
+                .orElseThrow(() -> {
+                    logger.warn("Product not found with id: {}", id);
+                    return new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found with id: " + id);
+                });
         products.remove(product);
     }
 
