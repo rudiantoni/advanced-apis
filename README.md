@@ -20,10 +20,9 @@
 
 Version table
 
-| Project                 | Java | Spring Boot | Build tool            | Database    |
-|-------------------------|------|-------------|-----------------------|-------------|
-| api-java-bavaria-munich | 8    | 2.7.18      | Gradle (wrapper) 8.14 | Postgres 18 |
-
+| Project                 | Java | Spring Boot | Database    | Build tool            | Others |
+|-------------------------|------|-------------|-------------|-----------------------|--------|
+| api-java-bavaria-munich | 8    | 2.7.18      | Postgres 18 | Gradle (wrapper) 8.14 | spring-boot-starter-web 2.7.18 <br> spring-boot-starter-data-jpa 2.7.18 <br> org.postgresql:postgresql 42.3.8 <br> jackson-databind-nullable 0.2.10 |
 
 
 - countries
