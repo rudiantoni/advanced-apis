@@ -2,6 +2,7 @@ package com.myapps.bavariamunich.controller;
 
 import com.myapps.bavariamunich.dto.ProductDto;
 import com.myapps.bavariamunich.dto.ProductUpdateDto;
+import com.myapps.bavariamunich.dto.ProductWriteDto;
 import com.myapps.bavariamunich.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,18 +36,18 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<ProductDto> create(
-            @RequestBody ProductDto productDto
+            @RequestBody ProductWriteDto productWriteDto
     ) {
-        ProductDto result = productService.create(productDto);
+        ProductDto result = productService.create(productWriteDto);
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ProductDto> replace(
             @PathVariable("id") Long id,
-            @RequestBody ProductDto productDto
+            @RequestBody ProductWriteDto productWriteDto
     ) {
-        ProductDto result = productService.replace(id, productDto);
+        ProductDto result = productService.replace(id, productWriteDto);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

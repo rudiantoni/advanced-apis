@@ -2,6 +2,7 @@ package com.myapps.bavariamunich.service;
 
 import com.myapps.bavariamunich.dto.ProductDto;
 import com.myapps.bavariamunich.dto.ProductUpdateDto;
+import com.myapps.bavariamunich.dto.ProductWriteDto;
 import com.myapps.bavariamunich.entity.Product;
 import com.myapps.bavariamunich.mapper.ProductMapper;
 import com.myapps.bavariamunich.repository.ProductRepository;
@@ -40,12 +41,12 @@ public class ProductService {
                 });
     }
 
-    public ProductDto create(ProductDto given) {
+    public ProductDto create(ProductWriteDto given) {
         Product created = productRepository.save(ProductMapper.toEntity(given));
         return ProductMapper.toDto(created);
     }
 
-    public ProductDto replace(Long id, ProductDto given) {
+    public ProductDto replace(Long id, ProductWriteDto given) {
         Product existing = productRepository.findById(id)
                 .orElseThrow(() -> {
                     logger.warn("Product not found with id: {}", id);

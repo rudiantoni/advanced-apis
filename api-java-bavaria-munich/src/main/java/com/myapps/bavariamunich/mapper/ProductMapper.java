@@ -2,6 +2,7 @@ package com.myapps.bavariamunich.mapper;
 
 import com.myapps.bavariamunich.dto.ProductDto;
 import com.myapps.bavariamunich.dto.ProductUpdateDto;
+import com.myapps.bavariamunich.dto.ProductWriteDto;
 import com.myapps.bavariamunich.entity.Product;
 import com.myapps.bavariamunich.util.JsonUtil;
 
@@ -10,7 +11,6 @@ public class ProductMapper {
         if (entity == null) {
             return null;
         }
-
         ProductDto dto = new ProductDto();
         dto.setId(entity.getId());
         dto.setName(entity.getName());
@@ -19,28 +19,27 @@ public class ProductMapper {
         dto.setReference(entity.getReference());
         dto.setStockQuantity(entity.getStockQuantity());
         dto.setImageUrl(entity.getImageUrl());
-
         return dto;
     }
 
-    public static Product toEntity(ProductDto dto) {
+    public static Product toEntity(ProductWriteDto dto) {
         if (dto == null) {
             return null;
         }
-
         Product entity = new Product();
-        entity.setId(dto.getId());
         entity.setName(dto.getName());
         entity.setDescription(dto.getDescription());
         entity.setPrice(dto.getPrice());
         entity.setReference(dto.getReference());
         entity.setStockQuantity(dto.getStockQuantity());
         entity.setImageUrl(dto.getImageUrl());
-
         return entity;
     }
 
-    public static void replaceEntity(Product target, ProductDto source) {
+    public static void replaceEntity(Product target, ProductWriteDto source) {
+        if (target == null || source == null) {
+            return;
+        }
         target.setName(source.getName());
         target.setDescription(source.getDescription());
         target.setPrice(source.getPrice());
