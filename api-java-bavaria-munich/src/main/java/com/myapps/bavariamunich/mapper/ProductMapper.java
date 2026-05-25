@@ -1,7 +1,9 @@
 package com.myapps.bavariamunich.mapper;
 
 import com.myapps.bavariamunich.dto.ProductDto;
+import com.myapps.bavariamunich.dto.ProductUpdateDto;
 import com.myapps.bavariamunich.entity.Product;
+import com.myapps.bavariamunich.util.JsonUtil;
 
 public class ProductMapper {
     public static ProductDto toDto(Product entity) {
@@ -45,5 +47,17 @@ public class ProductMapper {
         target.setReference(source.getReference());
         target.setStockQuantity(source.getStockQuantity());
         target.setImageUrl(source.getImageUrl());
+    }
+
+    public static void updateEntity(Product target, ProductUpdateDto source) {
+        if (target == null || source == null) {
+            return;
+        }
+        JsonUtil.applyIfDefined(source.getName(), target::setName);
+        JsonUtil.applyIfDefined(source.getDescription(), target::setDescription);
+        JsonUtil.applyIfDefined(source.getPrice(), target::setPrice);
+        JsonUtil.applyIfDefined(source.getReference(), target::setReference);
+        JsonUtil.applyIfDefined(source.getStockQuantity(), target::setStockQuantity);
+        JsonUtil.applyIfDefined(source.getImageUrl(), target::setImageUrl);
     }
 }

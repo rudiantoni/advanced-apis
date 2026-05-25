@@ -1,6 +1,7 @@
 package com.myapps.bavariamunich.service;
 
 import com.myapps.bavariamunich.dto.ProductDto;
+import com.myapps.bavariamunich.dto.ProductUpdateDto;
 import com.myapps.bavariamunich.entity.Product;
 import com.myapps.bavariamunich.mapper.ProductMapper;
 import com.myapps.bavariamunich.repository.ProductRepository;
@@ -51,6 +52,17 @@ public class ProductService {
                     return new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found with id: " + id);
                 });
         ProductMapper.replaceEntity(existing, given);
+        Product saved = productRepository.save(existing);
+        return ProductMapper.toDto(saved);
+    }
+
+    public ProductDto update(Long id, ProductUpdateDto given) {
+        Product existing = productRepository.findById(id)
+                .orElseThrow(() -> {
+                    logger.warn("Product not found with id: {}", id);
+                    return new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found with id: " + id);
+                });
+        ProductMapper.updateEntity(existing, given);
         Product saved = productRepository.save(existing);
         return ProductMapper.toDto(saved);
     }

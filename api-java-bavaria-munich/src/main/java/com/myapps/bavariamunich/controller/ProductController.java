@@ -1,6 +1,7 @@
 package com.myapps.bavariamunich.controller;
 
 import com.myapps.bavariamunich.dto.ProductDto;
+import com.myapps.bavariamunich.dto.ProductUpdateDto;
 import com.myapps.bavariamunich.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,6 +47,15 @@ public class ProductController {
             @RequestBody ProductDto productDto
     ) {
         ProductDto result = productService.replace(id, productDto);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<ProductDto> update(
+            @PathVariable("id") Long id,
+            @RequestBody ProductUpdateDto productUpdateDto
+    ) {
+        ProductDto result = productService.update(id, productUpdateDto);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
