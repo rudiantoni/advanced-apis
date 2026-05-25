@@ -37,4 +37,13 @@ public class ProductMapper {
 
         return entity;
     }
+
+    public static void replaceEntity(Product target, ProductDto source) {
+        target.setName(source.getName());
+        target.setDescription(source.getDescription());
+        target.setPrice(source.getPrice());
+        target.setReference(source.getReference());
+        target.setStockQuantity(source.getStockQuantity());
+        target.setImageUrl(source.getImageUrl());
+    }
 }

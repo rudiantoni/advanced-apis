@@ -40,6 +40,15 @@ public class ProductController {
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductDto> replace(
+            @PathVariable("id") Long id,
+            @RequestBody ProductDto productDto
+    ) {
+        ProductDto result = productService.replace(id, productDto);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(
             @PathVariable("id") Long id

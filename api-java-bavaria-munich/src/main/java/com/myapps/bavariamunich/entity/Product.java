@@ -15,6 +15,7 @@ public class Product {
     }
 
     public Product(
+            Long id,
             String name,
             String description,
             BigDecimal price,
@@ -22,6 +23,7 @@ public class Product {
             Integer stockQuantity,
             String imageUrl
     ) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
@@ -31,9 +33,7 @@ public class Product {
     }
 
     public Product copy() {
-        Product copy = new Product(name, description, price, reference, stockQuantity, imageUrl);
-        copy.setId(id);
-        return copy;
+        return new Product(id, name, description, price, reference, stockQuantity, imageUrl);
     }
 
     public Long getId() {

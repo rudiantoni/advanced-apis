@@ -2,8 +2,7 @@ package com.myapps.bavariamunich.repository.impl;
 
 import com.myapps.bavariamunich.entity.Product;
 import com.myapps.bavariamunich.repository.ProductRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -12,7 +11,6 @@ import java.util.stream.Collectors;
 @Repository
 public class InMemoryProductRepository implements ProductRepository {
 
-    private static final Logger logger = LoggerFactory.getLogger(InMemoryProductRepository.class);
     private final List<Product> products = new ArrayList<>();
     private long nextId = 1L;
 
@@ -33,9 +31,24 @@ public class InMemoryProductRepository implements ProductRepository {
 
     @Override
     public Product save(Product product) {
-        product.setId(nextId++);
-        products.add(product);
-        return product.copy();
+        boolean isUpdate = product.getId() != null;
+        if (isUpdate) {
+            Optional<Product> found = products.stream()
+                    .filter(it -> Objects.equals(it.getId(), product.getId()))
+                    .findFirst();
+            if (found.isPresent()) {
+                int index = products.indexOf(found.get());
+                Product persisted = product.copy();
+                products.set(index, persisted);
+                return product.copy();
+            } else {
+                throw new EmptyResultDataAccessException("Entity with id " + product.getId() + " not found", 1);
+            }
+        } else { // isSave
+            product.setId(nextId++);
+            products.add(product);
+            return product.copy();
+        }
     }
 
     @Override
@@ -43,6 +56,7 @@ public class InMemoryProductRepository implements ProductRepository {
         products.stream()
                 .filter(it -> Objects.equals(it.getId(), id))
                 .findFirst()
-                .ifPresent(products::remove);
+                .ifPresent(products::remove)
+        ;
     }
 }

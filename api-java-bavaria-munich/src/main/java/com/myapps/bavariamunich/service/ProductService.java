@@ -39,9 +39,20 @@ public class ProductService {
                 });
     }
 
-    public ProductDto create(ProductDto productDto) {
-        Product created = productRepository.save(ProductMapper.toEntity(productDto));
+    public ProductDto create(ProductDto given) {
+        Product created = productRepository.save(ProductMapper.toEntity(given));
         return ProductMapper.toDto(created);
+    }
+
+    public ProductDto replace(Long id, ProductDto given) {
+        Product existing = productRepository.findById(id)
+                .orElseThrow(() -> {
+                    logger.warn("Product not found with id: {}", id);
+                    return new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found with id: " + id);
+                });
+        ProductMapper.replaceEntity(existing, given);
+        Product saved = productRepository.save(existing);
+        return ProductMapper.toDto(saved);
     }
 
     public void delete(Long id) {
