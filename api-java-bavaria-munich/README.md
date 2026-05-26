@@ -8,7 +8,14 @@ Java API in the [advanced-apis](../README.md) monorepo.
 | Spring Boot      | 2.7.18  |
 | Gradle (wrapper) | 8.14    |
 
-How this project was created from scratch (steps and initial files): [docs/CREATION.md](docs/CREATION.md).
+## Documentation
+
+| Topic | Location |
+|-------|----------|
+| Project bootstrap | [docs/CREATION.md](docs/CREATION.md) |
+| Incremental implementation phases | [docs/phases/](docs/phases/) |
+
+The [phases](docs/phases/) guides document the API evolution step by step: executable scaffold, in-memory `Product` CRUD, `PUT` replace, `PATCH` partial update, then PostgreSQL with JPA and SQL migrations. Read them in version order; each phase builds on the previous one. Overview and index: [docs/phases/README.md](docs/phases/README.md).
 
 ## Run
 
