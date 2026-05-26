@@ -1,14 +1,34 @@
 package com.myapps.bavariamunich.entity;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 
+@Entity
+@Table(schema = "public", name = "product")
 public class Product {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_seq")
+    @SequenceGenerator(name = "product_seq", sequenceName = "public.product_seq", allocationSize = 1)
+    @Column(name = "id")
     private Long id;
+
+    @Column(name = "name", nullable = false, length = 256)
     private String name;
+
+    @Column(name = "description", nullable = false, length = 512)
     private String description;
+
+    @Column(name = "price", nullable = false, precision = 19, scale = 2)
     private BigDecimal price;
+
+    @Column(name = "reference", length = 128)
     private String reference;
+
+    @Column(name = "stock_quantity")
     private Integer stockQuantity;
+
+    @Column(name = "image_url", length = 1024)
     private String imageUrl;
 
     public Product() {

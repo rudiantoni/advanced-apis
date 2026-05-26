@@ -69,6 +69,10 @@ public class ProductService {
     }
 
     public void delete(Long id) {
+        if (!productRepository.existsById(id)) {
+            logger.warn("Product not found with id: {}", id);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found with id: " + id);
+        }
         productRepository.deleteById(id);
     }
 
