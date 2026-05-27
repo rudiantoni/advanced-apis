@@ -3,6 +3,8 @@ server:
   servlet:
     context-path: /api
 spring:
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
   datasource:
     url: jdbc:postgresql://localhost:5432/adv_pg_db
     username: adv_pg_user
@@ -18,3 +20,10 @@ spring:
 logging:
   level:
     root: INFO
+
+app:
+  security:
+    api-key: ca3b5397-cc52-4b11-be2d-29205177b82c
+    public-routes: "^/open(/.*)?$"
+#    public-routes: "^/open(/.*)?$;^/auth/create$;^/auth/login$"
+
