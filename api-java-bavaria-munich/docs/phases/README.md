@@ -11,5 +11,6 @@ Phases must be followed in order: each version assumes the previous one.
 | [v0.0.2](v0.0.2.md) | 2 | `PUT /products/{id}` with replace semantics |
 | [v0.0.3](v0.0.3.md) | 3 | `PATCH /products/{id}` with partial update (`JsonNullable`) |
 | [v0.0.4](v0.0.4.md) | 4 | Postgres + JPA replacing the in-memory adapter; SQL migrations |
+| [v0.0.5.1](v0.0.5.1.md) | 5.1 | API key header auth; public-route regexes; filter and Spring Security wiring |
 
 For how the repository was bootstrapped from scratch (Gradle, wrapper, layout), see [CREATION.md](../CREATION.md).
