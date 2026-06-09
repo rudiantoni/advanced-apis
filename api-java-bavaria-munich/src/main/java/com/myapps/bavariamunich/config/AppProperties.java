@@ -1,18 +1,42 @@
 package com.myapps.bavariamunich.config;
 
+import java.util.List;
+
 public class AppProperties {
     private AppProperties() {
     }
 
-    private static String myProperty;
+    private static String securityJwtSecret;
+    private static Long securityJwtExpirationMs;
+    private static List<String> securityPublicRoutes;
 
-    public static void setMyProperty(String givenMyProperty) {
-        if (myProperty == null) {
-            myProperty = givenMyProperty;
+    public static String getSecurityJwtSecret() {
+        return securityJwtSecret;
+    }
+
+    public static void setSecurityJwtSecret(String value) {
+        if (securityJwtSecret == null) {
+            securityJwtSecret = value;
         }
     }
 
-    public static String getMyProperty() {
-        return myProperty;
+    public static Long getSecurityJwtExpirationMs() {
+        return securityJwtExpirationMs;
+    }
+
+    public static void setSecurityJwtExpirationMs(Long value) {
+        if (securityJwtExpirationMs == null) {
+            securityJwtExpirationMs = value;
+        }
+    }
+
+    public static List<String> getSecurityPublicRoutes() {
+        return securityPublicRoutes;
+    }
+
+    public static void setSecurityPublicRoutes(List<String> value) {
+        if (securityPublicRoutes == null) {
+            securityPublicRoutes = value;
+        }
     }
 }
