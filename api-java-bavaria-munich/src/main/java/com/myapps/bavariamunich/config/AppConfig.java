@@ -1,64 +1,55 @@
 package com.myapps.bavariamunich.config;
 
-import com.myapps.bavariamunich.util.ListUtil;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.myapps.bavariamunich.util.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
-import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.core.env.Environment;
 
-import javax.annotation.PostConstruct;
-import java.util.Collections;
 import java.util.List;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 @Configuration
-@Order(Ordered.HIGHEST_PRECEDENCE)
 public class AppConfig {
 
     private static final Logger logger = LoggerFactory.getLogger(AppConfig.class);
 
     private final Environment env;
+    private final ObjectMapper objectMapper;
 
-    public AppConfig(Environment env) {
+    public AppConfig(Environment env, ObjectMapper objectMapper) {
         this.env = env;
+        this.objectMapper = objectMapper;
+        init();
     }
 
-    @PostConstruct
-    public void init() {
+    private void init() {
         logger.info("AppConfig initialization started");
+        initializeJsonUtil();
         initializeProperties();
         logger.info("AppConfig initialization finished");
     }
 
-    public void initializeProperties() {
+    private void initializeJsonUtil() {
+        JsonUtil.setObjectMapper(objectMapper);
+    }
+
+    private void initializeProperties() {
         try {
-            AppProperties.setSecurityJwtSecret(env.getRequiredProperty("app.security.jwt-secret", String.class));
+            AppProperties.setSecurityJwtSecret(env.getRequiredProperty("app.security.jwt-secret"));
             AppProperties.setSecurityJwtExpirationMs(env.getRequiredProperty("app.security.jwt-expiration-ms", Long.class));
-            AppProperties.setSecurityPublicRoutes(ListUtil.splitToList(
-                    env.getRequiredProperty("app.security.public-routes", String.class), ";"
-            ));
-        } catch (IllegalStateException e) {
-            logger.error("Unable to initialize security properties from environment.", e);
-        } catch (ConversionFailedException e) {
-            logger.error("Unable to convert security property.", e);
+            List<String> securityPublicRoutes = Objects.requireNonNull(
+                    objectMapper.readValue(env.getRequiredProperty("app.security.public-routes"), new TypeReference<List<String>>() {
+                    }),
+                    "Unable to parse app.security.public-routes"
+            );
+            AppProperties.setSecurityPublicRoutes(securityPublicRoutes);
+        } catch (Exception e) {
+            logger.error("Unable to initialize properties.", e);
+            throw new IllegalStateException("Unable to initialize properties.", e);
         }
     }
-
-    @Bean
-    public List<Pattern> publicUrlPatterns() {
-        List<String> routes = AppProperties.getSecurityPublicRoutes();
-        if (routes == null) {
-            return Collections.emptyList();
-        }
-        return routes.stream()
-                .map(Pattern::compile)
-                .collect(Collectors.toList());
-    }
-
 
 }

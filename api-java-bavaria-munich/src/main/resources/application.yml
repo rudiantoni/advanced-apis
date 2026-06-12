@@ -21,7 +21,7 @@ app:
   security:
     jwt-secret: "DCQPKB8ErtHUYHCqJZUKzgq9l733y/pNLhib8Xin8Yw="
     jwt-expiration-ms: 3600000 # 3600000ms = 1hr
-    public-routes: "^/open(/.*)?$;^/auth/login$"
+    public-routes: "[\"^/open(/.*)?$\"]"
 
 logging:
   level:
