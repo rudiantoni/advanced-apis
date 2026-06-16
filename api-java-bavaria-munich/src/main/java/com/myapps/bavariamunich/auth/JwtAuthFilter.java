@@ -17,19 +17,18 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
-import java.util.regex.Pattern;
 
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
 
-    private final List<Pattern> publicUrlPatterns;
+    private final List<PublicRouteRule> publicRouteRules;
     private final JwtService jwtService;
 
     public JwtAuthFilter(
-            @Qualifier("publicUrlPatterns") List<Pattern> publicUrlPatterns,
+            @Qualifier("publicRouteRules") List<PublicRouteRule> publicRouteRules,
             JwtService jwtService
     ) {
-        this.publicUrlPatterns = publicUrlPatterns;
+        this.publicRouteRules = publicRouteRules;
         this.jwtService = jwtService;
     }
 
@@ -38,9 +37,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             HttpServletRequest request, HttpServletResponse response, FilterChain filterChain
     ) throws ServletException, IOException {
 
-        String servletPath = request.getServletPath();
-
-        if (isPublicPath(servletPath)) {
+        if (isPublicRequest(request)) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -65,12 +62,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     }
 
-    private boolean isPublicPath(String servletPath) {
-        if (servletPath == null) {
-            return false;
-        }
-        return publicUrlPatterns.stream()
-                .anyMatch(it -> it.matcher(servletPath).matches());
+    private boolean isPublicRequest(HttpServletRequest request) {
+        String servletPath = request.getServletPath();
+        String method = request.getMethod();
+        return publicRouteRules.stream()
+                .anyMatch(it -> it.matches(servletPath, method));
     }
 
     private String extractAuthorizationToken(String header) {

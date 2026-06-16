@@ -1,5 +1,7 @@
 package com.myapps.bavariamunich.config;
 
+import com.myapps.bavariamunich.auth.PublicRouteDefinition;
+
 import java.util.List;
 
 public class AppProperties {
@@ -8,7 +10,7 @@ public class AppProperties {
 
     private static String securityJwtSecret;
     private static Long securityJwtExpirationMs;
-    private static List<String> securityPublicRoutes;
+    private static List<PublicRouteDefinition> securityPublicRoutes;
 
     public static String getSecurityJwtSecret() {
         return securityJwtSecret;
@@ -30,11 +32,11 @@ public class AppProperties {
         }
     }
 
-    public static List<String> getSecurityPublicRoutes() {
+    public static List<PublicRouteDefinition> getSecurityPublicRoutes() {
         return securityPublicRoutes;
     }
 
-    public static void setSecurityPublicRoutes(List<String> value) {
+    public static void setSecurityPublicRoutes(List<PublicRouteDefinition> value) {
         if (securityPublicRoutes == null) {
             securityPublicRoutes = value;
         }

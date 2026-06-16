@@ -1,12 +1,13 @@
 package com.myapps.bavariamunich.config;
 
+import com.myapps.bavariamunich.auth.PublicRouteDefinition;
+import com.myapps.bavariamunich.auth.PublicRouteRule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Configuration
@@ -14,13 +15,13 @@ import java.util.stream.Collectors;
 public class AppBeansConfig {
 
     @Bean
-    public List<Pattern> publicUrlPatterns() {
-        List<String> routes = AppProperties.getSecurityPublicRoutes();
-        if (routes == null) {
+    public List<PublicRouteRule> publicRouteRules() {
+        List<PublicRouteDefinition> definitions = AppProperties.getSecurityPublicRoutes();
+        if (definitions == null) {
             return Collections.emptyList();
         }
-        return routes.stream()
-                .map(Pattern::compile)
+        return definitions.stream()
+                .map(it -> new PublicRouteRule(it.getRoute(), it.getMethods()))
                 .collect(Collectors.toList());
     }
 }
