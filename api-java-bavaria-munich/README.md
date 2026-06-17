@@ -15,7 +15,7 @@ Java API in the [advanced-apis](../README.md) monorepo.
 | Project bootstrap | [docs/CREATION.md](docs/CREATION.md) |
 | Incremental implementation phases | [docs/phases/](docs/phases/) |
 
-The [phases](docs/phases/) guides document the API evolution step by step: executable scaffold, in-memory `Product` CRUD, `PUT` replace, `PATCH` partial update, then PostgreSQL with JPA and SQL migrations. Read them in version order; each phase builds on the previous one. Overview and index: [docs/phases/README.md](docs/phases/README.md).
+The [phases](docs/phases/) guides document the API evolution step by step: executable scaffold, in-memory `Product` CRUD, `PUT` replace, `PATCH` partial update, PostgreSQL with JPA and SQL migrations, shared utilities, then API security (API key or JWT — one alternative). Follow the guides in filename order. Overview and index: [docs/phases/README.md](docs/phases/README.md).
 
 ## Run
 
