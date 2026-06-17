@@ -21,7 +21,16 @@ app:
   security:
     jwt-secret: "DCQPKB8ErtHUYHCqJZUKzgq9l733y/pNLhib8Xin8Yw="
     jwt-expiration-ms: 3600000 # 3600000ms = 1hr
-    public-routes: "[{\"route\":\"^/open(/.*)?$\"},{\"route\":\"^/auth/login$\"}]"
+    public-routes: >-
+      [
+        {"route":"^/open(/.*)?$"},
+        {"route":"^/auth/login$"}
+      ]
+    super-user:
+      email: admin@mail.com
+      password: adminpass
+      id: 1
+      username: admin
 
 logging:
   level:

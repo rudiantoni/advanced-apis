@@ -43,6 +43,10 @@ public class AppConfig {
             AppProperties.setSecurityJwtSecret(env.getRequiredProperty("app.security.jwt-secret"));
             AppProperties.setSecurityJwtExpirationMs(env.getRequiredProperty("app.security.jwt-expiration-ms", Long.class));
             AppProperties.setSecurityPublicRoutes(getSecurityPublicRoutes());
+            AppProperties.setSecuritySuperUserEmail(env.getRequiredProperty("app.security.super-user.email"));
+            AppProperties.setSecuritySuperUserPassword(env.getRequiredProperty("app.security.super-user.password"));
+            AppProperties.setSecuritySuperUserId(env.getRequiredProperty("app.security.super-user.id", Long.class));
+            AppProperties.setSecuritySuperUserUsername(env.getRequiredProperty("app.security.super-user.username"));
         } catch (Exception e) {
             logger.error("Unable to initialize properties.", e);
             throw new IllegalStateException("Unable to initialize properties.", e);
