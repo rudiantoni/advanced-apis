@@ -76,3 +76,21 @@ Use this fat JAR, not `*-plain.jar` — the plain JAR has no embedded dependenci
   ```
 
 Only Java 8 is required on the target machine (no Gradle).
+
+## Security
+
+### Login timing side-channel (known limitation)
+
+The `/auth/login` flow returns the same HTTP **401 Unauthorized** whether the email is unknown or the password is wrong. The response body is also generic (`"Unauthorized"`), so callers cannot distinguish those cases from the payload alone.
+
+However, the server may still take **slightly different time** on each path:
+
+- **Unknown email** — lookup only; password comparison (`constantTimeEquals`) is skipped.
+- **Known email, wrong password** — lookup plus constant-time password comparison.
+- **Known email, correct password** — lookup, password comparison, and JWT generation.
+
+That difference is a **timing side-channel**: in theory, an attacker who can measure many response times might infer whether an email is registered. Network jitter, database latency, and JVM behavior make this hard to exploit in practice, but it is not fully mitigated today.
+
+**Planned mitigation:** hash passwords with `PasswordEncoder` and always run `matches()` on login (including a dummy hash when the user does not exist), so verification cost is similar on every attempt.
+
+Passwords in config (`default-users`) and in the database are currently stored in **plaintext** during bootstrap; encryption/hashing is planned separately.
