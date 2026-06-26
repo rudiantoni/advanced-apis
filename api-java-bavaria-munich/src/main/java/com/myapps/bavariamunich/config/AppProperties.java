@@ -1,6 +1,7 @@
 package com.myapps.bavariamunich.config;
 
-import com.myapps.bavariamunich.auth.PublicRouteDefinition;
+import com.myapps.bavariamunich.definition.DefaultUserDefinition;
+import com.myapps.bavariamunich.definition.PublicRouteDefinition;
 
 import java.util.List;
 
@@ -12,10 +13,7 @@ public class AppProperties {
     private static String securityJwtSecret;
     private static Long securityJwtExpirationMs;
     private static List<PublicRouteDefinition> securityPublicRoutes;
-    private static String securitySuperUserEmail;
-    private static String securitySuperUserPassword;
-    private static Long securitySuperUserId;
-    private static String securitySuperUserUsername;
+    private static List<DefaultUserDefinition> securityDefaultUsers;
 
     public static String getSecurityJwtSecret() {
         return securityJwtSecret;
@@ -47,43 +45,13 @@ public class AppProperties {
         }
     }
 
-    public static String getSecuritySuperUserEmail() {
-        return securitySuperUserEmail;
+    public static List<DefaultUserDefinition> getSecurityDefaultUsers() {
+        return securityDefaultUsers;
     }
 
-    public static void setSecuritySuperUserEmail(String value) {
-        if (securitySuperUserEmail == null) {
-            securitySuperUserEmail = value;
-        }
-    }
-
-    public static String getSecuritySuperUserPassword() {
-        return securitySuperUserPassword;
-    }
-
-    public static void setSecuritySuperUserPassword(String value) {
-        if (securitySuperUserPassword == null) {
-            securitySuperUserPassword = value;
-        }
-    }
-
-    public static Long getSecuritySuperUserId() {
-        return securitySuperUserId;
-    }
-
-    public static void setSecuritySuperUserId(Long value) {
-        if (securitySuperUserId == null) {
-            securitySuperUserId = value;
-        }
-    }
-
-    public static String getSecuritySuperUserUsername() {
-        return securitySuperUserUsername;
-    }
-
-    public static void setSecuritySuperUserUsername(String value) {
-        if (securitySuperUserUsername == null) {
-            securitySuperUserUsername = value;
+    public static void setSecurityDefaultUsers(List<DefaultUserDefinition> value) {
+        if (securityDefaultUsers == null) {
+            securityDefaultUsers = value;
         }
     }
 

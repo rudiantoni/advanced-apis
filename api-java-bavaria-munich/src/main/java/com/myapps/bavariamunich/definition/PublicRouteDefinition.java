@@ -1,4 +1,4 @@
-package com.myapps.bavariamunich.auth;
+package com.myapps.bavariamunich.definition;
 
 import java.util.List;
 
@@ -18,16 +18,8 @@ public class PublicRouteDefinition {
         return route;
     }
 
-    public void setRoute(String route) {
-        this.route = route;
-    }
-
     public List<String> getMethods() {
         return methods;
-    }
-
-    public void setMethods(List<String> methods) {
-        this.methods = methods;
     }
 
     @Override

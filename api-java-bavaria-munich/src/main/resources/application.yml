@@ -24,13 +24,16 @@ app:
     public-routes: >-
       [
         {"route":"^/open(/.*)?$"},
-        {"route":"^/auth/login$"}
+        {"route":"^/auth/login$"},
+        {"route":"^/users$","methods":["POST"]}
       ]
-    super-user:
-      email: admin@mail.com
-      password: adminpass
-      id: 1
-      username: admin
+    # public-routes: "[{\"route\":\"^/open(/.*)?$\"},{\"route\":\"^/auth/login$\"},{\"route\":\"^/users$\",\"methods\":[\"POST\"]}]"
+    default-users: >-
+      [
+        {"id":-1,"email":"admin@mail.com","username": "admin","password":"adminpass"},
+        {"id":-2,"email":"admin2@mail.com","username": "admin2","password":"admin2pass"}
+      ]
+    # default-users: "[{\"id\":-1,\"email\":\"admin@mail.com\",\"username\": \"admin\",\"password\":\"adminpass\"},{\"id\":-2,\"email\":\"admin2@mail.com\",\"username\": \"admin2\",\"password\":\"admin2pass\"}]"
 
 logging:
   level:

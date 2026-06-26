@@ -23,3 +23,27 @@ CREATE SEQUENCE IF NOT EXISTS public.product_seq
 
 ALTER TABLE public.product
     ALTER COLUMN id SET DEFAULT nextval('public.product_seq'::regclass);
+
+-- -------------------------------
+-- Table public.users
+-- -------------------------------
+CREATE TABLE IF NOT EXISTS public.users (
+    id                           BIGINT NOT NULL,
+    email                        VARCHAR(128) NOT NULL,
+    username                     VARCHAR(128) NOT NULL,
+    password                     VARCHAR(512) NOT NULL,
+    CONSTRAINT pk_users          PRIMARY KEY (id),
+    CONSTRAINT uk_users_email    UNIQUE (email)
+);
+
+CREATE SEQUENCE IF NOT EXISTS public.users_seq
+    AS BIGINT
+    INCREMENT 1
+    MINVALUE 1
+    NO MAXVALUE
+    NO CYCLE
+    START WITH 1
+    OWNED BY public.users.id;
+
+ALTER TABLE public.users
+    ALTER COLUMN id SET DEFAULT nextval('public.users_seq'::regclass);

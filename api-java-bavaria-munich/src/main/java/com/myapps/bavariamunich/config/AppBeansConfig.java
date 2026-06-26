@@ -1,6 +1,6 @@
 package com.myapps.bavariamunich.config;
 
-import com.myapps.bavariamunich.auth.PublicRouteDefinition;
+import com.myapps.bavariamunich.definition.PublicRouteDefinition;
 import com.myapps.bavariamunich.auth.PublicRouteRule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

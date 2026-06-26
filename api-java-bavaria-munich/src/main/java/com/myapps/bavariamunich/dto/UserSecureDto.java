@@ -1,22 +1,25 @@
 package com.myapps.bavariamunich.dto;
 
-public class MeResponseDto {
-    private Long userId;
+public class UserSecureDto {
+    private Long id;
     private String email;
     private String username;
 
-    public MeResponseDto(Long userId, String email, String username) {
-        this.userId = userId;
+    public UserSecureDto() {
+    }
+
+    public UserSecureDto(Long id, String email, String username) {
+        this.id = id;
         this.email = email;
         this.username = username;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getId() {
+        return id;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getEmail() {
