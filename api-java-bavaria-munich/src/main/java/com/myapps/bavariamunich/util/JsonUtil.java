@@ -29,7 +29,7 @@ public class JsonUtil {
 
     private static void ensureMapperConfigured() {
         if (objectMapper == null) {
-            throw new IllegalStateException("JsonUtil not initialized — ObjectMapper was not set");
+            throw new IllegalStateException("JsonUtil not initialized - ObjectMapper was not set");
         }
     }
 
