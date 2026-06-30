@@ -4,8 +4,8 @@ Record of how `this project` was created manually, without Spring Initializr.
 
 ## Prerequisites
 
-- **Java 8** — target runtime for this API.
-- **Gradle 8** — only needed on the machine that generates the wrapper; builds then use `gradlew`.
+- **Java 8** - target runtime for this API.
+- **Gradle 8** - only needed on the machine that generates the wrapper; builds then use `gradlew`.
 
 ---
 
@@ -40,7 +40,7 @@ The wrapper pins the Gradle version in the repo so builds are reproducible witho
   gradle wrapper --gradle-version 8.14
   ```
 
-This creates `gradlew`, `gradlew.bat`, and `gradle/wrapper/`. Later builds use the wrapper only — see [README.md](../README.md).
+This creates `gradlew`, `gradlew.bat`, and `gradle/wrapper/`. Later builds use the wrapper only - see [README.md](../README.md).
 
 ---
 
@@ -110,7 +110,7 @@ Path: `src/main/java/com/myapps/bavariamunich/`.
 
 ### `application.yml`
 
-Spring configuration file; created empty — ports and properties can be added later.
+Spring configuration file; created empty - ports and properties can be added later.
 
 ### `ApiJavaBavariaMunichApplicationTests.java`
 

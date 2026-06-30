@@ -15,7 +15,7 @@ Java API in the [advanced-apis](../README.md) monorepo.
 | Project bootstrap | [docs/CREATION.md](docs/CREATION.md) |
 | Incremental implementation phases | [docs/phases/](docs/phases/) |
 
-The [phases](docs/phases/) guides document the API evolution step by step: executable scaffold, in-memory `Product` CRUD, `PUT` replace, `PATCH` partial update, PostgreSQL with JPA and SQL migrations, shared utilities, then API security (API key or JWT — one alternative). Follow the guides in filename order. Overview and index: [docs/phases/README.md](docs/phases/README.md).
+The [phases](docs/phases/) guides document the API evolution step by step: executable scaffold, in-memory `Product` CRUD, `PUT` replace, `PATCH` partial update, PostgreSQL with JPA and SQL migrations, shared utilities, then API security (**one of** API key, JWT in-memory, or JWT hybrid - pick one sub-phase). Follow the guides in filename order. Overview and index: [docs/phases/README.md](docs/phases/README.md).
 
 ## Run
 
@@ -64,7 +64,7 @@ Output:
 | Windows | `build\libs\api-java-bavaria-munich-0.0.1-SNAPSHOT.jar` |
 | Linux / macOS | `build/libs/api-java-bavaria-munich-0.0.1-SNAPSHOT.jar` |
 
-Use this fat JAR, not `*-plain.jar` — the plain JAR has no embedded dependencies.
+Use this fat JAR, not `*-plain.jar` - the plain JAR has no embedded dependencies.
 
 - Windows (CMD / PowerShell)
   ```bat
@@ -79,15 +79,17 @@ Only Java 8 is required on the target machine (no Gradle).
 
 ## Security
 
+Applies after you implement a **JWT** security sub-phase (**6b** or **6c** in the phase guides). Sub-Phase **6a** (API key) has no `/auth/login` endpoint; skip this section for that path.
+
 ### Login timing side-channel (known limitation)
 
 The `/auth/login` flow returns the same HTTP **401 Unauthorized** whether the email is unknown or the password is wrong. The response body is also generic (`"Unauthorized"`), so callers cannot distinguish those cases from the payload alone.
 
 However, the server may still take **slightly different time** on each path:
 
-- **Unknown email** — lookup only; password comparison (`constantTimeEquals`) is skipped.
-- **Known email, wrong password** — lookup plus constant-time password comparison.
-- **Known email, correct password** — lookup, password comparison, and JWT generation.
+- **Unknown email** - lookup only; password comparison (`constantTimeEquals`) is skipped.
+- **Known email, wrong password** - lookup plus constant-time password comparison.
+- **Known email, correct password** - lookup, password comparison, and JWT generation.
 
 That difference is a **timing side-channel**: in theory, an attacker who can measure many response times might infer whether an email is registered. Network jitter, database latency, and JVM behavior make this hard to exploit in practice, but it is not fully mitigated today.
 
