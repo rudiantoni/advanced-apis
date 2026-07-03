@@ -18,17 +18,20 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordService passwordService;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(
+            UserRepository userRepository,
+            PasswordService passwordService
+    ) {
         this.userRepository = userRepository;
+        this.passwordService = passwordService;
     }
 
     public UserSecureDto create(UserWriteDto given) {
-        UserWriteDto normalized = new UserWriteDto(
-                NormalizeUtil.normalizeEmail(given.getEmail()),
-                given.getUsername(),
-                given.getPassword()
-        );
+        String hashedPassword = passwordService.hash(given.getPassword());
+        String normalizedEmail = NormalizeUtil.normalizeEmail(given.getEmail());
+        UserWriteDto normalized = new UserWriteDto(normalizedEmail, given.getUsername(), hashedPassword);
         User created = userRepository.save(UserMapper.toEntity(normalized));
         return UserMapper.toSecureDto(created);
     }

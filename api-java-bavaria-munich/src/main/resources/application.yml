@@ -30,10 +30,10 @@ app:
     # public-routes: "[{\"route\":\"^/open(/.*)?$\"},{\"route\":\"^/auth/login$\"},{\"route\":\"^/users$\",\"methods\":[\"POST\"]}]"
     default-users: >-
       [
-        {"id":-1,"email":"admin@mail.com","username": "admin","password":"adminpass"},
-        {"id":-2,"email":"admin2@mail.com","username": "admin2","password":"admin2pass"}
+        {"id":-1,"email":"admin@mail.com","username": "admin","password":"$2a$10$tLiI9ECQePGb4q/AQ.RzAOAXw0IKNAX9v5Pf7bms5J3a.dlJIf1Sm"}, 
+        {"id":-2,"email":"admin2@mail.com","username": "admin2","password":"$2a$10$VrzH8nybgRrvTp57BSabRejA.E6sgdsxvz4SKED19avNeB6S1SIWy"}
       ]
-    # default-users: "[{\"id\":-1,\"email\":\"admin@mail.com\",\"username\": \"admin\",\"password\":\"adminpass\"},{\"id\":-2,\"email\":\"admin2@mail.com\",\"username\": \"admin2\",\"password\":\"admin2pass\"}]"
+    # default-users: "[{\"id\":-1,\"email\":\"admin@mail.com\",\"username\": \"admin\",\"password\":\"$2a$10$tLiI9ECQePGb4q/AQ.RzAOAXw0IKNAX9v5Pf7bms5J3a.dlJIf1Sm\"},{\"id\":-2,\"email\":\"admin2@mail.com\",\"username\": \"admin2\",\"password\":\"$2a$10$VrzH8nybgRrvTp57BSabRejA.E6sgdsxvz4SKED19avNeB6S1SIWy\"}]"
 
 logging:
   level:

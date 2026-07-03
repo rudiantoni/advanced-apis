@@ -81,6 +81,15 @@ Only Java 8 is required on the target machine (no Gradle).
 
 Applies after you implement a **JWT** security sub-phase (**6b** or **6c** in the phase guides). Sub-Phase **6a** (API key) has no `/auth/login` endpoint; skip this section for that path.
 
+### Default users (login credentials)
+
+`app.security.default-users` stores BCrypt password hashes. Use these credentials at `POST /api/auth/login`:
+
+| Email | Password |
+|-------|----------|
+| `admin@mail.com` | `adminpass` |
+| `admin2@mail.com` | `admin2pass` |
+
 ### Login timing side-channel (known limitation)
 
 The `/auth/login` flow returns the same HTTP **401 Unauthorized** whether the email is unknown or the password is wrong. The response body is also generic (`"Unauthorized"`), so callers cannot distinguish those cases from the payload alone.

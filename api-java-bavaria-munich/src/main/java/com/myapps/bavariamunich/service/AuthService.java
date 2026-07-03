@@ -6,8 +6,6 @@ import com.myapps.bavariamunich.definition.UserInternalDefinition;
 import com.myapps.bavariamunich.dto.LoginRequestDto;
 import org.springframework.stereotype.Service;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.util.Optional;
 
 @Service
@@ -15,10 +13,16 @@ public class AuthService {
 
     private final JwtService jwtService;
     private final UserService userService;
+    private final PasswordService passwordService;
 
-    public AuthService(JwtService jwtService, UserService userService) {
+    public AuthService(
+            JwtService jwtService,
+            UserService userService,
+            PasswordService passwordService
+    ) {
         this.jwtService = jwtService;
         this.userService = userService;
+        this.passwordService = passwordService;
     }
 
     public String login(LoginRequestDto given) {
@@ -30,7 +34,7 @@ public class AuthService {
 
         if (foundUser.isPresent()) {
             UserInternalDefinition user = foundUser.get();
-            if (constantTimeEquals(given.getPassword(), user.getPassword())) {
+            if (passwordService.matches(given.getPassword(), user.getPassword())) {
                 return jwtService.generateToken(new JwtUserDetails(
                         user.getUsername(),
                         user.getId(),
@@ -41,15 +45,4 @@ public class AuthService {
 
         return null;
     }
-
-    private static boolean constantTimeEquals(String a, String b) {
-        if (a == null || b == null) {
-            return false;
-        }
-        return MessageDigest.isEqual(
-                a.getBytes(StandardCharsets.UTF_8),
-                b.getBytes(StandardCharsets.UTF_8)
-        );
-    }
-
 }

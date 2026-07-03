@@ -1,10 +1,12 @@
 package com.myapps.bavariamunich.config;
 
-import com.myapps.bavariamunich.definition.PublicRouteDefinition;
 import com.myapps.bavariamunich.auth.PublicRouteRule;
+import com.myapps.bavariamunich.definition.PublicRouteDefinition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,4 +26,10 @@ public class AppBeansConfig {
                 .map(it -> new PublicRouteRule(it.getRoute(), it.getMethods()))
                 .collect(Collectors.toList());
     }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
 }
