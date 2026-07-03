@@ -8,7 +8,7 @@ This folder contains the **incremental** documentation for the `api-java-bavaria
 
 **Sub-phases** (`v0.0.Na` … `v0.0.Nz`) may be incremental or mutually exclusive alternatives; each sub-phase document states which at the top. A phase that has sub-phases includes an **index** document named `v0.0.N-idx.md` (title: `Phase N index`).
 
-**Cross-references:** Phase and sub-phase bodies avoid citing other guides by **filename** (for example `v0.0.4.md`). Prefer *previous* / *later* and **functional descriptions** (for example "the phase where Postgres was introduced", "the shared-utilities phase", "the security sub-phase you pick"). **Exceptions:** this README (navigation table and links); the **security phase index** (`v0.0.6-idx.md`, including its link back here); links to the **module** [README.md](../../README.md) for run instructions or JWT-only operational notes (for example login timing side-channel in Sub-Phase **6b** / **6c**).
+**Cross-references:** Phase and sub-phase bodies avoid citing other guides by **filename** (for example `v0.0.4.md`). Prefer *previous* / *later* and **functional descriptions** (for example "the phase where Postgres was introduced", "the shared-utilities phase", "the security sub-phase you pick"). **Exceptions:** this README (navigation table and links); the **security phase index** (`v0.0.6-idx.md`, including its link back here); links to the **module** [README.md](../../README.md) for run instructions or JWT-only operational notes (for example default-user login credentials and BCrypt password storage in Sub-Phase **6b** / **6c**).
 
 **Non-strict incremental snippets:** each phase shows only what it adds or changes. Placeholders mark omitted prior content - never a patch inside a method or config block.
 
