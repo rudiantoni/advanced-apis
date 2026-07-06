@@ -1,6 +1,5 @@
 package com.myapps.bavariamunich.mapper;
 
-import com.myapps.bavariamunich.definition.DefaultUserDefinition;
 import com.myapps.bavariamunich.definition.UserInternalDefinition;
 import com.myapps.bavariamunich.dto.UserSecureDto;
 import com.myapps.bavariamunich.dto.UserWriteDto;
@@ -17,15 +16,6 @@ public class UserMapper {
         dto.setEmail(entity.getEmail());
         dto.setUsername(entity.getUsername());
         return dto;
-    }
-
-    public static UserInternalDefinition toInternalDefinition(DefaultUserDefinition entity) {
-        if (entity == null) {
-            return null;
-        }
-        return new UserInternalDefinition(
-                entity.getId(), entity.getEmail(), entity.getUsername(), entity.getPassword()
-        );
     }
 
     public static UserInternalDefinition toInternalDefinition(User entity) {
