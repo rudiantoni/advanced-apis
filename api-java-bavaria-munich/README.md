@@ -79,11 +79,13 @@ Only Java 8 is required on the target machine (no Gradle).
 
 ## Security
 
-Applies after you implement a **JWT** security sub-phase (**6b** or **6c** in the phase guides). Sub-Phase **6a** (API key) has no `/auth/login` endpoint; skip this section for that path.
+Applies after you implement a **JWT** security sub-phase (**6b**, **6c** or the official **6d** in the phase guides). Sub-Phase **6a** (API key) has no `/auth/login` endpoint; skip this section for that path.
 
 ### Default users (login credentials)
 
-`app.security.default-users` stores BCrypt password hashes. Use these credentials at `POST /api/auth/login`:
+The following users are active only if you choose some memory-backed security, applies in the guides **6b** and **6c**. These are not applicable if you choose the api key approach (guide **6a**) or the official JWT approach (guide **6d**).
+
+The property `app.security.default-users` stores BCrypt password hashes. Use these credentials at `POST /api/auth/login`:
 
 | Email | Password |
 |-------|----------|
