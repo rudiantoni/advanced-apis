@@ -15,7 +15,7 @@ Java API in the [advanced-apis](../README.md) monorepo.
 | Project bootstrap | [docs/CREATION.md](docs/CREATION.md) |
 | Incremental implementation phases | [docs/phases/](docs/phases/) |
 
-The [phases](docs/phases/) guides document the API evolution step by step: executable scaffold, in-memory `Product` CRUD, `PUT` replace, `PATCH` partial update, PostgreSQL with JPA and SQL migrations, shared utilities, then API security (**one of** API key, JWT in-memory, or JWT hybrid - pick one sub-phase). Follow the guides in filename order. Overview and index: [docs/phases/README.md](docs/phases/README.md).
+The [phases](docs/phases/) guides document the API evolution step by step: executable scaffold, OpenAPI/Swagger, in-memory `Product` CRUD, `PUT` replace, `PATCH` partial update, PostgreSQL with JPA and SQL migrations, shared utilities, route protection (`public-routes`), then authentication (**one of** API key, JWT in-memory, or JWT hybrid - pick one sub-phase). Follow the guides in filename order. Overview and index: [docs/phases/README.md](docs/phases/README.md).
 
 ## Run
 
@@ -77,13 +77,22 @@ Use this fat JAR, not `*-plain.jar` - the plain JAR has no embedded dependencies
 
 Only Java 8 is required on the target machine (no Gradle).
 
-## Security
+## API documentation (local)
 
-Applies after you implement a **JWT** security sub-phase (**6b**, **6c** or the official **6d** in the phase guides). Sub-Phase **6a** (API key) has no `/auth/login` endpoint; skip this section for that path.
+With the app running on port `8080` and `server.servlet.context-path: /api` (default in `application.yml`):
+
+| Resource | URL |
+|----------|-----|
+| Swagger UI | http://localhost:8080/api/swagger-ui/index.html |
+| OpenAPI JSON | http://localhost:8080/api/v3/api-docs |
+
+Introduced in the **API documentation sub-phase** (phase guides). See [docs/phases/v0.0.1a.md](docs/phases/v0.0.1a.md).
+
+## Security
 
 ### Default users (login credentials)
 
-The following users are active only if you choose some memory-backed security, applies in the guides **6b** and **6c**. These are not applicable if you choose the api key approach (guide **6a**) or the official JWT approach (guide **6d**).
+The following users are active only if you choose some memory-backed authentication, applies in the guides **8c** and **8d**. These are not applicable if you choose the api key approach (guide **8b**) or the official JWT approach (guide **8a**).
 
 The property `app.security.default-users` stores BCrypt password hashes. Use these credentials at `POST /api/auth/login`:
 
