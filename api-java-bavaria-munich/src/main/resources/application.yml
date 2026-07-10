@@ -30,7 +30,7 @@ app:
         {"route":"^/auth/login$"},
         {"route":"^/users$","methods":["POST"]}
       ]
-    # public-routes: "[{\"route\":\"^/open(/.*)?$\"},{\"route\":\"^/auth/login$\"},{\"route\":\"^/users$\",\"methods\":[\"POST\"]}]"
+    # public-routes: "[{\"route\":\"^/swagger-ui(/.*)?$\"},{\"route\":\"^/swagger-ui\\\\.html$\"},{\"route\":\"^/v3/api-docs(/.*)?$\"},{\"route\":\"^/open(/.*)?$\"},{\"route\":\"^/auth/login$\"},{\"route\":\"^/users$\",\"methods\":[\"POST\"]}]"
 
 logging:
   level:
