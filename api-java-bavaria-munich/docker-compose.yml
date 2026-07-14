@@ -1,0 +1,21 @@
+services:
+  api-java-bavaria-munich:
+    container_name: api-java-bavaria-munich
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SERVER_PORT: ${SERVER_PORT:-8080}
+    image: api-java-bavaria-munich
+    restart: unless-stopped
+    env_file:
+      - .env.dev
+    ports:
+      - "${SERVER_PORT:-8080}:${SERVER_PORT:-8080}"
+    networks:
+      - shared
+
+networks:
+  shared:
+    external: true
+    name: dev_default

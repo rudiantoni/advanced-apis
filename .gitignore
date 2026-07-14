@@ -45,3 +45,8 @@ Desktop.ini
 .env
 .env.*
 !.env.example
+
+# Spring local profile (machine-specific, not committed)
+**/application-local.yml
+**/application-local.yaml
+**/application-local.properties

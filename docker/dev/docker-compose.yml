@@ -23,10 +23,7 @@ services:
       - 5432:5432 # host:container
     volumes:
       - ./data:/var/lib/postgresql
-      # - ./[init-dir]:/docker-entrypoint-initdb.d/ # use .sh, .sql, run in alphabetical order
-  # application:
-  #   container_name: application
-  #   image: [img]
-  #   depends_on:
-  #     pg_base_18:
-  #       condition: service_healthy
+
+networks:
+  default:
+    name: dev_default
