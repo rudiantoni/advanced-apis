@@ -110,7 +110,7 @@ Path: `src/main/java/com/myapps/bavariamunich/`.
 
 ### `application.yml`
 
-Spring configuration file; created empty - ports and properties can be added later.
+Spring configuration file; created empty in the bootstrap record - ports and properties are added in the **scaffold phase**. The **platform configuration sub-phase** later replaces the single committed `application.yml` with profile-based configuration (`application-local.yml`, gitignored, and `application-cloud.yml`).
 
 ### `ApiJavaBavariaMunichApplicationTests.java`
 

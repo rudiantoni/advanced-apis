@@ -17,7 +17,7 @@ This folder contains the **incremental** documentation for the `api-java-bavaria
 | Kind | Unit | Placeholder | New or modified |
 |------|------|-------------|-----------------|
 | Java | field, method, constructor | `// ...` between members | show the **full** member |
-| `application.yml` | top-level key or nested block (e.g. `app.security:`) | `# ...` between blocks | show the **full** block |
+| `application-local.yml` | top-level key or nested block (e.g. `app.security:`) | `# ...` between blocks | show the **full** block |
 | `build.gradle` | line in `dependencies { }` | `// ...` inside the closure | show **full** new lines |
 | SQL migrations | table section (banner + DDL for one table) | `-- ...` between sections | show the **full** section |
 
@@ -28,8 +28,11 @@ First introduction of a file in a phase: full snippet for that phase's scope onl
 | Version | Phase / Sub-Phase | Topic |
 |---------|-------------------|-------|
 | [v0.0.0](v0.0.0.md) | Phase 0 | Executable scaffold (Java 8, Spring Boot 2.7); reachability check endpoints; config placeholders and demonstration `AppConfig` |
-| [v0.0.1-idx](v0.0.1-idx.md) | Phase 1 index | Platform integrations - canonical path includes Sub-Phase **1a** (OpenAPI / Swagger UI) |
-| [v0.0.1a](v0.0.1a.md) | Sub-Phase 1a | API documentation - springdoc OpenAPI 3 + Swagger UI (initial setup after scaffold) |
+| [v0.0.1-idx](v0.0.1-idx.md) | Phase 1 index | Platform integrations - canonical path includes Sub-Phases **1a**–**1d** |
+| [v0.0.1a](v0.0.1a.md) | Sub-Phase 1a | Externalized configuration - profiles `local` / `cloud`, env vars, `.env.example` → `.env.local` |
+| [v0.0.1b](v0.0.1b.md) | Sub-Phase 1b | Container image and local Compose - Dockerfile, `docker-entrypoint.sh`, module Compose, `.env.local`, `dev_default` network |
+| [v0.0.1c](v0.0.1c.md) | Sub-Phase 1c | API documentation - springdoc OpenAPI 3 + Swagger UI (minimal `OpenApiConfig`) |
+| [v0.0.1d](v0.0.1d.md) | Sub-Phase 1d | New Relic APM - Java agent (`-javaagent` + `NEW_RELIC_*`; Docker toggle via entrypoint) |
 | [v0.0.2](v0.0.2.md) | Phase 2 | `Product` entity, in-memory repository, DTOs, mapper, basic CRUD (`GET`, `POST`, `DELETE`) |
 | [v0.0.3](v0.0.3.md) | Phase 3 | `PUT /products/{id}` with replace semantics |
 | [v0.0.4](v0.0.4.md) | Phase 4 | `PATCH /products/{id}` with partial update (`JsonNullable`) |
