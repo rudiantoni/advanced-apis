@@ -9,7 +9,9 @@ services:
     image: api-java-bavaria-munich
     restart: unless-stopped
     env_file:
-      - .env.dev
+      - .env.local
+    environment:
+      DATABASE_HOST: postgres_18
     ports:
       - "${SERVER_PORT:-8080}:${SERVER_PORT:-8080}"
     networks:

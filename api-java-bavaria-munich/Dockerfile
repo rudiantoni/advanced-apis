@@ -21,11 +21,15 @@ RUN addgroup -g 10001 appgroup \
     && adduser -D -u 10001 -G appgroup appuser
 
 COPY --from=build --chown=appuser:appgroup /app/app.jar /app/app.jar
+COPY --chown=appuser:appgroup newrelic.jar /app/newrelic.jar
+COPY --chown=appuser:appgroup newrelic.yml /app/newrelic.yml
+COPY --chown=appuser:appgroup docker-entrypoint.sh /app/docker-entrypoint.sh
+
+RUN chmod +x /app/docker-entrypoint.sh
 
 USER appuser
 
 ARG SERVER_PORT=8080
 EXPOSE ${SERVER_PORT}
 
-ENTRYPOINT ["java", "-Dspring.profiles.active=cloud", "-jar", "/app/app.jar"]
-
+ENTRYPOINT ["/app/docker-entrypoint.sh"]

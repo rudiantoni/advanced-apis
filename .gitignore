@@ -9,11 +9,12 @@
 **/*.class
 **/out/
 
-# Build artifacts (never commit; wrapper JAR is excluded above)
+# Build artifacts (never commit; wrapper and New Relic agent JARs are exceptions)
 **/*.jar
 **/*.war
 **/*.ear
 !**/gradle/wrapper/gradle-wrapper.jar
+!**/newrelic.jar
 
 # --- Logs & temp ---
 *.log
