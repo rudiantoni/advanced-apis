@@ -64,24 +64,39 @@ Currently, the ways to run the application are:
 This runs the application in its initial state:
 
 1. Open this module so Gradle can sync.
-2. Run → Edit Configurations… → add an **Application** (or **Spring Boot**) configuration.
-3. **Main class:** `com.myapps.bavariamunich.ApiJavaBavariaMunichApplication`
-4. **Working directory:** the module root (`…/api-java-bavaria-munich`)
-5. Leave **Active profiles** empty.
-6. Do not add profile VM options yet
-7. To use spring profiles and/or New Relic agent
-  7.1. Local Spring profile
+2. **Recommended (avoids a harmless `BUILD FAILED` on Stop):** File → Settings → Build, Execution, Deployment → Build Tools → Gradle → set **Build and run using** to **IntelliJ IDEA** → Apply → OK. With the default **Gradle** value, Stop cancels the Gradle `main()` task and the Run tool window shows a failure like:
+
+   ```text
+   > Task :com.myapps.bavariamunich.ApiJavaBavariaMunichApplication.main() FAILED
+
+   FAILURE: Build failed with an exception.
+
+   * What went wrong:
+   Execution failed for task ':com.myapps.bavariamunich.ApiJavaBavariaMunichApplication.main()'.
+   > Build cancelled while executing task ':com.myapps.bavariamunich.ApiJavaBavariaMunichApplication.main()'
+
+   BUILD FAILED in 28s
+   ```
+
+   That message is only Gradle reporting cancellation; the app had already started. It does not affect `bootRun`, `bootJar`, or `java -jar`.
+3. Run → Edit Configurations… → add an **Application** (or **Spring Boot**) configuration.
+4. **Main class:** `com.myapps.bavariamunich.ApiJavaBavariaMunichApplication`
+5. **Working directory:** the module root (`…/api-java-bavaria-munich`)
+6. Leave **Active profiles** empty.
+7. Do not add profile VM options yet
+8. To use spring profiles and/or New Relic agent
+  8.1. Local Spring profile
     - Add this to VM Options: `-Dspring.profiles.active=local`
-  7.2. Cloud Spring profile
+  8.2. Cloud Spring profile
     - Add this to VM Options: `-Dspring.profiles.active=cloud`
     - Load env vars from **`.env.local`**
-  7.3. Local Spring profile with New Relic agent
+  8.3. Local Spring profile with New Relic agent
     - Add this to VM Options: `-Dspring.profiles.active=local -javaagent:newrelic.jar`
     - Load at least `NEW_RELIC_*` env vars from **`.env.local`** and review its values
-  7.4. Cloud Spring profile with New Relic agent
+  8.4. Cloud Spring profile with New Relic agent
     - Add this to VM Options: `-Dspring.profiles.active=cloud -javaagent:newrelic.jar`
     - Load env vars from **`.env.local`** and review `NEW_RELIC_*` env vars values
-8. Apply / OK, then Run.
+9. Apply / OK, then Run.
 
 ### Gradle `bootRun`
 
