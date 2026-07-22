@@ -15,7 +15,7 @@ Java API in the [advanced-apis](../README.md) monorepo.
 | Project bootstrap | [docs/CREATION.md](docs/CREATION.md) |
 | Incremental implementation phases | [docs/phases/](docs/phases/) |
 
-The [phases](docs/phases/) guides document the API evolution step by step: executable scaffold, externalized configuration and Docker, in-memory `Product` CRUD, `PUT` replace, `PATCH` partial update, PostgreSQL with JPA and SQL migrations, shared utilities, route protection (`public-routes`), authentication (**one of** API key, JWT in-memory, or JWT hybrid - pick one sub-phase; canonical path is JWT with database credentials), then a unified API error response contract (`{"errors":[...]}`). Follow the guides in filename order. Overview and index: [docs/phases/README.md](docs/phases/README.md).
+The [phases](docs/phases/) guides document the API evolution step by step: executable scaffold, externalized configuration and Docker, in-memory `Product` CRUD, `PUT` replace, `PATCH` partial update, PostgreSQL with JPA and SQL migrations, shared utilities, route protection (`public-routes`), authentication (**one of** API key, JWT in-memory, or JWT hybrid - pick one sub-phase; canonical path is JWT with database credentials), a unified API error response contract (`{"errors":[...]}`), then manual input validation for user create and product writes. Follow the guide order in [docs/phases/README.md](docs/phases/README.md) (navigation table).
 
 ## API documentation
 
