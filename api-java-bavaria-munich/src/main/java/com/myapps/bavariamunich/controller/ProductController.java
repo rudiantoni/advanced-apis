@@ -42,11 +42,15 @@ public class ProductController extends RequestBodyController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductResponseDto> create(
+    public ResponseEntity<?> create(
             @RequestBody ProductFullRequestDto productFullRequestDto
     ) {
-        ProductResponseDto result = productService.create(productFullRequestDto);
-        return new ResponseEntity<>(result, HttpStatus.CREATED);
+        try {
+            ProductResponseDto result = productService.create(productFullRequestDto);
+            return new ResponseEntity<>(result, HttpStatus.CREATED);
+        } catch (MultiErrorException ex) {
+            return new ResponseEntity<>(new ErrorResponseDto(ex.getErrors()), ex.getStatus());
+        }
     }
 
     @PutMapping("/{id}")

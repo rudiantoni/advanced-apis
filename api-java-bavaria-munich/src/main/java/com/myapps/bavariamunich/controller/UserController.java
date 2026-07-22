@@ -3,9 +3,11 @@ package com.myapps.bavariamunich.controller;
 import com.myapps.bavariamunich.auth.JwtUserDetails;
 import com.myapps.bavariamunich.component.AuthDetailsComponent;
 import com.myapps.bavariamunich.controller.base.RequestBodyController;
+import com.myapps.bavariamunich.dto.ErrorResponseDto;
 import com.myapps.bavariamunich.dto.UserFullRequestDto;
 import com.myapps.bavariamunich.dto.UserMeResponseDto;
 import com.myapps.bavariamunich.dto.UserSecureResponseDto;
+import com.myapps.bavariamunich.exception.MultiErrorException;
 import com.myapps.bavariamunich.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,9 +37,13 @@ public class UserController extends RequestBodyController {
     }
 
     @PostMapping
-    public ResponseEntity<UserSecureResponseDto> create(@RequestBody UserFullRequestDto userFullRequestDto) {
-        UserSecureResponseDto result = userService.create(userFullRequestDto);
-        return new ResponseEntity<>(result, HttpStatus.CREATED);
+    public ResponseEntity<?> create(@RequestBody UserFullRequestDto userFullRequestDto) {
+        try {
+            UserSecureResponseDto result = userService.create(userFullRequestDto);
+            return new ResponseEntity<>(result, HttpStatus.CREATED);
+        } catch (MultiErrorException ex) {
+            return new ResponseEntity<>(new ErrorResponseDto(ex.getErrors()), ex.getStatus());
+        }
     }
 
 }

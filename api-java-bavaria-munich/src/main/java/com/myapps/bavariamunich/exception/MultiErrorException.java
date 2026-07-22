@@ -9,6 +9,11 @@ public class MultiErrorException extends RuntimeException {
     private final HttpStatus status;
     private final List<String> errors;
 
+    public MultiErrorException(HttpStatus status, List<String> errors) {
+        this.status = status;
+        this.errors = errors;
+    }
+
     public MultiErrorException(HttpStatus status, String error) {
         this.status = status;
         this.errors = Collections.singletonList(error);
