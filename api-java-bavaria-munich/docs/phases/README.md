@@ -44,5 +44,6 @@ First introduction of a file in a phase: full snippet for that phase's scope onl
 | [v0.0.8b](v0.0.8b.md) | Sub-Phase 8b (alternative) | API key header auth; replaces `RouteProtectionFilter` with `ApiKeyAuthFilter` |
 | [v0.0.8c](v0.0.8c.md) | Sub-Phase 8c (alternative) | Basic JWT using in-memory `default-users` |
 | [v0.0.8d](v0.0.8d.md) | Sub-Phase 8d (alternative) | Hybrid JWT - in-memory credentials and database users |
+| [v0.0.9](v0.0.9.md) | Phase 9 | Unified API error contract - `{"errors":[...]}` for 401/404/malformed JSON; `ErrorResponseDto`, `MultiErrorException`, `RequestBodyController` |
 
 For how the repository was bootstrapped from scratch (Gradle, wrapper, layout), see [CREATION.md](../CREATION.md).
