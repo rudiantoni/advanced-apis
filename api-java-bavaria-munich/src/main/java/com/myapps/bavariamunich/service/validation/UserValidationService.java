@@ -16,6 +16,9 @@ import java.util.ArrayList;
 public class UserValidationService {
 
     private static final Logger logger = LoggerFactory.getLogger(UserValidationService.class);
+    private static final int EMAIL_MAX_LENGTH = 128;
+    private static final int USERNAME_MAX_LENGTH = 128;
+    private static final int PASSWORD_MAX_LENGTH = 512;
     private final UserRepository userRepository;
 
     public UserValidationService(
@@ -31,33 +34,32 @@ public class UserValidationService {
 
     public void validateFull(UserFullRequestDto given, String errorMsg) {
         ArrayList<String> errors = new ArrayList<>();
-
-        ValidationUtil.checkNotNullOrEmpty(given.getEmail(), errors, "email");
-        ValidationUtil.checkNotNullOrEmpty(given.getUsername(), errors, "username");
-        ValidationUtil.checkNotNullOrEmpty(given.getPassword(), errors, "password");
-
-        if (given.getEmail() != null) {
-            ValidationUtil.checkLengthNotGreaterThan(given.getEmail(), 128, errors, "email");
-            ValidationUtil.checkUnique(existsByEmail(given.getEmail()), errors, "email");
-        }
-        if (given.getUsername() != null) {
-            ValidationUtil.checkLengthNotGreaterThan(given.getUsername(), 128, errors, "username");
-        }
-        if (given.getPassword() != null) {
-            ValidationUtil.checkLengthNotGreaterThan(given.getPassword(), 512, errors, "password");
-        }
-        if (!errors.isEmpty()) {
-            String errMsg = String.format(
-                    "Unable to create user with email: '%s' and username: '%s'",
-                    given.getEmail(),
-                    given.getUsername()
-            );
-            logger.warn(errMsg);
-            errors.add(0, errMsg);
-            throw new MultiErrorException(HttpStatus.BAD_REQUEST, errors);
-        }
-
+        validateFieldEmail(given.getEmail(), errors);
+        validateFieldUsername(given.getUsername(), errors);
+        validateFieldPassword(given.getPassword(), errors);
         throwIfErrors(errors, errorMsg);
+    }
+
+    private void validateFieldEmail(String email, ArrayList<String> errors) {
+        ValidationUtil.checkNotNullOrEmpty(email, errors, "email");
+        if (!ValidationUtil.isNullOrEmpty(email)) {
+            ValidationUtil.checkLengthNotGreaterThan(email, EMAIL_MAX_LENGTH, errors, "email");
+            ValidationUtil.checkUnique(existsByEmail(email), errors, "email");
+        }
+    }
+
+    private void validateFieldUsername(String username, ArrayList<String> errors) {
+        ValidationUtil.checkNotNullOrEmpty(username, errors, "username");
+        if (!ValidationUtil.isNullOrEmpty(username)) {
+            ValidationUtil.checkLengthNotGreaterThan(username, USERNAME_MAX_LENGTH, errors, "username");
+        }
+    }
+
+    private void validateFieldPassword(String password, ArrayList<String> errors) {
+        ValidationUtil.checkNotNullOrEmpty(password, errors, "password");
+        if (!ValidationUtil.isNullOrEmpty(password)) {
+            ValidationUtil.checkLengthNotGreaterThan(password, PASSWORD_MAX_LENGTH, errors, "password");
+        }
     }
 
     private void throwIfErrors(ArrayList<String> errors, String errorMsg) {

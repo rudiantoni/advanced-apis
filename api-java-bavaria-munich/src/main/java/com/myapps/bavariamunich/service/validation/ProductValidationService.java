@@ -15,7 +15,6 @@ import java.util.ArrayList;
 @Service
 public class ProductValidationService {
     private static final Logger logger = LoggerFactory.getLogger(ProductValidationService.class);
-
     private static final int NAME_MAX_LENGTH = 256;
     private static final int DESCRIPTION_MAX_LENGTH = 512;
     private static final int REFERENCE_MAX_LENGTH = 128;
@@ -25,12 +24,12 @@ public class ProductValidationService {
 
     public void validateFull(ProductFullRequestDto given, String errorMsg) {
         ArrayList<String> errors = new ArrayList<>();
-        validateNameValue(given.getName(), errors);
-        validateDescriptionValue(given.getDescription(), errors);
-        validatePriceValue(given.getPrice(), errors);
-        validateReferenceValue(given.getReference(), errors);
-        validateStockQuantityValue(given.getStockQuantity(), errors);
-        validateImageUrlValue(given.getImageUrl(), errors);
+        validateFieldName(given.getName(), errors);
+        validateFieldDescription(given.getDescription(), errors);
+        validateFieldPrice(given.getPrice(), errors);
+        validateFieldReference(given.getReference(), errors);
+        validateFieldStockQuantity(given.getStockQuantity(), errors);
+        validateFieldImageUrl(given.getImageUrl(), errors);
         throwIfErrors(errors, errorMsg);
     }
 
@@ -39,72 +38,72 @@ public class ProductValidationService {
         if (ValidationUtil.isDefined(given.getName())) {
             ValidationUtil.checkDefinedNotNull(given.getName(), errors, "name");
             if (given.getName().get() != null) {
-                validateNameValue(given.getName().get(), errors);
+                validateFieldName(given.getName().get(), errors);
             }
         }
         if (ValidationUtil.isDefined(given.getDescription())) {
             ValidationUtil.checkDefinedNotNull(given.getDescription(), errors, "description");
             if (given.getDescription().get() != null) {
-                validateDescriptionValue(given.getDescription().get(), errors);
+                validateFieldDescription(given.getDescription().get(), errors);
             }
         }
         if (ValidationUtil.isDefined(given.getPrice())) {
             ValidationUtil.checkDefinedNotNull(given.getPrice(), errors, "price");
             if (given.getPrice().get() != null) {
-                validatePriceValue(given.getPrice().get(), errors);
+                validateFieldPrice(given.getPrice().get(), errors);
             }
         }
         if (ValidationUtil.isDefined(given.getReference())) {
-            validateReferenceValue(given.getReference().get(), errors);
+            validateFieldReference(given.getReference().get(), errors);
         }
         if (ValidationUtil.isDefined(given.getStockQuantity())) {
-            validateStockQuantityValue(given.getStockQuantity().get(), errors);
+            validateFieldStockQuantity(given.getStockQuantity().get(), errors);
         }
         if (ValidationUtil.isDefined(given.getImageUrl())) {
-            validateImageUrlValue(given.getImageUrl().get(), errors);
+            validateFieldImageUrl(given.getImageUrl().get(), errors);
         }
         throwIfErrors(errors, errorMsg);
     }
 
-    private void validateNameValue(String name, ArrayList<String> errors) {
+    private void validateFieldName(String name, ArrayList<String> errors) {
         ValidationUtil.checkNotNullOrEmpty(name, errors, "name");
-        if (name != null) {
+        if (!ValidationUtil.isNullOrEmpty(name)) {
             ValidationUtil.checkLengthNotGreaterThan(name, NAME_MAX_LENGTH, errors, "name");
         }
     }
 
-    private void validateDescriptionValue(String description, ArrayList<String> errors) {
+    private void validateFieldDescription(String description, ArrayList<String> errors) {
         ValidationUtil.checkNotNullOrEmpty(description, errors, "description");
-        if (description != null) {
+        if (!ValidationUtil.isNullOrEmpty(description)) {
             ValidationUtil.checkLengthNotGreaterThan(description, DESCRIPTION_MAX_LENGTH, errors, "description");
         }
     }
 
-    private void validatePriceValue(BigDecimal price, ArrayList<String> errors) {
+    private void validateFieldPrice(BigDecimal price, ArrayList<String> errors) {
         ValidationUtil.checkNotNull(price, errors, "price");
-        if (price != null) {
+        if (!ValidationUtil.isNull(price)) {
             ValidationUtil.checkPositive(price, errors, "price");
             ValidationUtil.checkNumericPrecisionAndScale(price, PRICE_PRECISION, PRICE_SCALE, errors, "price");
         }
     }
 
-    private void validateReferenceValue(String reference, ArrayList<String> errors) {
-        if (reference == null) {
+    private void validateFieldReference(String reference, ArrayList<String> errors) {
+        if (ValidationUtil.isNull(reference)) {
             return;
         }
         ValidationUtil.checkNotEmpty(reference, errors, "reference");
         ValidationUtil.checkLengthNotGreaterThan(reference, REFERENCE_MAX_LENGTH, errors, "reference");
     }
 
-    private void validateStockQuantityValue(Integer stockQuantity, ArrayList<String> errors) {
-        if (stockQuantity == null) {
+    private void validateFieldStockQuantity(Integer stockQuantity, ArrayList<String> errors) {
+        if (ValidationUtil.isNull(stockQuantity)) {
             return;
         }
         ValidationUtil.checkNotNegative(stockQuantity, errors, "stockQuantity");
     }
 
-    private void validateImageUrlValue(String imageUrl, ArrayList<String> errors) {
-        if (imageUrl == null) {
+    private void validateFieldImageUrl(String imageUrl, ArrayList<String> errors) {
+        if (ValidationUtil.isNull(imageUrl)) {
             return;
         }
         ValidationUtil.checkNotEmpty(imageUrl, errors, "imageUrl");
