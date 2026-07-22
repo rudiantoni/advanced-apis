@@ -2,8 +2,9 @@ package com.myapps.bavariamunich.controller;
 
 import com.myapps.bavariamunich.auth.JwtUserDetails;
 import com.myapps.bavariamunich.component.AuthDetailsComponent;
-import com.myapps.bavariamunich.dto.UserMeResponseDto;
+import com.myapps.bavariamunich.controller.base.RequestBodyController;
 import com.myapps.bavariamunich.dto.UserFullRequestDto;
+import com.myapps.bavariamunich.dto.UserMeResponseDto;
 import com.myapps.bavariamunich.dto.UserSecureResponseDto;
 import com.myapps.bavariamunich.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
-public class UserController {
+public class UserController extends RequestBodyController {
 
     private final AuthDetailsComponent authDetailsComponent;
     private final UserService userService;
@@ -38,4 +39,5 @@ public class UserController {
         UserSecureResponseDto result = userService.create(userFullRequestDto);
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
+
 }

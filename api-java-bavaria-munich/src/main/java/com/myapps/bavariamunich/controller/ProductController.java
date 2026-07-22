@@ -1,8 +1,11 @@
 package com.myapps.bavariamunich.controller;
 
+import com.myapps.bavariamunich.controller.base.RequestBodyController;
+import com.myapps.bavariamunich.dto.ErrorResponseDto;
 import com.myapps.bavariamunich.dto.ProductFullRequestDto;
 import com.myapps.bavariamunich.dto.ProductPartialRequestDto;
 import com.myapps.bavariamunich.dto.ProductResponseDto;
+import com.myapps.bavariamunich.exception.MultiErrorException;
 import com.myapps.bavariamunich.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/products")
-public class ProductController {
+public class ProductController extends RequestBodyController {
 
     private final ProductService productService;
 
@@ -27,11 +30,15 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductResponseDto> read(
+    public ResponseEntity<?> read(
             @PathVariable("id") Long id
     ) {
-        ProductResponseDto result = productService.read(id);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        try {
+            ProductResponseDto result = productService.read(id);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (MultiErrorException ex) {
+            return new ResponseEntity<>(new ErrorResponseDto(ex.getErrors()), ex.getStatus());
+        }
     }
 
     @PostMapping
@@ -43,29 +50,41 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductResponseDto> replace(
+    public ResponseEntity<?> replace(
             @PathVariable("id") Long id,
             @RequestBody ProductFullRequestDto productFullRequestDto
     ) {
-        ProductResponseDto result = productService.replace(id, productFullRequestDto);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        try {
+            ProductResponseDto result = productService.replace(id, productFullRequestDto);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (MultiErrorException ex) {
+            return new ResponseEntity<>(new ErrorResponseDto(ex.getErrors()), ex.getStatus());
+        }
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<ProductResponseDto> update(
+    public ResponseEntity<?> update(
             @PathVariable("id") Long id,
             @RequestBody ProductPartialRequestDto productPartialRequestDto
     ) {
-        ProductResponseDto result = productService.update(id, productPartialRequestDto);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        try {
+            ProductResponseDto result = productService.update(id, productPartialRequestDto);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (MultiErrorException ex) {
+            return new ResponseEntity<>(new ErrorResponseDto(ex.getErrors()), ex.getStatus());
+        }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(
+    public ResponseEntity<?> delete(
             @PathVariable("id") Long id
     ) {
-        productService.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        try {
+            productService.delete(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (MultiErrorException ex) {
+            return new ResponseEntity<>(new ErrorResponseDto(ex.getErrors()), ex.getStatus());
+        }
     }
 
 }

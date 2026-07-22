@@ -4,13 +4,13 @@ import com.myapps.bavariamunich.dto.ProductFullRequestDto;
 import com.myapps.bavariamunich.dto.ProductPartialRequestDto;
 import com.myapps.bavariamunich.dto.ProductResponseDto;
 import com.myapps.bavariamunich.entity.Product;
+import com.myapps.bavariamunich.exception.MultiErrorException;
 import com.myapps.bavariamunich.mapper.ProductMapper;
 import com.myapps.bavariamunich.repository.ProductRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,7 +37,7 @@ public class ProductService {
                 .map(ProductMapper::toDto)
                 .orElseThrow(() -> {
                     logger.warn("Product not found with id: {}", id);
-                    return new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found with id: " + id);
+                    return new MultiErrorException(HttpStatus.NOT_FOUND, "Product not found with id: " + id);
                 });
     }
 
@@ -50,7 +50,7 @@ public class ProductService {
         Product existing = productRepository.findById(id)
                 .orElseThrow(() -> {
                     logger.warn("Product not found with id: {}", id);
-                    return new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found with id: " + id);
+                    return new MultiErrorException(HttpStatus.NOT_FOUND, "Product not found with id: " + id);
                 });
         ProductMapper.replaceEntity(existing, given);
         Product saved = productRepository.save(existing);
@@ -61,7 +61,7 @@ public class ProductService {
         Product existing = productRepository.findById(id)
                 .orElseThrow(() -> {
                     logger.warn("Product not found with id: {}", id);
-                    return new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found with id: " + id);
+                    return new MultiErrorException(HttpStatus.NOT_FOUND, "Product not found with id: " + id);
                 });
         ProductMapper.updateEntity(existing, given);
         Product saved = productRepository.save(existing);
@@ -71,7 +71,7 @@ public class ProductService {
     public void delete(Long id) {
         if (!productRepository.existsById(id)) {
             logger.warn("Product not found with id: {}", id);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found with id: " + id);
+            throw new MultiErrorException(HttpStatus.NOT_FOUND, "Product not found with id: " + id);
         }
         productRepository.deleteById(id);
     }

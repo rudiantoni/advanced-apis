@@ -1,6 +1,8 @@
 package com.myapps.bavariamunich.auth;
 
 import com.myapps.bavariamunich.config.AppConsts;
+import com.myapps.bavariamunich.dto.ErrorResponseDto;
+import com.myapps.bavariamunich.util.JsonUtil;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
@@ -17,6 +19,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
@@ -78,9 +81,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     }
 
     private void writeUnauthorized(HttpServletResponse response) throws IOException {
+        String responseBody = Objects.requireNonNull(
+                JsonUtil.toJsonStr(ErrorResponseDto.of(AppConsts.UNAUTHORIZED))
+        );
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-        response.getWriter().write(AppConsts.DEFAULT_UNAUTHORIZED_RESPONSE_JSON_STR);
+        response.getWriter().write(responseBody);
     }
 }

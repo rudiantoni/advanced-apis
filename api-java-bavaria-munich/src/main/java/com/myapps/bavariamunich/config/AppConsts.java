@@ -7,6 +7,6 @@ public class AppConsts {
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String BEARER_PREFIX = "Bearer ";
-    public static final String DEFAULT_UNAUTHORIZED_RESPONSE_JSON_STR = "{\"message\":\"Unauthorized\"}";
+    public static final String UNAUTHORIZED = "Unauthorized";
 
 }
