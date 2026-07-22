@@ -1,14 +1,14 @@
 package com.myapps.bavariamunich.dto;
 
-public class UserWriteDto {
+public class UserFullRequestDto {
     private String email;
     private String username;
     private String password;
 
-    public UserWriteDto() {
+    public UserFullRequestDto() {
     }
 
-    public UserWriteDto(String email, String username, String password) {
+    public UserFullRequestDto(String email, String username, String password) {
         this.email = email;
         this.username = username;
         this.password = password;

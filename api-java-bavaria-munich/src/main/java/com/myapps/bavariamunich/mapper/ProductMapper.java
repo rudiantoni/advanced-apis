@@ -1,17 +1,17 @@
 package com.myapps.bavariamunich.mapper;
 
-import com.myapps.bavariamunich.dto.ProductDto;
-import com.myapps.bavariamunich.dto.ProductUpdateDto;
-import com.myapps.bavariamunich.dto.ProductWriteDto;
+import com.myapps.bavariamunich.dto.ProductFullRequestDto;
+import com.myapps.bavariamunich.dto.ProductPartialRequestDto;
+import com.myapps.bavariamunich.dto.ProductResponseDto;
 import com.myapps.bavariamunich.entity.Product;
 import com.myapps.bavariamunich.util.JsonUtil;
 
 public class ProductMapper {
-    public static ProductDto toDto(Product entity) {
+    public static ProductResponseDto toDto(Product entity) {
         if (entity == null) {
             return null;
         }
-        ProductDto dto = new ProductDto();
+        ProductResponseDto dto = new ProductResponseDto();
         dto.setId(entity.getId());
         dto.setName(entity.getName());
         dto.setDescription(entity.getDescription());
@@ -22,7 +22,7 @@ public class ProductMapper {
         return dto;
     }
 
-    public static Product toEntity(ProductWriteDto dto) {
+    public static Product toEntity(ProductFullRequestDto dto) {
         if (dto == null) {
             return null;
         }
@@ -36,7 +36,7 @@ public class ProductMapper {
         return entity;
     }
 
-    public static void replaceEntity(Product target, ProductWriteDto source) {
+    public static void replaceEntity(Product target, ProductFullRequestDto source) {
         if (target == null || source == null) {
             return;
         }
@@ -48,7 +48,7 @@ public class ProductMapper {
         target.setImageUrl(source.getImageUrl());
     }
 
-    public static void updateEntity(Product target, ProductUpdateDto source) {
+    public static void updateEntity(Product target, ProductPartialRequestDto source) {
         if (target == null || source == null) {
             return;
         }

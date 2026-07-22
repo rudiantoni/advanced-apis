@@ -3,7 +3,7 @@ package com.myapps.bavariamunich.service;
 import com.myapps.bavariamunich.auth.JwtService;
 import com.myapps.bavariamunich.auth.JwtUserDetails;
 import com.myapps.bavariamunich.definition.UserInternalDefinition;
-import com.myapps.bavariamunich.dto.LoginRequestDto;
+import com.myapps.bavariamunich.dto.AuthLoginRequestDto;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -25,7 +25,7 @@ public class AuthService {
         this.passwordService = passwordService;
     }
 
-    public String login(LoginRequestDto given) {
+    public String login(AuthLoginRequestDto given) {
         if (given.getEmail() == null || given.getPassword() == null) {
             return null;
         }

@@ -1,8 +1,8 @@
 package com.myapps.bavariamunich.controller;
 
-import com.myapps.bavariamunich.dto.ProductDto;
-import com.myapps.bavariamunich.dto.ProductUpdateDto;
-import com.myapps.bavariamunich.dto.ProductWriteDto;
+import com.myapps.bavariamunich.dto.ProductFullRequestDto;
+import com.myapps.bavariamunich.dto.ProductPartialRequestDto;
+import com.myapps.bavariamunich.dto.ProductResponseDto;
 import com.myapps.bavariamunich.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,42 +21,42 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProductDto>> readAll() {
-        List<ProductDto> result = productService.readAll();
+    public ResponseEntity<List<ProductResponseDto>> readAll() {
+        List<ProductResponseDto> result = productService.readAll();
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDto> read(
+    public ResponseEntity<ProductResponseDto> read(
             @PathVariable("id") Long id
     ) {
-        ProductDto result = productService.read(id);
+        ProductResponseDto result = productService.read(id);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<ProductDto> create(
-            @RequestBody ProductWriteDto productWriteDto
+    public ResponseEntity<ProductResponseDto> create(
+            @RequestBody ProductFullRequestDto productFullRequestDto
     ) {
-        ProductDto result = productService.create(productWriteDto);
+        ProductResponseDto result = productService.create(productFullRequestDto);
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductDto> replace(
+    public ResponseEntity<ProductResponseDto> replace(
             @PathVariable("id") Long id,
-            @RequestBody ProductWriteDto productWriteDto
+            @RequestBody ProductFullRequestDto productFullRequestDto
     ) {
-        ProductDto result = productService.replace(id, productWriteDto);
+        ProductResponseDto result = productService.replace(id, productFullRequestDto);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<ProductDto> update(
+    public ResponseEntity<ProductResponseDto> update(
             @PathVariable("id") Long id,
-            @RequestBody ProductUpdateDto productUpdateDto
+            @RequestBody ProductPartialRequestDto productPartialRequestDto
     ) {
-        ProductDto result = productService.update(id, productUpdateDto);
+        ProductResponseDto result = productService.update(id, productPartialRequestDto);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

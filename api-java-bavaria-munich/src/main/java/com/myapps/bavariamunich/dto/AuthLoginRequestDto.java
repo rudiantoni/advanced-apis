@@ -1,6 +1,6 @@
 package com.myapps.bavariamunich.dto;
 
-public class LoginRequestDto {
+public class AuthLoginRequestDto {
     private String email;
     private String password;
 

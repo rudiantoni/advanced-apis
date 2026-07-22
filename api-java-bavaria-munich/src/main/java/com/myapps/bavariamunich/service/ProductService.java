@@ -1,8 +1,8 @@
 package com.myapps.bavariamunich.service;
 
-import com.myapps.bavariamunich.dto.ProductDto;
-import com.myapps.bavariamunich.dto.ProductUpdateDto;
-import com.myapps.bavariamunich.dto.ProductWriteDto;
+import com.myapps.bavariamunich.dto.ProductFullRequestDto;
+import com.myapps.bavariamunich.dto.ProductPartialRequestDto;
+import com.myapps.bavariamunich.dto.ProductResponseDto;
 import com.myapps.bavariamunich.entity.Product;
 import com.myapps.bavariamunich.mapper.ProductMapper;
 import com.myapps.bavariamunich.repository.ProductRepository;
@@ -26,13 +26,13 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public List<ProductDto> readAll() {
+    public List<ProductResponseDto> readAll() {
         return productRepository.findAll().stream()
                 .map(ProductMapper::toDto)
                 .collect(Collectors.toList());
     }
 
-    public ProductDto read(Long id) {
+    public ProductResponseDto read(Long id) {
         return productRepository.findById(id)
                 .map(ProductMapper::toDto)
                 .orElseThrow(() -> {
@@ -41,12 +41,12 @@ public class ProductService {
                 });
     }
 
-    public ProductDto create(ProductWriteDto given) {
+    public ProductResponseDto create(ProductFullRequestDto given) {
         Product created = productRepository.save(ProductMapper.toEntity(given));
         return ProductMapper.toDto(created);
     }
 
-    public ProductDto replace(Long id, ProductWriteDto given) {
+    public ProductResponseDto replace(Long id, ProductFullRequestDto given) {
         Product existing = productRepository.findById(id)
                 .orElseThrow(() -> {
                     logger.warn("Product not found with id: {}", id);
@@ -57,7 +57,7 @@ public class ProductService {
         return ProductMapper.toDto(saved);
     }
 
-    public ProductDto update(Long id, ProductUpdateDto given) {
+    public ProductResponseDto update(Long id, ProductPartialRequestDto given) {
         Product existing = productRepository.findById(id)
                 .orElseThrow(() -> {
                     logger.warn("Product not found with id: {}", id);

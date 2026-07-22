@@ -2,7 +2,7 @@ package com.myapps.bavariamunich.dto;
 
 import java.math.BigDecimal;
 
-public class ProductWriteDto {
+public class ProductFullRequestDto {
     private String name;
     private String description;
     private BigDecimal price;
@@ -10,7 +10,7 @@ public class ProductWriteDto {
     private Integer stockQuantity;
     private String imageUrl;
 
-    public ProductWriteDto() {
+    public ProductFullRequestDto() {
     }
 
     public String getName() {

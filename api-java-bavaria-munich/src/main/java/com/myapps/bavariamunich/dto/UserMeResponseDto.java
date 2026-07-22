@@ -1,11 +1,11 @@
 package com.myapps.bavariamunich.dto;
 
-public class MeResponseDto {
+public class UserMeResponseDto {
     private Long userId;
     private String email;
     private String username;
 
-    public MeResponseDto(Long userId, String email, String username) {
+    public UserMeResponseDto(Long userId, String email, String username) {
         this.userId = userId;
         this.email = email;
         this.username = username;

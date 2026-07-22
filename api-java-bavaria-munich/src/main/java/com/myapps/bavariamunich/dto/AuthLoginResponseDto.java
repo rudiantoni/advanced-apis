@@ -1,9 +1,9 @@
 package com.myapps.bavariamunich.dto;
 
-public class LoginResponseDto {
+public class AuthLoginResponseDto {
     private String token;
 
-    public LoginResponseDto(String token) {
+    public AuthLoginResponseDto(String token) {
         this.token = token;
     }
 

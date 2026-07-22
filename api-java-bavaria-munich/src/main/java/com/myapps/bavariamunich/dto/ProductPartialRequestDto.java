@@ -4,7 +4,7 @@ import org.openapitools.jackson.nullable.JsonNullable;
 
 import java.math.BigDecimal;
 
-public class ProductUpdateDto {
+public class ProductPartialRequestDto {
 
     private JsonNullable<String> name = JsonNullable.undefined();
     private JsonNullable<String> description = JsonNullable.undefined();
@@ -13,7 +13,7 @@ public class ProductUpdateDto {
     private JsonNullable<Integer> stockQuantity = JsonNullable.undefined();
     private JsonNullable<String> imageUrl = JsonNullable.undefined();
 
-    public ProductUpdateDto() {
+    public ProductPartialRequestDto() {
     }
 
     public JsonNullable<String> getName() {

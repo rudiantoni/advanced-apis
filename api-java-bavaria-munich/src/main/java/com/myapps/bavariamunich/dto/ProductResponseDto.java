@@ -2,7 +2,7 @@ package com.myapps.bavariamunich.dto;
 
 import java.math.BigDecimal;
 
-public class ProductDto {
+public class ProductResponseDto {
     private Long id;
     private String name;
     private String description;
@@ -11,7 +11,7 @@ public class ProductDto {
     private Integer stockQuantity;
     private String imageUrl;
 
-    public ProductDto() {
+    public ProductResponseDto() {
     }
 
     public Long getId() {

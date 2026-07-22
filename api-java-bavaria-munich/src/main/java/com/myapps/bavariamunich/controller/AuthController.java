@@ -1,7 +1,7 @@
 package com.myapps.bavariamunich.controller;
 
-import com.myapps.bavariamunich.dto.LoginRequestDto;
-import com.myapps.bavariamunich.dto.LoginResponseDto;
+import com.myapps.bavariamunich.dto.AuthLoginRequestDto;
+import com.myapps.bavariamunich.dto.AuthLoginResponseDto;
 import com.myapps.bavariamunich.service.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,13 +24,13 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequestDto body) {
+    public ResponseEntity<?> login(@RequestBody AuthLoginRequestDto body) {
         String token = authService.login(body);
         if (token == null) {
             Map<String, String> result = Collections.singletonMap("message", "Unauthorized");
             return new ResponseEntity<>(result, HttpStatus.UNAUTHORIZED);
         }
-        LoginResponseDto result = new LoginResponseDto(token);
+        AuthLoginResponseDto result = new AuthLoginResponseDto(token);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

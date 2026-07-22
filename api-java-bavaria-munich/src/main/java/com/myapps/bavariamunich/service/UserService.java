@@ -1,8 +1,8 @@
 package com.myapps.bavariamunich.service;
 
 import com.myapps.bavariamunich.definition.UserInternalDefinition;
-import com.myapps.bavariamunich.dto.UserSecureDto;
-import com.myapps.bavariamunich.dto.UserWriteDto;
+import com.myapps.bavariamunich.dto.UserFullRequestDto;
+import com.myapps.bavariamunich.dto.UserSecureResponseDto;
 import com.myapps.bavariamunich.entity.User;
 import com.myapps.bavariamunich.mapper.UserMapper;
 import com.myapps.bavariamunich.repository.UserRepository;
@@ -25,10 +25,10 @@ public class UserService {
         this.passwordService = passwordService;
     }
 
-    public UserSecureDto create(UserWriteDto given) {
+    public UserSecureResponseDto create(UserFullRequestDto given) {
         String hashedPassword = passwordService.hash(given.getPassword());
         String normalizedEmail = NormalizeUtil.normalizeEmail(given.getEmail());
-        UserWriteDto normalized = new UserWriteDto(normalizedEmail, given.getUsername(), hashedPassword);
+        UserFullRequestDto normalized = new UserFullRequestDto(normalizedEmail, given.getUsername(), hashedPassword);
         User created = userRepository.save(UserMapper.toEntity(normalized));
         return UserMapper.toSecureDto(created);
     }

@@ -2,9 +2,9 @@ package com.myapps.bavariamunich.controller;
 
 import com.myapps.bavariamunich.auth.JwtUserDetails;
 import com.myapps.bavariamunich.component.AuthDetailsComponent;
-import com.myapps.bavariamunich.dto.MeResponseDto;
-import com.myapps.bavariamunich.dto.UserSecureDto;
-import com.myapps.bavariamunich.dto.UserWriteDto;
+import com.myapps.bavariamunich.dto.UserMeResponseDto;
+import com.myapps.bavariamunich.dto.UserFullRequestDto;
+import com.myapps.bavariamunich.dto.UserSecureResponseDto;
 import com.myapps.bavariamunich.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +23,9 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<MeResponseDto> me() {
+    public ResponseEntity<UserMeResponseDto> me() {
         JwtUserDetails userDetails = authDetailsComponent.getCurrentUser();
-        MeResponseDto result = new MeResponseDto(
+        UserMeResponseDto result = new UserMeResponseDto(
                 userDetails.getUserId(),
                 userDetails.getEmail(),
                 userDetails.getUsername()
@@ -34,8 +34,8 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserSecureDto> create(@RequestBody UserWriteDto userWriteDto) {
-        UserSecureDto result = userService.create(userWriteDto);
+    public ResponseEntity<UserSecureResponseDto> create(@RequestBody UserFullRequestDto userFullRequestDto) {
+        UserSecureResponseDto result = userService.create(userFullRequestDto);
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 }

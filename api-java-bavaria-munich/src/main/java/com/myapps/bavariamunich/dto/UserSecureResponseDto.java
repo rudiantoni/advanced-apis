@@ -1,14 +1,14 @@
 package com.myapps.bavariamunich.dto;
 
-public class UserSecureDto {
+public class UserSecureResponseDto {
     private Long id;
     private String email;
     private String username;
 
-    public UserSecureDto() {
+    public UserSecureResponseDto() {
     }
 
-    public UserSecureDto(Long id, String email, String username) {
+    public UserSecureResponseDto(Long id, String email, String username) {
         this.id = id;
         this.email = email;
         this.username = username;

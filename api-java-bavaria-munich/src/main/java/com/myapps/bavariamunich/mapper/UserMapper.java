@@ -1,17 +1,17 @@
 package com.myapps.bavariamunich.mapper;
 
 import com.myapps.bavariamunich.definition.UserInternalDefinition;
-import com.myapps.bavariamunich.dto.UserSecureDto;
-import com.myapps.bavariamunich.dto.UserWriteDto;
+import com.myapps.bavariamunich.dto.UserFullRequestDto;
+import com.myapps.bavariamunich.dto.UserSecureResponseDto;
 import com.myapps.bavariamunich.entity.User;
 
 public class UserMapper {
 
-    public static UserSecureDto toSecureDto(User entity) {
+    public static UserSecureResponseDto toSecureDto(User entity) {
         if (entity == null) {
             return null;
         }
-        UserSecureDto dto = new UserSecureDto();
+        UserSecureResponseDto dto = new UserSecureResponseDto();
         dto.setId(entity.getId());
         dto.setEmail(entity.getEmail());
         dto.setUsername(entity.getUsername());
@@ -27,7 +27,7 @@ public class UserMapper {
         );
     }
 
-    public static User toEntity(UserWriteDto dto) {
+    public static User toEntity(UserFullRequestDto dto) {
         if (dto == null) {
             return null;
         }
