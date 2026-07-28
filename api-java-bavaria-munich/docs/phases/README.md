@@ -4,7 +4,7 @@ This folder contains the **incremental** documentation for the `api-java-bavaria
 
 **Application order** is defined by the **navigation table** below (and by the same sequence when walking guides). For single-digit phase numbers (`v0.0.0` … `v0.0.9`), that order matches plain filename sort. From **`v0.0.10` onward**, do **not** rely on lexicographic filename sort alone (`v0.0.10` sorts before `v0.0.2`); follow the table. Guides do not restate that order with file references.
 
-**Phases** (`v0.0.0` … `v0.0.10`) are always **incremental**.
+**Phases** (`v0.0.0` … `v0.0.11`) are always **incremental**.
 
 **Sub-phases** (`v0.0.Na` … `v0.0.Nz`) may be incremental or mutually exclusive alternatives; each sub-phase document states which at the top. A phase that has sub-phases includes an **index** document named `v0.0.N-idx.md` (title: `Phase N index`).
 
@@ -46,5 +46,7 @@ First introduction of a file in a phase: full snippet for that phase's scope onl
 | [v0.0.8d](v0.0.8d.md) | Sub-Phase 8d (alternative) | Hybrid JWT - in-memory credentials and database users |
 | [v0.0.9](v0.0.9.md) | Phase 9 | Unified API error contract - `{"errors":[...]}` for 401/404/malformed JSON; `ErrorResponseDto`, `MultiErrorException`, `RequestBodyController` |
 | [v0.0.10](v0.0.10.md) | Phase 10 | Manual input validation - `ValidationUtil`, `UserValidationService` / `ProductValidationService`, `400` with multi-error `errors` on user create and product POST/PUT/PATCH |
+| [v0.0.11-idx](v0.0.11-idx.md) | Phase 11 index | Error handling evolution - currently documents Sub-Phase **11a** and reserves later sub-phases |
+| [v0.0.11a](v0.0.11a.md) | Sub-Phase 11a | Global MVC error handling for known failures; remove controller-level duplication and keep `{"errors":[...]}` |
 
 For how the repository was bootstrapped from scratch (Gradle, wrapper, layout), see [CREATION.md](../CREATION.md).
