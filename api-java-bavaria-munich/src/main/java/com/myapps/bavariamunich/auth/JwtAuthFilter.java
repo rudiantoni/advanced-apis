@@ -5,6 +5,7 @@ import com.myapps.bavariamunich.dto.ErrorResponseDto;
 import com.myapps.bavariamunich.util.JsonUtil;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -82,7 +83,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private void writeUnauthorized(HttpServletResponse response) throws IOException {
         String responseBody = Objects.requireNonNull(
-                JsonUtil.toJsonStr(ErrorResponseDto.of(AppConsts.UNAUTHORIZED))
+                JsonUtil.toJsonStr(ErrorResponseDto.of(HttpStatus.UNAUTHORIZED.getReasonPhrase()))
         );
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);

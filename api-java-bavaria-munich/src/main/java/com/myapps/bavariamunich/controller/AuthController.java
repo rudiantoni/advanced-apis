@@ -26,7 +26,7 @@ public class AuthController {
     public ResponseEntity<AuthLoginResponseDto> login(@RequestBody AuthLoginRequestDto body) {
         String token = authService.login(body);
         if (token == null) {
-            throw new MultiErrorException(HttpStatus.UNAUTHORIZED, AppConsts.UNAUTHORIZED);
+            throw new MultiErrorException(HttpStatus.UNAUTHORIZED, HttpStatus.UNAUTHORIZED.getReasonPhrase());
         }
         AuthLoginResponseDto result = new AuthLoginResponseDto(token);
         return new ResponseEntity<>(result, HttpStatus.OK);
