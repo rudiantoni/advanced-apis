@@ -1,11 +1,8 @@
 package com.myapps.bavariamunich.controller;
 
-import com.myapps.bavariamunich.controller.base.RequestBodyController;
-import com.myapps.bavariamunich.dto.ErrorResponseDto;
 import com.myapps.bavariamunich.dto.ProductFullRequestDto;
 import com.myapps.bavariamunich.dto.ProductPartialRequestDto;
 import com.myapps.bavariamunich.dto.ProductResponseDto;
-import com.myapps.bavariamunich.exception.MultiErrorException;
 import com.myapps.bavariamunich.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/products")
-public class ProductController extends RequestBodyController {
+public class ProductController {
 
     private final ProductService productService;
 
@@ -30,65 +27,45 @@ public class ProductController extends RequestBodyController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> read(
+    public ResponseEntity<ProductResponseDto> read(
             @PathVariable("id") Long id
     ) {
-        try {
-            ProductResponseDto result = productService.read(id);
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (MultiErrorException ex) {
-            return new ResponseEntity<>(new ErrorResponseDto(ex.getErrors()), ex.getStatus());
-        }
+        ProductResponseDto result = productService.read(id);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<?> create(
+    public ResponseEntity<ProductResponseDto> create(
             @RequestBody ProductFullRequestDto productFullRequestDto
     ) {
-        try {
-            ProductResponseDto result = productService.create(productFullRequestDto);
-            return new ResponseEntity<>(result, HttpStatus.CREATED);
-        } catch (MultiErrorException ex) {
-            return new ResponseEntity<>(new ErrorResponseDto(ex.getErrors()), ex.getStatus());
-        }
+        ProductResponseDto result = productService.create(productFullRequestDto);
+        return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> replace(
+    public ResponseEntity<ProductResponseDto> replace(
             @PathVariable("id") Long id,
             @RequestBody ProductFullRequestDto productFullRequestDto
     ) {
-        try {
-            ProductResponseDto result = productService.replace(id, productFullRequestDto);
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (MultiErrorException ex) {
-            return new ResponseEntity<>(new ErrorResponseDto(ex.getErrors()), ex.getStatus());
-        }
+        ProductResponseDto result = productService.replace(id, productFullRequestDto);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> update(
+    public ResponseEntity<ProductResponseDto> update(
             @PathVariable("id") Long id,
             @RequestBody ProductPartialRequestDto productPartialRequestDto
     ) {
-        try {
-            ProductResponseDto result = productService.update(id, productPartialRequestDto);
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (MultiErrorException ex) {
-            return new ResponseEntity<>(new ErrorResponseDto(ex.getErrors()), ex.getStatus());
-        }
+        ProductResponseDto result = productService.update(id, productPartialRequestDto);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(
+    public ResponseEntity<Void> delete(
             @PathVariable("id") Long id
     ) {
-        try {
-            productService.delete(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (MultiErrorException ex) {
-            return new ResponseEntity<>(new ErrorResponseDto(ex.getErrors()), ex.getStatus());
-        }
+        productService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }
