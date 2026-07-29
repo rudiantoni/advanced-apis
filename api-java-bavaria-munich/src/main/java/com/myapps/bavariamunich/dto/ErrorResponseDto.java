@@ -4,13 +4,16 @@ import java.util.Collections;
 import java.util.List;
 
 public class ErrorResponseDto {
-    public List<String> errors;
 
-    public ErrorResponseDto(List<String> errors) {
+    public String requestId;
+    public List<ErrorItem> errors;
+
+    public ErrorResponseDto(String requestId, List<ErrorItem> errors) {
+        this.requestId = requestId;
         this.errors = errors;
     }
 
-    public static ErrorResponseDto of(String error) {
-        return new ErrorResponseDto(Collections.singletonList(error));
+    public static ErrorResponseDto of(String requestId, ErrorItem error) {
+        return new ErrorResponseDto(requestId, Collections.singletonList(error));
     }
 }

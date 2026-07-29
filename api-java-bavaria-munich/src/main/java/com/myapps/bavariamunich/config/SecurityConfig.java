@@ -1,6 +1,7 @@
 package com.myapps.bavariamunich.config;
 
 import com.myapps.bavariamunich.auth.JwtAuthFilter;
+import com.myapps.bavariamunich.auth.RequestIdFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,9 +14,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
     private final JwtAuthFilter jwtAuthFilter;
+    private final RequestIdFilter requestIdFilter;
 
-    public SecurityConfig(JwtAuthFilter jwtAuthFilter) {
+    public SecurityConfig(
+            JwtAuthFilter jwtAuthFilter,
+            RequestIdFilter requestIdFilter
+    ) {
         this.jwtAuthFilter = jwtAuthFilter;
+        this.requestIdFilter = requestIdFilter;
     }
 
     @Bean
@@ -30,7 +36,8 @@ public class SecurityConfig {
                 .anyRequest()
                 .permitAll()
                 .and()
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(requestIdFilter, JwtAuthFilter.class);
 
         return http.build();
     }

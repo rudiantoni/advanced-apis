@@ -26,3 +26,5 @@ app:
 logging:
   level:
     root: INFO
+  pattern:
+    level: "%5p [%X{requestId:-}]"

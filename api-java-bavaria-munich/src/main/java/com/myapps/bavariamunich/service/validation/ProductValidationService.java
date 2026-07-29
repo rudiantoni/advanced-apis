@@ -1,5 +1,6 @@
 package com.myapps.bavariamunich.service.validation;
 
+import com.myapps.bavariamunich.dto.ErrorItem;
 import com.myapps.bavariamunich.dto.ProductFullRequestDto;
 import com.myapps.bavariamunich.dto.ProductPartialRequestDto;
 import com.myapps.bavariamunich.exception.MultiErrorException;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductValidationService {
@@ -114,7 +117,10 @@ public class ProductValidationService {
         if (!errors.isEmpty()) {
             logger.warn(errorMsg);
             errors.add(0, errorMsg);
-            throw new MultiErrorException(HttpStatus.BAD_REQUEST, errors);
+            List<ErrorItem> items = errors.stream()
+                    .map(it -> new ErrorItem("UNCLASSIFIED", it, null, null))
+                    .collect(Collectors.toList());
+            throw new MultiErrorException(HttpStatus.BAD_REQUEST, items);
         }
     }
 

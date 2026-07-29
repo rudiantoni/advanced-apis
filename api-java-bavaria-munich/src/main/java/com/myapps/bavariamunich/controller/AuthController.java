@@ -1,8 +1,8 @@
 package com.myapps.bavariamunich.controller;
 
-import com.myapps.bavariamunich.config.AppConsts;
 import com.myapps.bavariamunich.dto.AuthLoginRequestDto;
 import com.myapps.bavariamunich.dto.AuthLoginResponseDto;
+import com.myapps.bavariamunich.exception.ErrorCode;
 import com.myapps.bavariamunich.exception.MultiErrorException;
 import com.myapps.bavariamunich.service.AuthService;
 import org.springframework.http.HttpStatus;
@@ -26,7 +26,7 @@ public class AuthController {
     public ResponseEntity<AuthLoginResponseDto> login(@RequestBody AuthLoginRequestDto body) {
         String token = authService.login(body);
         if (token == null) {
-            throw new MultiErrorException(HttpStatus.UNAUTHORIZED, HttpStatus.UNAUTHORIZED.getReasonPhrase());
+            throw new MultiErrorException(HttpStatus.UNAUTHORIZED, ErrorCode.UNAUTHORIZED);
         }
         AuthLoginResponseDto result = new AuthLoginResponseDto(token);
         return new ResponseEntity<>(result, HttpStatus.OK);

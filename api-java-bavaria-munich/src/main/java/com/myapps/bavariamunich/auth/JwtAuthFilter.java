@@ -1,11 +1,13 @@
 package com.myapps.bavariamunich.auth;
 
 import com.myapps.bavariamunich.config.AppConsts;
+import com.myapps.bavariamunich.dto.ErrorItem;
 import com.myapps.bavariamunich.dto.ErrorResponseDto;
+import com.myapps.bavariamunich.exception.ErrorCode;
 import com.myapps.bavariamunich.util.JsonUtil;
 import io.jsonwebtoken.Claims;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +23,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
@@ -82,9 +85,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     }
 
     private void writeUnauthorized(HttpServletResponse response) throws IOException {
-        String responseBody = Objects.requireNonNull(
-                JsonUtil.toJsonStr(ErrorResponseDto.of(HttpStatus.UNAUTHORIZED.getReasonPhrase()))
-        );
+        String requestId = Optional.ofNullable(MDC.get(AppConsts.MDC_REQUEST_ID_KEY))
+                .orElse(AppConsts.UNKNOWN_REQUEST_ID);
+        ErrorResponseDto body = ErrorResponseDto.of(requestId, ErrorItem.of(ErrorCode.UNAUTHORIZED));
+        String responseBody = Objects.requireNonNull(JsonUtil.toJsonStr(body));
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
