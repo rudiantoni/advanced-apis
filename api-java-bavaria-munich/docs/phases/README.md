@@ -46,8 +46,9 @@ First introduction of a file in a phase: full snippet for that phase's scope onl
 | [v0.0.8d](v0.0.8d.md) | Sub-Phase 8d (alternative) | Hybrid JWT - in-memory credentials and database users |
 | [v0.0.9](v0.0.9.md) | Phase 9 | Unified API error contract - `{"errors":[...]}` for 401/404/malformed JSON; `ErrorResponseDto`, `MultiErrorException`, `RequestBodyController` |
 | [v0.0.10](v0.0.10.md) | Phase 10 | Manual input validation - `ValidationUtil`, `UserValidationService` / `ProductValidationService`, `400` with multi-error `errors` on user create and product POST/PUT/PATCH |
-| [v0.0.11-idx](v0.0.11-idx.md) | Phase 11 index | Error handling evolution - documents Sub-Phases **11a**–**11b** and reserves later sub-phases |
+| [v0.0.11-idx](v0.0.11-idx.md) | Phase 11 index | Error handling evolution - documents Sub-Phases **11a**–**11c** and reserves later sub-phases |
 | [v0.0.11a](v0.0.11a.md) | Sub-Phase 11a | Global MVC error handling for known failures; remove controller-level duplication and keep `{"errors":[...]}` |
 | [v0.0.11b](v0.0.11b.md) | Sub-Phase 11b | Catch-all `Exception` handler → `500` with generic message and stack logging; same `{"errors":[...]}` envelope |
+| [v0.0.11c](v0.0.11c.md) | Sub-Phase 11c | Breaking structured errors (`requestId` + `ErrorItem`/`ErrorCode`) and request correlation (`X-Request-Id` / MDC) |
 
 For how the repository was bootstrapped from scratch (Gradle, wrapper, layout), see [CREATION.md](../CREATION.md).
